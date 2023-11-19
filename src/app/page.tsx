@@ -2,6 +2,13 @@ import {Button} from '@/components/button';
 import {Icon} from '@/components/icon';
 import {Input} from '@/components/input';
 import {
+	NumberInput,
+	NumberInputControl,
+	NumberInputDecrementTrigger,
+	NumberInputIncrementTrigger,
+	NumberInputInput,
+} from '@/components/number-input';
+import {
 	Select,
 	SelectContent,
 	SelectControl,
@@ -16,7 +23,12 @@ import {
 import {authOptions} from '@/config/auth-options';
 import {styled} from '@/styled-system/jsx';
 import {Portal} from '@ark-ui/react';
-import {CheckIcon, ChevronsUpDownIcon} from 'lucide-react';
+import {
+	CheckIcon,
+	ChevronDownIcon,
+	ChevronUpIcon,
+	ChevronsUpDownIcon,
+} from 'lucide-react';
 import {getServerSession} from 'next-auth';
 
 const items = [
@@ -31,7 +43,23 @@ export default async function Index() {
 
 	return (
 		<styled.div p={4}>
-			<Input mt={1} id="input" placeholder="Placeholder" />
+			<Input placeholder="Placeholder" />
+
+			<NumberInput mt={5}>
+				<NumberInputControl>
+					<NumberInputInput placeholder="Placeholder" />
+					<NumberInputIncrementTrigger>
+						<Icon>
+							<ChevronUpIcon />
+						</Icon>
+					</NumberInputIncrementTrigger>
+					<NumberInputDecrementTrigger>
+						<Icon>
+							<ChevronDownIcon />
+						</Icon>
+					</NumberInputDecrementTrigger>
+				</NumberInputControl>
+			</NumberInput>
 
 			<Select mt={5} loop positioning={{sameWidth: true}} items={items}>
 				<SelectControl>
