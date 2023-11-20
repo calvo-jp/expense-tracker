@@ -2,6 +2,7 @@
 
 import {Avatar, AvatarFallback, AvatarImage} from '@/components/avatar';
 import {Button} from '@/components/button';
+import {Checkbox, CheckboxControl} from '@/components/checkbox';
 import {
 	DatePicker,
 	DatePickerContent,
@@ -116,6 +117,7 @@ import {
 	ChevronRightIcon,
 	ChevronUpIcon,
 	ChevronsUpDownIcon,
+	MinusIcon,
 	Settings2Icon,
 	XIcon,
 } from 'lucide-react';
@@ -259,6 +261,78 @@ export default function Index() {
 				Submit
 			</Button>
 
+			<Box mt={5}>
+				<Table variant="outline">
+					<TableHeader>
+						<TableRow>
+							<TableHead>
+								<Checkbox checked="indeterminate">
+									{(state) => (
+										<>
+											<CheckboxControl>
+												{state.isChecked && (
+													<Icon size="sm">
+														<CheckIcon />
+													</Icon>
+												)}
+
+												{state.isIndeterminate && (
+													<Icon size="sm">
+														<MinusIcon />
+													</Icon>
+												)}
+											</CheckboxControl>
+										</>
+									)}
+								</Checkbox>
+							</TableHead>
+							<TableHead>ID</TableHead>
+							<TableHead>Name</TableHead>
+							<TableHead>Stock</TableHead>
+							<TableHead textAlign="right">Price</TableHead>
+						</TableRow>
+					</TableHeader>
+					<TableBody>
+						{PRODUCTS.map((product, index) => (
+							<TableRow key={index}>
+								<TableCell>
+									<Checkbox defaultChecked>
+										{(state) => (
+											<>
+												<CheckboxControl>
+													{state.isChecked && (
+														<Icon size="sm">
+															<CheckIcon />
+														</Icon>
+													)}
+
+													{state.isIndeterminate && (
+														<Icon size="sm">
+															<MinusIcon />
+														</Icon>
+													)}
+												</CheckboxControl>
+											</>
+										)}
+									</Checkbox>
+								</TableCell>
+								<TableCell fontWeight="medium">{product.id}</TableCell>
+								<TableCell>{product.name}</TableCell>
+								<TableCell>{product.stock}</TableCell>
+								<TableCell textAlign="right">{product.price}</TableCell>
+							</TableRow>
+						))}
+					</TableBody>
+					<TableFooter>
+						<TableRow>
+							<TableCell colSpan={2}>Totals</TableCell>
+							<TableCell>87</TableCell>
+							<TableCell textAlign="right">$34,163.00</TableCell>
+						</TableRow>
+					</TableFooter>
+				</Table>
+			</Box>
+
 			<Pagination
 				mt={5}
 				w="fit"
@@ -299,36 +373,6 @@ export default function Index() {
 					</>
 				)}
 			</Pagination>
-
-			<Box mt={5}>
-				<Table variant="outline">
-					<TableHeader>
-						<TableRow>
-							<TableHead>ID</TableHead>
-							<TableHead>Name</TableHead>
-							<TableHead>Stock</TableHead>
-							<TableHead textAlign="right">Price</TableHead>
-						</TableRow>
-					</TableHeader>
-					<TableBody>
-						{PRODUCTS.map((product, index) => (
-							<TableRow key={index}>
-								<TableCell fontWeight="medium">{product.id}</TableCell>
-								<TableCell>{product.name}</TableCell>
-								<TableCell>{product.stock}</TableCell>
-								<TableCell textAlign="right">{product.price}</TableCell>
-							</TableRow>
-						))}
-					</TableBody>
-					<TableFooter>
-						<TableRow>
-							<TableCell colSpan={2}>Totals</TableCell>
-							<TableCell>87</TableCell>
-							<TableCell textAlign="right">$34,163.00</TableCell>
-						</TableRow>
-					</TableFooter>
-				</Table>
-			</Box>
 
 			<Drawer>
 				<DrawerTrigger asChild>
