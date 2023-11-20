@@ -96,6 +96,7 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/table';
+import {Textarea} from '@/components/textarea';
 import {toast} from '@/components/toaster';
 import {
 	Tooltip,
@@ -214,6 +215,8 @@ export default function Index() {
 					</NumberInputDecrementTrigger>
 				</NumberInputControl>
 			</NumberInput>
+
+			<Textarea mt={5} />
 
 			<Select mt={5} loop positioning={{sameWidth: true}} items={items}>
 				<SelectControl>
