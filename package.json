@@ -7,8 +7,7 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"prepare": "panda codegen",
-		"postinstall": "prisma generate"
+		"postinstall": "panda codegen && prisma generate"
 	},
 	"dependencies": {
 		"@ark-ui/react": "1.0.1",
