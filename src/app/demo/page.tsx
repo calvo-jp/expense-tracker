@@ -1,5 +1,12 @@
 'use client';
 
+import {
+	Accordion,
+	AccordionItem,
+	AccordionItemContent,
+	AccordionItemIndicator,
+	AccordionItemTrigger,
+} from '@/components/accordion';
 import {Avatar, AvatarFallback, AvatarImage} from '@/components/avatar';
 import {Button} from '@/components/button';
 import {Checkbox, CheckboxControl} from '@/components/checkbox';
@@ -588,6 +595,25 @@ export default function Index() {
 					</DatePickerContent>
 				</DatePickerPositioner>
 			</DatePicker>
+
+			<Accordion mt={5} multiple>
+				{PRODUCTS.map((product) => (
+					<AccordionItem key={product.id} value={product.id}>
+						<AccordionItemTrigger>
+							{product.name}
+							<AccordionItemIndicator>
+								<ChevronDownIcon />
+							</AccordionItemIndicator>
+						</AccordionItemTrigger>
+						<AccordionItemContent>
+							<div>
+								Pudding donut gummies chupa chups oat cake marzipan biscuit tart. Dessert
+								macaroon ice cream bonbon jelly. Jelly topping tiramisu halvah lollipop.
+							</div>
+						</AccordionItemContent>
+					</AccordionItem>
+				))}
+			</Accordion>
 		</styled.div>
 	);
 }
