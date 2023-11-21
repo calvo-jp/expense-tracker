@@ -287,7 +287,9 @@ export default function Index() {
 					</ComboboxInput>
 					<ComboboxTrigger asChild>
 						<IconButton variant="link" aria-label="open" size="xs">
-							<ChevronsUpDownIcon />
+							<Icon>
+								<ChevronsUpDownIcon />
+							</Icon>
 						</IconButton>
 					</ComboboxTrigger>
 				</ComboboxControl>
@@ -305,7 +307,9 @@ export default function Index() {
 									<ComboboxItem key={product.value} item={product}>
 										<ComboboxItemText>{product.label}</ComboboxItemText>
 										<ComboboxItemIndicator>
-											<CheckIcon />
+											<Icon>
+												<CheckIcon />
+											</Icon>
 										</ComboboxItemIndicator>
 									</ComboboxItem>
 								))}
