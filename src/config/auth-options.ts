@@ -1,6 +1,9 @@
 import {PrismaAdapter} from '@auth/prisma-adapter';
+import bcrypt from 'bcrypt';
 import {AuthOptions} from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
+import R from 'ramda';
+import {z} from 'zod';
 import {prisma} from './prisma';
 
 export const authOptions: AuthOptions = {
@@ -17,9 +20,29 @@ export const authOptions: AuthOptions = {
 					label: 'Password',
 				},
 			},
-			async authorize() {
-				return null;
+			async authorize(credentials) {
+				const {email, password} = schema.parse(credentials);
+
+				const user = await prisma.user.findUniqueOrThrow({
+					where: {
+						email,
+					},
+				});
+
+				return (await bcrypt.compare(password, user.password))
+					? R.omit(['password'], user)
+					: null;
 			},
 		}),
 	],
+	pages: {
+		error: '/login',
+		signIn: '/login',
+		signOut: '/login',
+	},
 };
+
+const schema = z.object({
+	email: z.string().email(),
+	password: z.string().min(8).max(150),
+});
