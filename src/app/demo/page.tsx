@@ -109,6 +109,7 @@ import {
 	SelectTrigger,
 	SelectValueText,
 } from '@/components/select';
+import {Switch, SwitchControl, SwitchLabel, SwitchThumb} from '@/components/switch';
 import {
 	Table,
 	TableBody,
@@ -239,24 +240,26 @@ export default function Index() {
 				</NumberInputControl>
 			</NumberInput>
 
-			<Textarea mt={5} />
-
 			<Select mt={5} loop positioning={{sameWidth: true}} items={items}>
 				<SelectControl>
 					<SelectTrigger>
-						<SelectValueText placeholder="Select a Framework" />
+						<SelectValueText placeholder="Select a Product" />
 						<Icon>
 							<ChevronsUpDownIcon />
 						</Icon>
 					</SelectTrigger>
 				</SelectControl>
+
 				<Portal>
 					<SelectPositioner>
 						<SelectContent>
-							<SelectItemGroup id="framework">
-								{items.map((item) => (
-									<SelectItem key={item.value} item={item}>
-										<SelectItemText>{item.label}</SelectItemText>
+							<SelectItemGroup id="products--select">
+								{PRODUCTS.map((product) => ({
+									label: product.name,
+									value: product.id,
+								})).map((product) => (
+									<SelectItem key={product.value} item={product}>
+										<SelectItemText>{product.label}</SelectItemText>
 										<SelectItemIndicator>
 											<Icon>
 												<CheckIcon />
@@ -269,6 +272,194 @@ export default function Index() {
 					</SelectPositioner>
 				</Portal>
 			</Select>
+
+			<Combobox
+				mt={5}
+				items={PRODUCTS.map((product) => ({
+					label: product.name,
+					value: product.id,
+				}))}
+			>
+				<ComboboxLabel>Product</ComboboxLabel>
+				<ComboboxControl>
+					<ComboboxInput placeholder="Select a Product" asChild>
+						<Input />
+					</ComboboxInput>
+					<ComboboxTrigger asChild>
+						<IconButton variant="link" aria-label="open" size="xs">
+							<ChevronsUpDownIcon />
+						</IconButton>
+					</ComboboxTrigger>
+				</ComboboxControl>
+				<Portal>
+					<ComboboxPositioner>
+						<ComboboxContent>
+							<ComboboxItemGroup id="products">
+								<ComboboxItemGroupLabel htmlFor="products">
+									Products
+								</ComboboxItemGroupLabel>
+								{PRODUCTS.map((product) => ({
+									label: product.name,
+									value: product.id,
+								})).map((product) => (
+									<ComboboxItem key={product.value} item={product}>
+										<ComboboxItemText>{product.label}</ComboboxItemText>
+										<ComboboxItemIndicator>
+											<CheckIcon />
+										</ComboboxItemIndicator>
+									</ComboboxItem>
+								))}
+							</ComboboxItemGroup>
+						</ComboboxContent>
+					</ComboboxPositioner>
+				</Portal>
+			</Combobox>
+			<DatePicker mt={5} positioning={{sameWidth: true}} startOfWeek={1}>
+				<DatePickerLabel>Date Picker</DatePickerLabel>
+				<DatePickerControl>
+					<DatePickerInput asChild>
+						<Input />
+					</DatePickerInput>
+					<DatePickerTrigger asChild>
+						<IconButton variant="outline" aria-label="Open date picker">
+							<Icon>
+								<CalendarIcon />
+							</Icon>
+						</IconButton>
+					</DatePickerTrigger>
+				</DatePickerControl>
+				<DatePickerPositioner>
+					<DatePickerContent>
+						<DatePickerView view="day">
+							{(api) => (
+								<>
+									<DatePickerViewControl>
+										<DatePickerPrevTrigger asChild>
+											<IconButton variant="ghost" size="sm">
+												<ChevronLeftIcon />
+											</IconButton>
+										</DatePickerPrevTrigger>
+										<DatePickerViewTrigger asChild>
+											<Button variant="ghost" size="sm">
+												<DatePickerRangeText />
+											</Button>
+										</DatePickerViewTrigger>
+										<DatePickerNextTrigger asChild>
+											<IconButton variant="ghost" size="sm">
+												<ChevronRightIcon />
+											</IconButton>
+										</DatePickerNextTrigger>
+									</DatePickerViewControl>
+									<DatePickerTable>
+										<DatePickerTableHead>
+											<DatePickerTableRow>
+												{api.weekDays.map((weekDay, id) => (
+													<DatePickerTableHeader key={id}>
+														{weekDay.narrow}
+													</DatePickerTableHeader>
+												))}
+											</DatePickerTableRow>
+										</DatePickerTableHead>
+										<DatePickerTableBody>
+											{api.weeks.map((week, id) => (
+												<DatePickerTableRow key={id}>
+													{week.map((day, id) => (
+														<DatePickerTableCell key={id} value={day}>
+															<DatePickerTableCellTrigger asChild>
+																<IconButton variant="ghost">{day.day}</IconButton>
+															</DatePickerTableCellTrigger>
+														</DatePickerTableCell>
+													))}
+												</DatePickerTableRow>
+											))}
+										</DatePickerTableBody>
+									</DatePickerTable>
+								</>
+							)}
+						</DatePickerView>
+						<DatePickerView view="month">
+							{(api) => (
+								<>
+									<DatePickerViewControl>
+										<DatePickerPrevTrigger asChild>
+											<IconButton variant="ghost" size="sm">
+												<ChevronLeftIcon />
+											</IconButton>
+										</DatePickerPrevTrigger>
+										<DatePickerViewTrigger asChild>
+											<Button variant="ghost" size="sm">
+												<DatePickerRangeText />
+											</Button>
+										</DatePickerViewTrigger>
+										<DatePickerNextTrigger asChild>
+											<IconButton variant="ghost" size="sm">
+												<ChevronRightIcon />
+											</IconButton>
+										</DatePickerNextTrigger>
+									</DatePickerViewControl>
+									<DatePickerTable>
+										<DatePickerTableBody>
+											{api
+												.getMonthsGrid({columns: 4, format: 'short'})
+												.map((months, id) => (
+													<DatePickerTableRow key={id}>
+														{months.map((month, id) => (
+															<DatePickerTableCell key={id} value={month.value}>
+																<DatePickerTableCellTrigger asChild>
+																	<Button variant="ghost">{month.label}</Button>
+																</DatePickerTableCellTrigger>
+															</DatePickerTableCell>
+														))}
+													</DatePickerTableRow>
+												))}
+										</DatePickerTableBody>
+									</DatePickerTable>
+								</>
+							)}
+						</DatePickerView>
+						<DatePickerView view="year">
+							{(api) => (
+								<>
+									<DatePickerViewControl>
+										<DatePickerPrevTrigger asChild>
+											<IconButton variant="ghost" size="sm">
+												<ChevronLeftIcon />
+											</IconButton>
+										</DatePickerPrevTrigger>
+										<DatePickerViewTrigger asChild>
+											<Button variant="ghost" size="sm">
+												<DatePickerRangeText />
+											</Button>
+										</DatePickerViewTrigger>
+										<DatePickerNextTrigger asChild>
+											<IconButton variant="ghost" size="sm">
+												<ChevronRightIcon />
+											</IconButton>
+										</DatePickerNextTrigger>
+									</DatePickerViewControl>
+									<DatePickerTable>
+										<DatePickerTableBody>
+											{api.getYearsGrid({columns: 4}).map((years, id) => (
+												<DatePickerTableRow key={id}>
+													{years.map((year, id) => (
+														<DatePickerTableCell key={id} value={year.value}>
+															<DatePickerTableCellTrigger asChild>
+																<Button variant="ghost">{year.label}</Button>
+															</DatePickerTableCellTrigger>
+														</DatePickerTableCell>
+													))}
+												</DatePickerTableRow>
+											))}
+										</DatePickerTableBody>
+									</DatePickerTable>
+								</>
+							)}
+						</DatePickerView>
+					</DatePickerContent>
+				</DatePickerPositioner>
+			</DatePicker>
+
+			<Textarea mt={5} placeholder="Placeholder" />
 
 			<Button
 				mt={5}
@@ -460,192 +651,14 @@ export default function Index() {
 				</Dialog>
 			</Box>
 
-			<DatePicker mt={5} positioning={{sameWidth: true}} startOfWeek={1}>
-				<DatePickerLabel>Date Picker</DatePickerLabel>
-				<DatePickerControl>
-					<DatePickerInput asChild>
-						<Input />
-					</DatePickerInput>
-					<DatePickerTrigger asChild>
-						<IconButton variant="outline" aria-label="Open date picker">
-							<Icon>
-								<CalendarIcon />
-							</Icon>
-						</IconButton>
-					</DatePickerTrigger>
-				</DatePickerControl>
-				<DatePickerPositioner>
-					<DatePickerContent>
-						<DatePickerView view="day">
-							{(api) => (
-								<>
-									<DatePickerViewControl>
-										<DatePickerPrevTrigger asChild>
-											<IconButton variant="ghost" size="sm">
-												<ChevronLeftIcon />
-											</IconButton>
-										</DatePickerPrevTrigger>
-										<DatePickerViewTrigger asChild>
-											<Button variant="ghost" size="sm">
-												<DatePickerRangeText />
-											</Button>
-										</DatePickerViewTrigger>
-										<DatePickerNextTrigger asChild>
-											<IconButton variant="ghost" size="sm">
-												<ChevronRightIcon />
-											</IconButton>
-										</DatePickerNextTrigger>
-									</DatePickerViewControl>
-									<DatePickerTable>
-										<DatePickerTableHead>
-											<DatePickerTableRow>
-												{api.weekDays.map((weekDay, id) => (
-													<DatePickerTableHeader key={id}>
-														{weekDay.narrow}
-													</DatePickerTableHeader>
-												))}
-											</DatePickerTableRow>
-										</DatePickerTableHead>
-										<DatePickerTableBody>
-											{api.weeks.map((week, id) => (
-												<DatePickerTableRow key={id}>
-													{week.map((day, id) => (
-														<DatePickerTableCell key={id} value={day}>
-															<DatePickerTableCellTrigger asChild>
-																<IconButton variant="ghost">{day.day}</IconButton>
-															</DatePickerTableCellTrigger>
-														</DatePickerTableCell>
-													))}
-												</DatePickerTableRow>
-											))}
-										</DatePickerTableBody>
-									</DatePickerTable>
-								</>
-							)}
-						</DatePickerView>
-						<DatePickerView view="month">
-							{(api) => (
-								<>
-									<DatePickerViewControl>
-										<DatePickerPrevTrigger asChild>
-											<IconButton variant="ghost" size="sm">
-												<ChevronLeftIcon />
-											</IconButton>
-										</DatePickerPrevTrigger>
-										<DatePickerViewTrigger asChild>
-											<Button variant="ghost" size="sm">
-												<DatePickerRangeText />
-											</Button>
-										</DatePickerViewTrigger>
-										<DatePickerNextTrigger asChild>
-											<IconButton variant="ghost" size="sm">
-												<ChevronRightIcon />
-											</IconButton>
-										</DatePickerNextTrigger>
-									</DatePickerViewControl>
-									<DatePickerTable>
-										<DatePickerTableBody>
-											{api
-												.getMonthsGrid({columns: 4, format: 'short'})
-												.map((months, id) => (
-													<DatePickerTableRow key={id}>
-														{months.map((month, id) => (
-															<DatePickerTableCell key={id} value={month.value}>
-																<DatePickerTableCellTrigger asChild>
-																	<Button variant="ghost">{month.label}</Button>
-																</DatePickerTableCellTrigger>
-															</DatePickerTableCell>
-														))}
-													</DatePickerTableRow>
-												))}
-										</DatePickerTableBody>
-									</DatePickerTable>
-								</>
-							)}
-						</DatePickerView>
-						<DatePickerView view="year">
-							{(api) => (
-								<>
-									<DatePickerViewControl>
-										<DatePickerPrevTrigger asChild>
-											<IconButton variant="ghost" size="sm">
-												<ChevronLeftIcon />
-											</IconButton>
-										</DatePickerPrevTrigger>
-										<DatePickerViewTrigger asChild>
-											<Button variant="ghost" size="sm">
-												<DatePickerRangeText />
-											</Button>
-										</DatePickerViewTrigger>
-										<DatePickerNextTrigger asChild>
-											<IconButton variant="ghost" size="sm">
-												<ChevronRightIcon />
-											</IconButton>
-										</DatePickerNextTrigger>
-									</DatePickerViewControl>
-									<DatePickerTable>
-										<DatePickerTableBody>
-											{api.getYearsGrid({columns: 4}).map((years, id) => (
-												<DatePickerTableRow key={id}>
-													{years.map((year, id) => (
-														<DatePickerTableCell key={id} value={year.value}>
-															<DatePickerTableCellTrigger asChild>
-																<Button variant="ghost">{year.label}</Button>
-															</DatePickerTableCellTrigger>
-														</DatePickerTableCell>
-													))}
-												</DatePickerTableRow>
-											))}
-										</DatePickerTableBody>
-									</DatePickerTable>
-								</>
-							)}
-						</DatePickerView>
-					</DatePickerContent>
-				</DatePickerPositioner>
-			</DatePicker>
-
-			<Combobox
-				mt={5}
-				items={PRODUCTS.map((product) => ({
-					label: product.name,
-					value: product.id,
-				}))}
-			>
-				<ComboboxLabel>Product</ComboboxLabel>
-				<ComboboxControl>
-					<ComboboxInput placeholder="Select a Product" asChild>
-						<Input />
-					</ComboboxInput>
-					<ComboboxTrigger asChild>
-						<IconButton variant="link" aria-label="open" size="xs">
-							<ChevronsUpDownIcon />
-						</IconButton>
-					</ComboboxTrigger>
-				</ComboboxControl>
-				<Portal>
-					<ComboboxPositioner>
-						<ComboboxContent>
-							<ComboboxItemGroup id="products">
-								<ComboboxItemGroupLabel htmlFor="products">
-									Products
-								</ComboboxItemGroupLabel>
-								{PRODUCTS.map((product) => ({
-									label: product.name,
-									value: product.id,
-								})).map((product) => (
-									<ComboboxItem key={product.value} item={product}>
-										<ComboboxItemText>{product.label}</ComboboxItemText>
-										<ComboboxItemIndicator>
-											<CheckIcon />
-										</ComboboxItemIndicator>
-									</ComboboxItem>
-								))}
-							</ComboboxItemGroup>
-						</ComboboxContent>
-					</ComboboxPositioner>
-				</Portal>
-			</Combobox>
+			<Box mt={5}>
+				<Switch>
+					<SwitchControl>
+						<SwitchThumb />
+					</SwitchControl>
+					<SwitchLabel>Label</SwitchLabel>
+				</Switch>
+			</Box>
 
 			<Accordion mt={12} multiple>
 				{PRODUCTS.map((product) => (
