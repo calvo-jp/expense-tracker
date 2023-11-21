@@ -72,6 +72,7 @@ import {
 import {Icon} from '@/components/icon';
 import {IconButton} from '@/components/icon-button';
 import {Input} from '@/components/input';
+import {Label} from '@/components/label';
 import {
 	Menu,
 	MenuContent,
@@ -89,6 +90,7 @@ import {
 	NumberInputDecrementTrigger,
 	NumberInputIncrementTrigger,
 	NumberInputInput,
+	NumberInputLabel,
 } from '@/components/number-input';
 import {
 	Pagination,
@@ -105,6 +107,7 @@ import {
 	SelectItemGroup,
 	SelectItemIndicator,
 	SelectItemText,
+	SelectLabel,
 	SelectPositioner,
 	SelectTrigger,
 	SelectValueText,
@@ -129,7 +132,7 @@ import {
 	TooltipPositioner,
 	TooltipTrigger,
 } from '@/components/tooltip';
-import {Box, Stack, styled} from '@/styled-system/jsx';
+import {Box, Stack, VStack, styled} from '@/styled-system/jsx';
 import {Portal} from '@ark-ui/react';
 import {
 	CalendarIcon,
@@ -222,9 +225,13 @@ export default function Index() {
 				</Menu>
 			</Box>
 
-			<Input mt={5} placeholder="Placeholder" />
+			<VStack mt={5} gap={1.5} alignItems="start">
+				<Label>Name</Label>
+				<Input placeholder="Placeholder" />
+			</VStack>
 
 			<NumberInput mt={5}>
+				<NumberInputLabel>Amount</NumberInputLabel>
 				<NumberInputControl>
 					<NumberInputInput placeholder="Placeholder" />
 					<NumberInputIncrementTrigger>
@@ -241,6 +248,7 @@ export default function Index() {
 			</NumberInput>
 
 			<Select mt={5} loop positioning={{sameWidth: true}} items={items}>
+				<SelectLabel>Product</SelectLabel>
 				<SelectControl>
 					<SelectTrigger>
 						<SelectValueText placeholder="Select a Product" />
@@ -318,8 +326,9 @@ export default function Index() {
 					</ComboboxPositioner>
 				</Portal>
 			</Combobox>
+
 			<DatePicker mt={5} positioning={{sameWidth: true}} startOfWeek={1}>
-				<DatePickerLabel>Date Picker</DatePickerLabel>
+				<DatePickerLabel>Date</DatePickerLabel>
 				<DatePickerControl>
 					<DatePickerInput asChild>
 						<Input />
@@ -340,7 +349,9 @@ export default function Index() {
 									<DatePickerViewControl>
 										<DatePickerPrevTrigger asChild>
 											<IconButton variant="ghost" size="sm">
-												<ChevronLeftIcon />
+												<Icon>
+													<ChevronLeftIcon />
+												</Icon>
 											</IconButton>
 										</DatePickerPrevTrigger>
 										<DatePickerViewTrigger asChild>
@@ -350,7 +361,9 @@ export default function Index() {
 										</DatePickerViewTrigger>
 										<DatePickerNextTrigger asChild>
 											<IconButton variant="ghost" size="sm">
-												<ChevronRightIcon />
+												<Icon>
+													<ChevronRightIcon />
+												</Icon>
 											</IconButton>
 										</DatePickerNextTrigger>
 									</DatePickerViewControl>
@@ -387,7 +400,9 @@ export default function Index() {
 									<DatePickerViewControl>
 										<DatePickerPrevTrigger asChild>
 											<IconButton variant="ghost" size="sm">
-												<ChevronLeftIcon />
+												<Icon>
+													<ChevronLeftIcon />
+												</Icon>
 											</IconButton>
 										</DatePickerPrevTrigger>
 										<DatePickerViewTrigger asChild>
@@ -397,7 +412,9 @@ export default function Index() {
 										</DatePickerViewTrigger>
 										<DatePickerNextTrigger asChild>
 											<IconButton variant="ghost" size="sm">
-												<ChevronRightIcon />
+												<Icon>
+													<ChevronRightIcon />
+												</Icon>
 											</IconButton>
 										</DatePickerNextTrigger>
 									</DatePickerViewControl>
@@ -427,7 +444,9 @@ export default function Index() {
 									<DatePickerViewControl>
 										<DatePickerPrevTrigger asChild>
 											<IconButton variant="ghost" size="sm">
-												<ChevronLeftIcon />
+												<Icon>
+													<ChevronLeftIcon />
+												</Icon>
 											</IconButton>
 										</DatePickerPrevTrigger>
 										<DatePickerViewTrigger asChild>
@@ -437,7 +456,9 @@ export default function Index() {
 										</DatePickerViewTrigger>
 										<DatePickerNextTrigger asChild>
 											<IconButton variant="ghost" size="sm">
-												<ChevronRightIcon />
+												<Icon>
+													<ChevronRightIcon />
+												</Icon>
 											</IconButton>
 										</DatePickerNextTrigger>
 									</DatePickerViewControl>
@@ -463,7 +484,10 @@ export default function Index() {
 				</DatePickerPositioner>
 			</DatePicker>
 
-			<Textarea mt={5} placeholder="Placeholder" />
+			<VStack mt={5} gap={1.5} alignItems="start">
+				<Label>Comments</Label>
+				<Textarea placeholder="Placeholder" />
+			</VStack>
 
 			<Button
 				mt={5}
@@ -477,7 +501,7 @@ export default function Index() {
 				Submit
 			</Button>
 
-			<Box mt={5}>
+			<Box mt={16}>
 				<Table variant="outline">
 					<TableHeader>
 						<TableRow>
@@ -592,7 +616,7 @@ export default function Index() {
 
 			<Drawer>
 				<DrawerTrigger asChild>
-					<Button mt={5}>Open Drawer</Button>
+					<Button mt={16}>Open Drawer</Button>
 				</DrawerTrigger>
 				<Portal>
 					<DrawerBackdrop />
@@ -655,7 +679,7 @@ export default function Index() {
 				</Dialog>
 			</Box>
 
-			<Box mt={5}>
+			<Box mt={16}>
 				<Switch>
 					<SwitchControl>
 						<SwitchThumb />
@@ -664,7 +688,7 @@ export default function Index() {
 				</Switch>
 			</Box>
 
-			<Accordion mt={12} multiple>
+			<Accordion mt={16} multiple>
 				{PRODUCTS.map((product) => (
 					<AccordionItem key={product.id} value={product.id}>
 						<AccordionItemTrigger>
