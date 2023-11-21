@@ -7,6 +7,7 @@ export default function Layout(props: PropsWithChildren) {
 	return (
 		<Box
 			h="100vh"
+			minW="breakpoint-lg"
 			css={{
 				'--navbar-height': 'token(spacing.20)',
 				'--sidebar-width': 'token(spacing.64)',
@@ -18,6 +19,7 @@ export default function Layout(props: PropsWithChildren) {
 				<styled.main
 					p={8}
 					h="calc(100vh - var(--navbar-height))"
+					bg="bg.default"
 					flexGrow={1}
 					overflowY="auto"
 				>

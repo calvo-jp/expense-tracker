@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 };
 
 const sans = Lato({
-	weight: ['400'],
+	weight: ['400', '700'],
 	display: 'swap',
 	subsets: ['latin'],
 	variable: '--font-sans',

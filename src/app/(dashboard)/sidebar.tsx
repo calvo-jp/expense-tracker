@@ -18,7 +18,7 @@ export function Sidebar() {
 			flexShrink={0}
 			borderRightWidth="1px"
 		>
-			<styled.ul py={4}>
+			<styled.ul py={6}>
 				<styled.li>
 					<Link href="/dashboard" className={linkCls}>
 						<Icon>
@@ -66,7 +66,7 @@ export function Sidebar() {
 
 const linkCls = css({
 	w: 'full',
-	px: 5,
+	px: 8,
 	py: 2.5,
 	cursor: 'pointer',
 	display: 'flex',
