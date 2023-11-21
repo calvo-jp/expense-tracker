@@ -2,7 +2,7 @@ import {PrismaAdapter} from '@auth/prisma-adapter';
 import bcrypt from 'bcrypt';
 import {AuthOptions} from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import R from 'ramda';
+import * as R from 'ramda';
 import {z} from 'zod';
 import {prisma} from './prisma';
 
