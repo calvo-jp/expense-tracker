@@ -12,9 +12,6 @@ export default defineConfig({
 					sans: {
 						value: 'var(--font-sans)',
 					},
-					mono: {
-						value: 'var(--font-mono)',
-					},
 				},
 			},
 		},
