@@ -147,13 +147,6 @@ import {
 	XIcon,
 } from 'lucide-react';
 
-const items = [
-	{label: 'React', value: 'react'},
-	{label: 'Solid', value: 'solid'},
-	{label: 'Svelte', value: 'svelte'},
-	{label: 'Vue', value: 'vue'},
-];
-
 export default function Index() {
 	return (
 		<styled.div p={4}>
@@ -247,7 +240,15 @@ export default function Index() {
 				</NumberInputControl>
 			</NumberInput>
 
-			<Select mt={5} loop positioning={{sameWidth: true}} items={items}>
+			<Select
+				mt={5}
+				loop
+				positioning={{sameWidth: true}}
+				items={PRODUCTS.map((product) => ({
+					label: product.name,
+					value: product.id,
+				}))}
+			>
 				<SelectLabel>Product</SelectLabel>
 				<SelectControl>
 					<SelectTrigger>
