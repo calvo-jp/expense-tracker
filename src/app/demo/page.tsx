@@ -11,6 +11,20 @@ import {Avatar, AvatarFallback, AvatarImage} from '@/components/avatar';
 import {Button} from '@/components/button';
 import {Checkbox, CheckboxControl} from '@/components/checkbox';
 import {
+	Combobox,
+	ComboboxContent,
+	ComboboxControl,
+	ComboboxInput,
+	ComboboxItem,
+	ComboboxItemGroup,
+	ComboboxItemGroupLabel,
+	ComboboxItemIndicator,
+	ComboboxItemText,
+	ComboboxLabel,
+	ComboboxPositioner,
+	ComboboxTrigger,
+} from '@/components/combobox';
+import {
 	DatePicker,
 	DatePickerContent,
 	DatePickerControl,
@@ -446,12 +460,7 @@ export default function Index() {
 				</Dialog>
 			</Box>
 
-			<DatePicker
-				mt={5}
-				positioning={{sameWidth: true}}
-				startOfWeek={1}
-				selectionMode="range"
-			>
+			<DatePicker mt={5} positioning={{sameWidth: true}} startOfWeek={1}>
 				<DatePickerLabel>Date Picker</DatePickerLabel>
 				<DatePickerControl>
 					<DatePickerInput asChild>
@@ -596,7 +605,49 @@ export default function Index() {
 				</DatePickerPositioner>
 			</DatePicker>
 
-			<Accordion mt={5} multiple>
+			<Combobox
+				mt={5}
+				items={PRODUCTS.map((product) => ({
+					label: product.name,
+					value: product.id,
+				}))}
+			>
+				<ComboboxLabel>Product</ComboboxLabel>
+				<ComboboxControl>
+					<ComboboxInput placeholder="Select a Product" asChild>
+						<Input />
+					</ComboboxInput>
+					<ComboboxTrigger asChild>
+						<IconButton variant="link" aria-label="open" size="xs">
+							<ChevronsUpDownIcon />
+						</IconButton>
+					</ComboboxTrigger>
+				</ComboboxControl>
+				<Portal>
+					<ComboboxPositioner>
+						<ComboboxContent>
+							<ComboboxItemGroup id="products">
+								<ComboboxItemGroupLabel htmlFor="products">
+									Products
+								</ComboboxItemGroupLabel>
+								{PRODUCTS.map((product) => ({
+									label: product.name,
+									value: product.id,
+								})).map((product) => (
+									<ComboboxItem key={product.value} item={product}>
+										<ComboboxItemText>{product.label}</ComboboxItemText>
+										<ComboboxItemIndicator>
+											<CheckIcon />
+										</ComboboxItemIndicator>
+									</ComboboxItem>
+								))}
+							</ComboboxItemGroup>
+						</ComboboxContent>
+					</ComboboxPositioner>
+				</Portal>
+			</Combobox>
+
+			<Accordion mt={12} multiple>
 				{PRODUCTS.map((product) => (
 					<AccordionItem key={product.id} value={product.id}>
 						<AccordionItemTrigger>
