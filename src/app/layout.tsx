@@ -16,7 +16,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-	title: 'Expense Tracker',
+	title: {
+		default: 'Expense Tracker',
+		template: 'Expense Tracker | %s',
+	},
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
