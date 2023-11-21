@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
 	return (
-		<styled.html lang="en" className={cx(inter.variable, 'dark')}>
+		<styled.html lang="en" scrollBehavior="smooth" className={cx(inter.variable, 'dark')}>
 			<styled.body fontFamily="sans">
 				<Providers>{children}</Providers>
 				<Toaster />
