@@ -16,8 +16,9 @@ export default function Layout(props: PropsWithChildren) {
 			<Navbar />
 			<Flex alignItems="flex-start">
 				<Sidebar />
+
 				<styled.main
-					p={8}
+					p={10}
 					h="calc(100vh - var(--navbar-height))"
 					bg="bg.default"
 					flexGrow={1}

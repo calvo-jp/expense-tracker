@@ -35,7 +35,7 @@ export default function Expenses() {
 				</Button>
 			</Flex>
 
-			<Box mt={8}>
+			<Box mt={10}>
 				<Table variant="outline">
 					<TableHeader>
 						<TableRow>
@@ -87,7 +87,7 @@ export default function Expenses() {
 				</Table>
 			</Box>
 
-			<Center mt={8}>
+			<Center mt={10}>
 				<PageNav />
 			</Center>
 		</Box>
