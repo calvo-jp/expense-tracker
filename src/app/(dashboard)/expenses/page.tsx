@@ -36,7 +36,6 @@ import {
 	subWeeks,
 	subYears,
 } from 'date-fns';
-import _ from 'lodash';
 import {
 	FileEditIcon,
 	FileX2Icon,
@@ -164,7 +163,9 @@ export default function Expenses() {
 						<TableRow>
 							<TableCell colSpan={3}>Total</TableCell>
 							<TableCell fontVariantNumeric="tabular-nums">
-								{numberFormatter.format(_.sumBy(items, (o) => o.amount))}
+								{numberFormatter.format(
+									items.reduce((total, item) => total + item.amount, 0),
+								)}
 							</TableCell>
 							<TableCell />
 						</TableRow>
