@@ -1,4 +1,5 @@
 import {Icon} from '@/components/icon';
+import {Link} from '@/components/link';
 import {css} from '@/styled-system/css';
 import {styled} from '@/styled-system/jsx';
 import {
@@ -8,7 +9,6 @@ import {
 	PowerIcon,
 	SettingsIcon,
 } from 'lucide-react';
-import Link from 'next/link';
 
 export function Sidebar() {
 	return (
