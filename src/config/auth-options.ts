@@ -1,8 +1,8 @@
 import {PrismaAdapter} from '@auth/prisma-adapter';
 import bcrypt from 'bcrypt';
+import _ from 'lodash';
 import {AuthOptions} from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import * as R from 'ramda';
 import {z} from 'zod';
 import {prisma} from './prisma';
 
@@ -30,7 +30,7 @@ export const authOptions: AuthOptions = {
 				});
 
 				return (await bcrypt.compare(password, user.password))
-					? R.omit(['password'], user)
+					? _.omit(user, ['password'])
 					: null;
 			},
 		}),

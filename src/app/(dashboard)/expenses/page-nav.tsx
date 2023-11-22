@@ -11,6 +11,7 @@ import {
 	PaginationPrevTrigger,
 } from '@/components/pagination';
 import {ChevronLeftIcon, ChevronRightIcon} from 'lucide-react';
+import {Fragment} from 'react';
 
 export function PageNav() {
 	return (
@@ -22,7 +23,7 @@ export function PageNav() {
 			defaultPage={2}
 		>
 			{({pages}) => (
-				<>
+				<Fragment>
 					<PaginationPrevTrigger asChild>
 						<IconButton variant="outline" aria-label="Next Page">
 							<Icon>
@@ -31,17 +32,21 @@ export function PageNav() {
 						</IconButton>
 					</PaginationPrevTrigger>
 
-					{pages.map((page, index) =>
-						page.type === 'page' ? (
-							<PaginationItem key={index} {...page} asChild>
-								<Button variant="outline">{page.value}</Button>
-							</PaginationItem>
-						) : (
+					{pages.map((page, index) => {
+						if (page.type === 'page') {
+							return (
+								<PaginationItem key={index} {...page} asChild>
+									<Button variant="outline">{page.value}</Button>
+								</PaginationItem>
+							);
+						}
+
+						return (
 							<PaginationEllipsis key={index} index={index}>
-								&#8230;
+								...
 							</PaginationEllipsis>
-						),
-					)}
+						);
+					})}
 
 					<PaginationNextTrigger asChild>
 						<IconButton variant="outline" aria-label="Next Page">
@@ -50,7 +55,7 @@ export function PageNav() {
 							</Icon>
 						</IconButton>
 					</PaginationNextTrigger>
-				</>
+				</Fragment>
 			)}
 		</Pagination>
 	);

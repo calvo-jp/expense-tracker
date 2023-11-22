@@ -32,47 +32,52 @@ export function Navbar() {
 
 				<Flex gap={4}>
 					<Notifications />
-
-					<Menu
-						positioning={{
-							flip: true,
-							placement: 'bottom-end',
-						}}
-					>
-						<MenuTrigger asChild>
-							<styled.button cursor="pointer">
-								<Avatar>
-									<AvatarFallback>JP</AvatarFallback>
-								</Avatar>
-							</styled.button>
-						</MenuTrigger>
-
-						<MenuPositioner>
-							<MenuContent w="14rem" shadow="none" borderWidth="1px">
-								<MenuItemGroup id="profile-settings-menu">
-									<MenuItem id="profile-settings-menu--item-1">
-										<HStack>
-											<Icon>
-												<LockIcon />
-											</Icon>
-											<styled.span>Change Password</styled.span>
-										</HStack>
-									</MenuItem>
-									<MenuItem id="profile-settings-menu--item-2">
-										<HStack>
-											<Icon>
-												<PowerIcon />
-											</Icon>
-											<styled.span>Sign out</styled.span>
-										</HStack>
-									</MenuItem>
-								</MenuItemGroup>
-							</MenuContent>
-						</MenuPositioner>
-					</Menu>
+					<ProfileMenu />
 				</Flex>
 			</Flex>
 		</styled.header>
+	);
+}
+
+function ProfileMenu() {
+	return (
+		<Menu
+			positioning={{
+				flip: true,
+				placement: 'bottom-end',
+			}}
+		>
+			<MenuTrigger asChild>
+				<styled.button cursor="pointer">
+					<Avatar>
+						<AvatarFallback>JP</AvatarFallback>
+					</Avatar>
+				</styled.button>
+			</MenuTrigger>
+
+			<MenuPositioner>
+				<MenuContent w="14rem" shadow="none" borderWidth="1px">
+					<MenuItemGroup id="profile-settings-menu">
+						<MenuItem id="profile-settings-menu--item-1">
+							<HStack>
+								<Icon>
+									<LockIcon />
+								</Icon>
+								<styled.span>Change Password</styled.span>
+							</HStack>
+						</MenuItem>
+						<MenuItem id="profile-settings-menu--item-2">
+							<HStack>
+								<Icon>
+									<PowerIcon />
+								</Icon>
+								<styled.span>Sign out</styled.span>
+							</HStack>
+						</MenuItem>
+					</MenuItemGroup>
+				</MenuContent>
+			</MenuPositioner>
+		</Menu>
 	);
 }
 

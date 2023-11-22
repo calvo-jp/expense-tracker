@@ -1,6 +1,5 @@
 import {Icon} from '@/components/icon';
 import {Link} from '@/components/link';
-import {css} from '@/styled-system/css';
 import {styled} from '@/styled-system/jsx';
 import {
 	CoinsIcon,
@@ -19,60 +18,60 @@ export function Sidebar() {
 			borderRightWidth="1px"
 		>
 			<styled.ul py={6}>
-				<styled.li>
-					<Link href="/dashboard" className={linkCls}>
-						<Icon>
-							<LineChartIcon />
-						</Icon>
-						<styled.span>Dashboard</styled.span>
-					</Link>
-				</styled.li>
-				<styled.li>
-					<Link href="/expenses" className={linkCls}>
-						<Icon>
-							<CoinsIcon />
-						</Icon>
-						<styled.span>Expenses</styled.span>
-					</Link>
-				</styled.li>
-				<styled.li>
-					<Link href="/reports" className={linkCls}>
-						<Icon>
-							<FilePieChartIcon />
-						</Icon>
-						<styled.span>Reports</styled.span>
-					</Link>
-				</styled.li>
-				<styled.li>
-					<Link href="/settings" className={linkCls}>
-						<Icon>
-							<SettingsIcon />
-						</Icon>
-						<styled.span>Settings</styled.span>
-					</Link>
-				</styled.li>
-				<styled.li>
-					<styled.button className={linkCls}>
-						<Icon>
-							<PowerIcon />
-						</Icon>
-						<styled.span>Sign out</styled.span>
-					</styled.button>
-				</styled.li>
+				{links.map((link) => (
+					<styled.li key={link.path}>
+						<Link
+							href={link.path}
+							css={{
+								w: 'full',
+								px: 8,
+								py: 2.5,
+								cursor: 'pointer',
+								display: 'flex',
+								alignItems: 'center',
+								gap: 3,
+								_hover: {
+									bg: 'bg.subtle',
+								},
+								_selected: {
+									color: 'amber.light.a10',
+								},
+							}}
+						>
+							<Icon>{link.icon}</Icon>
+							<styled.span>{link.label}</styled.span>
+						</Link>
+					</styled.li>
+				))}
 			</styled.ul>
 		</styled.nav>
 	);
 }
 
-const linkCls = css({
-	w: 'full',
-	px: 8,
-	py: 2.5,
-	cursor: 'pointer',
-	display: 'flex',
-	alignItems: 'center',
-	gap: 3,
-	_hover: {
-		bg: 'bg.subtle',
+const links = [
+	{
+		icon: <LineChartIcon />,
+		path: '/dashboard',
+		label: 'Dashboard',
 	},
-});
+	{
+		icon: <CoinsIcon />,
+		path: '/expenses',
+		label: 'Expenses',
+	},
+	{
+		icon: <FilePieChartIcon />,
+		path: '/reports',
+		label: 'Reports',
+	},
+	{
+		icon: <SettingsIcon />,
+		path: '/settings',
+		label: 'Settings',
+	},
+	{
+		icon: <PowerIcon />,
+		path: '/signout',
+		label: 'Sign out',
+	},
+];
