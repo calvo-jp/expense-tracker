@@ -1,4 +1,4 @@
-import {Avatar, AvatarFallback, AvatarImage} from '@/components/avatar';
+import {Avatar, AvatarFallback} from '@/components/avatar';
 import {
 	Drawer,
 	DrawerBackdrop,
@@ -43,7 +43,6 @@ export function Navbar() {
 							<styled.button cursor="pointer">
 								<Avatar>
 									<AvatarFallback>JP</AvatarFallback>
-									<AvatarImage src="https://i.pravatar.cc/150" alt="" />
 								</Avatar>
 							</styled.button>
 						</MenuTrigger>
