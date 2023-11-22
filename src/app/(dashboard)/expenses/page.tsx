@@ -18,13 +18,23 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/table';
+import {
+	Tooltip,
+	TooltipArrow,
+	TooltipArrowTip,
+	TooltipContent,
+	TooltipPositioner,
+	TooltipTrigger,
+} from '@/components/tooltip';
 import {Box, Center, Flex, HStack, Spacer, styled} from '@/styled-system/jsx';
 import {
+	format,
 	formatDistanceToNow,
 	subDays,
 	subMinutes,
 	subSeconds,
 	subWeeks,
+	subYears,
 } from 'date-fns';
 import _ from 'lodash';
 import {
@@ -81,10 +91,29 @@ export default function Expenses() {
 								<TableCell>{item.where}</TableCell>
 								<TableCell>{item.what}</TableCell>
 								<TableCell>
-									{formatDistanceToNow(item.when, {
-										addSuffix: true,
-										includeSeconds: true,
-									})}
+									<Tooltip
+										positioning={{
+											placement: 'right',
+										}}
+									>
+										<TooltipTrigger>
+											{formatDistanceToNow(item.when)}
+										</TooltipTrigger>
+										<TooltipPositioner>
+											<TooltipContent>
+												<TooltipArrow
+													css={{
+														'--arrow-size': 'token(sizes.3)',
+														'--arrow-background': 'colors.fg.default',
+													}}
+												>
+													<TooltipArrowTip />
+												</TooltipArrow>
+
+												{format(item.when, 'yyyy MMM dd hh:mm a')}
+											</TooltipContent>
+										</TooltipPositioner>
+									</Tooltip>
 								</TableCell>
 								<TableCell fontVariantNumeric="tabular-nums">
 									{numberFormatter.format(item.amount)}
@@ -182,7 +211,7 @@ const items = [
 	{
 		id: 5,
 		what: 'Pizza',
-		when: subSeconds(new Date(), 15),
+		when: subYears(new Date(), 1),
 		where: 'Fabrica',
 		amount: 29,
 	},
