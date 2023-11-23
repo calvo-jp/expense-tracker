@@ -14,14 +14,15 @@ import {IconButton} from '@/components/icon-button';
 import {
 	Menu,
 	MenuContent,
-	MenuItem,
 	MenuItemGroup,
 	MenuPositioner,
 	MenuTrigger,
 } from '@/components/menu';
-import {Flex, HStack, Spacer, styled} from '@/styled-system/jsx';
+import {Flex, Spacer, styled} from '@/styled-system/jsx';
 import {Portal} from '@ark-ui/react';
-import {BellIcon, ChevronRightIcon, LockIcon, PowerIcon} from 'lucide-react';
+import {BellIcon, ChevronRightIcon} from 'lucide-react';
+import {ChangePassword} from './change-password';
+import {SignOut} from './sign-out';
 
 export function Navbar() {
 	return (
@@ -57,22 +58,8 @@ function ProfileMenu() {
 			<MenuPositioner>
 				<MenuContent w="14rem" shadow="none" borderWidth="1px">
 					<MenuItemGroup id="profile-settings-menu">
-						<MenuItem id="profile-settings-menu--item-1">
-							<HStack>
-								<Icon>
-									<LockIcon />
-								</Icon>
-								<styled.span>Change Password</styled.span>
-							</HStack>
-						</MenuItem>
-						<MenuItem id="profile-settings-menu--item-2">
-							<HStack>
-								<Icon>
-									<PowerIcon />
-								</Icon>
-								<styled.span>Sign out</styled.span>
-							</HStack>
-						</MenuItem>
+						<ChangePassword />
+						<SignOut />
 					</MenuItemGroup>
 				</MenuContent>
 			</MenuPositioner>

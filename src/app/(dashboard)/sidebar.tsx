@@ -5,7 +5,6 @@ import {
 	CoinsIcon,
 	FilePieChartIcon,
 	LineChartIcon,
-	PowerIcon,
 	SettingsIcon,
 } from 'lucide-react';
 
@@ -70,10 +69,5 @@ const links = [
 		icon: <SettingsIcon />,
 		path: '/settings',
 		label: 'Settings',
-	},
-	{
-		icon: <PowerIcon />,
-		path: '/signout',
-		label: 'Sign out',
 	},
 ];
