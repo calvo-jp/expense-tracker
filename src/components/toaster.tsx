@@ -1,5 +1,6 @@
 'use client';
 
+import {token} from '@/styled-system/tokens';
 import {createToaster} from '@ark-ui/react';
 import {XIcon} from 'lucide-react';
 import {Icon} from './icon';
@@ -7,6 +8,9 @@ import {IconButton} from './icon-button';
 import {Toast, ToastCloseTrigger, ToastDescription, ToastTitle} from './toast';
 
 export const [Toaster, toast] = createToaster({
+	max: 5,
+	zIndex: parseInt(token('zIndex.toast', '9999')),
+	duration: 5000,
 	placement: 'bottom-end',
 	render(toast) {
 		return (

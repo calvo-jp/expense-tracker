@@ -2,7 +2,6 @@ import {Icon} from '@/components/icon';
 import {
 	Menu,
 	MenuContent,
-	MenuItem,
 	MenuItemGroup,
 	MenuPositioner,
 	MenuTrigger,
@@ -24,7 +23,7 @@ import {
 	TooltipPositioner,
 	TooltipTrigger,
 } from '@/components/tooltip';
-import {Box, Flex, HStack, Spacer, styled} from '@/styled-system/jsx';
+import {Box, Flex, Spacer, styled} from '@/styled-system/jsx';
 import {
 	format,
 	formatDistanceToNow,
@@ -34,11 +33,13 @@ import {
 	subWeeks,
 	subYears,
 } from 'date-fns';
-import {FileEditIcon, FileX2Icon, SettingsIcon} from 'lucide-react';
+import {SettingsIcon} from 'lucide-react';
 import {Metadata} from 'next';
-import {CreateNew} from './create-new';
+import {CreateExpense} from './create-expense';
+import {DeleteExpense} from './delete-expense';
+import {EditExpense} from './edit-expense';
 import {Filter} from './filter';
-import {PageNav} from './page-nav';
+import {PageControls} from './page-controls';
 
 export const metadata: Metadata = {
 	title: 'Expenses',
@@ -54,7 +55,7 @@ export default function Expenses() {
 				<Spacer />
 				<Flex gap={3}>
 					<Filter />
-					<CreateNew />
+					<CreateExpense />
 				</Flex>
 			</Flex>
 
@@ -122,22 +123,8 @@ export default function Expenses() {
 										<MenuPositioner>
 											<MenuContent w="12rem" shadow="none" borderWidth="1px">
 												<MenuItemGroup id={`expenses-menu--${item.id}`}>
-													<MenuItem id={`expenses-menu--${item.id}--item-1`}>
-														<HStack>
-															<Icon>
-																<FileEditIcon />
-															</Icon>
-															<styled.span>Edit</styled.span>
-														</HStack>
-													</MenuItem>
-													<MenuItem id={`expenses-menu--${item.id}--item-2`}>
-														<HStack>
-															<Icon>
-																<FileX2Icon />
-															</Icon>
-															<styled.span>Delete</styled.span>
-														</HStack>
-													</MenuItem>
+													<EditExpense />
+													<DeleteExpense />
 												</MenuItemGroup>
 											</MenuContent>
 										</MenuPositioner>
@@ -161,7 +148,7 @@ export default function Expenses() {
 			</Box>
 
 			<Box mt={8}>
-				<PageNav />
+				<PageControls />
 			</Box>
 		</Box>
 	);

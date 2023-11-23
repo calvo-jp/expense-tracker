@@ -32,7 +32,7 @@ import {
 } from 'lucide-react';
 import {Fragment} from 'react';
 
-export function PageNav() {
+export function PageControls() {
 	return (
 		<Flex gap={4} alignItems="center">
 			<Box fontSize="sm">Showing 1-10 of 1001</Box>
