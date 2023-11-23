@@ -1,6 +1,6 @@
 import {Button} from '@/components/button';
 import {Input} from '@/components/input';
-import {Box} from '@/styled-system/jsx';
+import {styled} from '@/styled-system/jsx';
 import {Metadata} from 'next';
 
 export const metadata: Metadata = {
@@ -9,12 +9,30 @@ export const metadata: Metadata = {
 
 export default function Register() {
 	return (
-		<Box>
-			<Input mt={12} size="xl" placeholder="Email" />
-			<Input mt={6} size="xl" placeholder="Password" />
-			<Button w="full" mt={8} size="xl">
+		<styled.form
+			action={async (formdata) => {
+				'use server';
+
+				const email = formdata.get('email');
+				const password = formdata.get('password');
+
+				console.log({
+					email,
+					password,
+				});
+			}}
+		>
+			<Input mt={12} name="email" size="xl" placeholder="Email" />
+			<Input
+				mt={6}
+				name="password"
+				size="xl"
+				type="password"
+				placeholder="Password"
+			/>
+			<Button w="full" mt={8} size="xl" type="submit">
 				Login
 			</Button>
-		</Box>
+		</styled.form>
 	);
 }
