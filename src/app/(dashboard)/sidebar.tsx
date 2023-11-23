@@ -12,29 +12,31 @@ import {
 export function Sidebar() {
 	return (
 		<styled.nav
-			w="var(--sidebar-width)"
-			h="calc(100vh - var(--navbar-height))"
+			w="sidebar.width"
+			h="calc(100vh - token(sizes.navbar.height))"
 			flexShrink={0}
 			borderRightWidth="1px"
 		>
-			<styled.ul py={6}>
+			<styled.ul py={6} px={4}>
 				{links.map((link) => (
 					<styled.li key={link.path}>
 						<Link
 							href={link.path}
 							css={{
 								w: 'full',
-								px: 8,
+								px: 4,
 								py: 2.5,
+								color: 'fg.muted',
 								cursor: 'pointer',
+								rounded: 'sm',
 								display: 'flex',
 								alignItems: 'center',
 								gap: 3,
 								_hover: {
-									bg: 'bg.subtle',
+									color: 'fg.default',
 								},
 								_selected: {
-									color: 'amber.light.a10',
+									color: 'fg.default',
 								},
 							}}
 						>

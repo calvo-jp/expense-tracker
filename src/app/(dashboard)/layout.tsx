@@ -5,21 +5,14 @@ import {Sidebar} from './sidebar';
 
 export default function Layout(props: PropsWithChildren) {
 	return (
-		<Box
-			h="100vh"
-			minW="breakpoint-lg"
-			css={{
-				'--navbar-height': 'token(spacing.20)',
-				'--sidebar-width': 'token(spacing.64)',
-			}}
-		>
+		<Box h="100vh" minW="breakpoint-lg">
 			<Navbar />
 			<Flex alignItems="flex-start">
 				<Sidebar />
 
 				<styled.main
 					p={10}
-					h="calc(100vh - var(--navbar-height))"
+					h="calc(100vh - token(sizes.navbar.height))"
 					bg="bg.default"
 					flexGrow={1}
 					overflowY="auto"

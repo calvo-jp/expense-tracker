@@ -13,6 +13,18 @@ export default defineConfig({
 						value: 'var(--font-sans)',
 					},
 				},
+				sizes: {
+					navbar: {
+						height: {
+							value: '{spacing.20}',
+						},
+					},
+					sidebar: {
+						width: {
+							value: '{spacing.64}',
+						},
+					},
+				},
 			},
 		},
 	},

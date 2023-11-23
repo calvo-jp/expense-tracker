@@ -7,7 +7,6 @@ import {
 	DrawerContent,
 	DrawerHeader,
 	DrawerPositioner,
-	DrawerTitle,
 	DrawerTrigger,
 } from '@/components/drawer';
 import {Icon} from '@/components/icon';
@@ -22,11 +21,11 @@ import {
 } from '@/components/menu';
 import {Flex, HStack, Spacer, styled} from '@/styled-system/jsx';
 import {Portal} from '@ark-ui/react';
-import {BellIcon, LockIcon, PowerIcon, XIcon} from 'lucide-react';
+import {BellIcon, ChevronRightIcon, LockIcon, PowerIcon} from 'lucide-react';
 
 export function Navbar() {
 	return (
-		<styled.header h="var(--navbar-height)" borderBottomWidth="1px">
+		<styled.header h="navbar.height" borderBottomWidth="1px">
 			<Flex h="full" px={8} alignItems="center">
 				<Spacer />
 
@@ -95,14 +94,12 @@ function Notifications() {
 				<DrawerBackdrop />
 				<DrawerPositioner>
 					<DrawerContent>
-						<DrawerHeader py={4}>
-							<Flex alignItems="center">
-								<DrawerTitle lineHeight="none">Notifications</DrawerTitle>
-								<Spacer />
+						<DrawerHeader p={0}>
+							<Flex h="navbar.height" pr={4} pl={6} alignItems="center">
 								<DrawerCloseTrigger asChild>
-									<IconButton variant="ghost">
+									<IconButton variant="outline">
 										<Icon>
-											<XIcon />
+											<ChevronRightIcon />
 										</Icon>
 									</IconButton>
 								</DrawerCloseTrigger>

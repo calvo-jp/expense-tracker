@@ -1,6 +1,4 @@
-import {Button} from '@/components/button';
 import {Icon} from '@/components/icon';
-import {IconButton} from '@/components/icon-button';
 import {
 	Menu,
 	MenuContent,
@@ -36,14 +34,10 @@ import {
 	subWeeks,
 	subYears,
 } from 'date-fns';
-import {
-	FileEditIcon,
-	FileX2Icon,
-	PlusIcon,
-	SearchIcon,
-	SettingsIcon,
-} from 'lucide-react';
+import {FileEditIcon, FileX2Icon, SettingsIcon} from 'lucide-react';
 import {Metadata} from 'next';
+import {CreateNew} from './create-new';
+import {Filter} from './filter';
 import {PageNav} from './page-nav';
 
 export const metadata: Metadata = {
@@ -59,17 +53,8 @@ export default function Expenses() {
 				</styled.h1>
 				<Spacer />
 				<Flex gap={3}>
-					<IconButton variant="outline">
-						<Icon>
-							<SearchIcon />
-						</Icon>
-					</IconButton>
-					<Button variant="outline">
-						<Icon>
-							<PlusIcon />
-						</Icon>
-						Add new
-					</Button>
+					<Filter />
+					<CreateNew />
 				</Flex>
 			</Flex>
 
@@ -95,8 +80,10 @@ export default function Expenses() {
 											placement: 'right',
 										}}
 									>
-										<TooltipTrigger>
-											{formatDistanceToNow(item.when)}
+										<TooltipTrigger asChild>
+											<styled.span>
+												{formatDistanceToNow(item.when)}
+											</styled.span>
 										</TooltipTrigger>
 										<TooltipPositioner>
 											<TooltipContent>
