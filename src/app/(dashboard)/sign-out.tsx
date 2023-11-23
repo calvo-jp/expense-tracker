@@ -4,7 +4,6 @@ import {Icon} from '@/components/icon';
 import {MenuItem} from '@/components/menu';
 import {HStack, styled} from '@/styled-system/jsx';
 import {PowerIcon} from 'lucide-react';
-import {signOut} from 'next-auth/react';
 import {useRouter} from 'next/navigation';
 
 export function SignOut() {
@@ -13,8 +12,7 @@ export function SignOut() {
 	return (
 		<MenuItem
 			id="profile-settings-menu--signout"
-			onClick={async () => {
-				await signOut({redirect: false});
+			onClick={() => {
 				router.push('/login');
 			}}
 		>
