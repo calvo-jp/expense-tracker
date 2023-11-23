@@ -72,8 +72,8 @@ export default function Expenses() {
 					<TableBody>
 						{items.map((item) => (
 							<TableRow key={item.id}>
-								<TableCell>{item.where}</TableCell>
 								<TableCell>{item.what}</TableCell>
+								<TableCell>{item.where}</TableCell>
 								<TableCell>
 									<Tooltip
 										positioning={{
