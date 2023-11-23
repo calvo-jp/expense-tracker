@@ -5,7 +5,6 @@ import {cx} from '@/styled-system/css';
 import {styled} from '@/styled-system/jsx';
 import {Metadata} from 'next';
 import {Lato} from 'next/font/google';
-import {Providers} from './providers';
 
 export const metadata: Metadata = {
 	title: {
@@ -30,7 +29,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
 			colorScheme="dark"
 		>
 			<styled.body fontFamily="sans">
-				<Providers>{children}</Providers>
+				{children}
 				<Toaster />
 			</styled.body>
 		</styled.html>
