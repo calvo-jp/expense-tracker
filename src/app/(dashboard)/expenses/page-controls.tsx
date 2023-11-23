@@ -5,6 +5,7 @@ import {Icon} from '@/components/icon';
 import {IconButton} from '@/components/icon-button';
 import {
 	Pagination,
+	PaginationEllipsis,
 	PaginationItem,
 	PaginationNextTrigger,
 	PaginationPrevTrigger,
@@ -36,7 +37,13 @@ export function PageControls() {
 		<Flex gap={4} alignItems="center">
 			<Box fontSize="sm">Showing 1-10 of 1001</Box>
 			<Spacer />
-			<Pagination w="fit" count={90} pageSize={10} defaultPage={2}>
+			<Pagination
+				w="fit"
+				count={90}
+				pageSize={10}
+				siblingCount={1}
+				defaultPage={2}
+			>
 				{({pages}) => (
 					<Fragment>
 						<PaginationPrevTrigger asChild>
@@ -48,12 +55,18 @@ export function PageControls() {
 						</PaginationPrevTrigger>
 
 						{pages.map((page, index) => {
-							if (page.type === 'ellipsis') return null;
+							if (page.type === 'page') {
+								return (
+									<PaginationItem key={index} {...page} asChild>
+										<Button variant="outline">{page.value}</Button>
+									</PaginationItem>
+								);
+							}
 
 							return (
-								<PaginationItem key={index} {...page} asChild>
-									<Button variant="outline">{page.value}</Button>
-								</PaginationItem>
+								<PaginationEllipsis key={index} index={index}>
+									...
+								</PaginationEllipsis>
 							);
 						})}
 
