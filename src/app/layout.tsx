@@ -27,6 +27,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
 			lang="en"
 			scrollBehavior="smooth"
 			className={cx(sans.variable, 'dark')}
+			colorScheme="dark"
 		>
 			<styled.body fontFamily="sans">
 				<Providers>{children}</Providers>
