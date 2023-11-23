@@ -38,6 +38,7 @@ import {Metadata} from 'next';
 import {CreateExpense} from './create-expense';
 import {DeleteExpense} from './delete-expense';
 import {EditExpense} from './edit-expense';
+import {Export} from './export';
 import {Filter} from './filter';
 import {PageControls} from './page-controls';
 
@@ -54,6 +55,7 @@ export default function Expenses() {
 				</styled.h1>
 				<Spacer />
 				<Flex gap={3}>
+					<Export />
 					<Filter />
 					<CreateExpense />
 				</Flex>
