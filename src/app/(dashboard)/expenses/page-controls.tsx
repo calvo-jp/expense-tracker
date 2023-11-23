@@ -32,18 +32,23 @@ import {
 } from 'lucide-react';
 import {Fragment} from 'react';
 
+interface Value {
+	page: number;
+	size: number;
+}
+
+interface PageControlsProps {
+	value: Value;
+	onChange(value: Value): void;
+	count: number;
+}
+
 export function PageControls() {
 	return (
 		<Flex gap={4} alignItems="center">
 			<Box fontSize="sm">Showing 1-10 of 1001</Box>
 			<Spacer />
-			<Pagination
-				w="fit"
-				count={90}
-				pageSize={10}
-				siblingCount={1}
-				defaultPage={2}
-			>
+			<Pagination count={90} pageSize={10} siblingCount={1} defaultPage={2}>
 				{({pages}) => (
 					<Fragment>
 						<PaginationPrevTrigger asChild>

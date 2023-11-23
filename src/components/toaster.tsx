@@ -9,6 +9,7 @@ import {Toast, ToastCloseTrigger, ToastDescription, ToastTitle} from './toast';
 
 export const [Toaster, toast] = createToaster({
 	max: 5,
+	offsets: token('spacing.3'),
 	zIndex: parseInt(token('zIndex.toast', '9999')),
 	duration: 5000,
 	placement: 'bottom-end',
