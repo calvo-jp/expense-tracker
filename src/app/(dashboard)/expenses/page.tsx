@@ -24,7 +24,7 @@ import {
 	TooltipPositioner,
 	TooltipTrigger,
 } from '@/components/tooltip';
-import {Box, Center, Flex, HStack, Spacer, styled} from '@/styled-system/jsx';
+import {Box, Flex, HStack, Spacer, styled} from '@/styled-system/jsx';
 import {
 	format,
 	formatDistanceToNow,
@@ -160,9 +160,9 @@ export default function Expenses() {
 				</Table>
 			</Box>
 
-			<Center mt={8}>
+			<Box mt={8}>
 				<PageNav />
-			</Center>
+			</Box>
 		</Box>
 	);
 }

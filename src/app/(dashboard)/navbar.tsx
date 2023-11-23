@@ -18,24 +18,34 @@ import {
 	MenuPositioner,
 	MenuTrigger,
 } from '@/components/menu';
-import {Flex, Spacer, styled} from '@/styled-system/jsx';
+import {Box, Flex, Spacer, styled} from '@/styled-system/jsx';
 import {Portal} from '@ark-ui/react';
 import {BellIcon, ChevronRightIcon} from 'lucide-react';
+import {Fragment} from 'react';
 import {ChangePassword} from './change-password';
 import {SignOut} from './sign-out';
 
 export function Navbar() {
 	return (
-		<styled.header h="navbar.height" borderBottomWidth="1px">
-			<Flex h="full" px={8} alignItems="center">
-				<Spacer />
-
-				<Flex gap={4}>
-					<Notifications />
-					<ProfileMenu />
+		<Fragment>
+			<styled.header
+				h="navbar.height"
+				w="full"
+				bg="bg.canvas"
+				pos="fixed"
+				borderBottomWidth="1px"
+			>
+				<Flex h="full" px={8} alignItems="center">
+					<Spacer />
+					<Flex gap={4}>
+						<Notifications />
+						<ProfileMenu />
+					</Flex>
 				</Flex>
-			</Flex>
-		</styled.header>
+			</styled.header>
+
+			<Box id="navbar-placeholder" h="navbar.height" />
+		</Fragment>
 	);
 }
 

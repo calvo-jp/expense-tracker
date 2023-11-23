@@ -10,59 +10,117 @@ import {
 	PaginationNextTrigger,
 	PaginationPrevTrigger,
 } from '@/components/pagination';
-import {ChevronLeftIcon, ChevronRightIcon} from 'lucide-react';
+import {
+	Select,
+	SelectContent,
+	SelectControl,
+	SelectItem,
+	SelectItemGroup,
+	SelectItemIndicator,
+	SelectItemText,
+	SelectPositioner,
+	SelectTrigger,
+	SelectValueText,
+} from '@/components/select';
+import {Box, Flex, Spacer} from '@/styled-system/jsx';
+import {Portal} from '@ark-ui/react';
+import {
+	CheckIcon,
+	ChevronLeftIcon,
+	ChevronRightIcon,
+	ChevronsUpDownIcon,
+} from 'lucide-react';
 import {Fragment} from 'react';
 
 export function PageNav() {
 	return (
-		<Pagination
-			w="fit"
-			count={90}
-			pageSize={10}
-			siblingCount={1}
-			defaultPage={2}
-		>
-			{({pages}) => (
-				<Fragment>
-					<PaginationPrevTrigger asChild>
-						<IconButton variant="outline" aria-label="Next Page">
-							<Icon>
-								<ChevronLeftIcon />
-							</Icon>
-						</IconButton>
-					</PaginationPrevTrigger>
+		<Flex gap={4} alignItems="center">
+			<Box fontSize="sm">Showing 1-10 of 1001</Box>
+			<Spacer />
+			<Pagination
+				w="fit"
+				count={90}
+				pageSize={10}
+				siblingCount={1}
+				defaultPage={2}
+			>
+				{({pages}) => (
+					<Fragment>
+						<PaginationPrevTrigger asChild>
+							<IconButton variant="outline" aria-label="Next Page">
+								<Icon>
+									<ChevronLeftIcon />
+								</Icon>
+							</IconButton>
+						</PaginationPrevTrigger>
 
-					{pages.map((page, index) => {
-						if (page.type === 'page') {
+						{pages.map((page, index) => {
+							if (page.type === 'page') {
+								return (
+									<PaginationItem key={index} {...page} asChild>
+										<Button variant="outline">{page.value}</Button>
+									</PaginationItem>
+								);
+							}
+
 							return (
-								<PaginationItem key={index} {...page} asChild>
-									<Button variant="outline">{page.value}</Button>
-								</PaginationItem>
+								<PaginationEllipsis key={index} index={index}>
+									...
+								</PaginationEllipsis>
 							);
-						}
+						})}
 
-						return (
-							<PaginationEllipsis key={index} index={index}>
-								...
-							</PaginationEllipsis>
-						);
-					})}
+						<PaginationNextTrigger asChild>
+							<IconButton variant="outline" aria-label="Next Page">
+								<Icon>
+									<ChevronRightIcon />
+								</Icon>
+							</IconButton>
+						</PaginationNextTrigger>
+					</Fragment>
+				)}
+			</Pagination>
 
-					<PaginationNextTrigger asChild>
-						<IconButton variant="outline" aria-label="Next Page">
-							<Icon>
-								<ChevronRightIcon />
-							</Icon>
-						</IconButton>
-					</PaginationNextTrigger>
-				</Fragment>
-			)}
-		</Pagination>
+			<Select
+				w={28}
+				loop
+				items={sizes}
+				positioning={{sameWidth: true}}
+				value={[sizes[0].value]}
+			>
+				<SelectControl>
+					<SelectTrigger>
+						<SelectValueText />
+						<Icon>
+							<ChevronsUpDownIcon />
+						</Icon>
+					</SelectTrigger>
+				</SelectControl>
+
+				<Portal>
+					<SelectPositioner>
+						<SelectContent>
+							<SelectItemGroup id="xxx">
+								{sizes.map((product) => (
+									<SelectItem key={product.value} item={product}>
+										<SelectItemText>{product.label}</SelectItemText>
+										<SelectItemIndicator>
+											<Icon>
+												<CheckIcon />
+											</Icon>
+										</SelectItemIndicator>
+									</SelectItem>
+								))}
+							</SelectItemGroup>
+						</SelectContent>
+					</SelectPositioner>
+				</Portal>
+			</Select>
+		</Flex>
 	);
 }
 
-const PRODUCTS = [
-	{id: 'P001', name: 'MacBook Pro', stock: 12, price: '$1999.00'},
-	{id: 'P002', name: 'AirPods Pro', stock: 25, price: '$249.00'},
-	{id: 'P003', name: 'Leather Wallet', stock: 50, price: '$79.00'},
-];
+const sizes = [10, 25, 50].map((size) => ({
+	value: `${size}`,
+	label: `${size} rows`,
+}));
