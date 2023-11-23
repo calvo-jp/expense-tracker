@@ -100,7 +100,7 @@ export function PageNav() {
 				<Portal>
 					<SelectPositioner>
 						<SelectContent>
-							<SelectItemGroup id="xxx">
+							<SelectItemGroup id="expenses-pagination-page-size">
 								{sizes.map((product) => (
 									<SelectItem key={product.value} item={product}>
 										<SelectItemText>{product.label}</SelectItemText>
