@@ -26,34 +26,34 @@ export function Sidebar() {
 			>
 				<styled.ul py={6} px={4}>
 					<styled.li>
-						<MenuButton asChild>
+						<SidebarButton asChild>
 							<Link href="/dashboard">
 								<Icon>
 									<LineChartIcon />
 								</Icon>
 								<styled.span>Dashboard</styled.span>
 							</Link>
-						</MenuButton>
+						</SidebarButton>
 					</styled.li>
 					<styled.li>
-						<MenuButton asChild>
+						<SidebarButton asChild>
 							<Link href="/expenses">
 								<Icon>
 									<CoinsIcon />
 								</Icon>
 								<styled.span>Expenses</styled.span>
 							</Link>
-						</MenuButton>
+						</SidebarButton>
 					</styled.li>
 					<styled.li>
-						<MenuButton asChild>
+						<SidebarButton asChild>
 							<Link href="/reports">
 								<Icon>
 									<FilePieChartIcon />
 								</Icon>
 								<styled.span>Reports</styled.span>
 							</Link>
-						</MenuButton>
+						</SidebarButton>
 					</styled.li>
 					<styled.li>
 						<styled.form
@@ -65,12 +65,12 @@ export function Sidebar() {
 								redirect('/');
 							}}
 						>
-							<MenuButton type="submit">
+							<SidebarButton type="submit">
 								<Icon>
 									<PowerIcon />
 								</Icon>
 								<styled.span>Sign out</styled.span>
-							</MenuButton>
+							</SidebarButton>
 						</styled.form>
 					</styled.li>
 				</styled.ul>
@@ -81,22 +81,30 @@ export function Sidebar() {
 	);
 }
 
-const MenuButton = styled(ark.button, {
-	base: {
-		w: 'full',
-		px: 4,
-		py: 2.5,
-		color: 'fg.muted',
-		cursor: 'pointer',
-		rounded: 'sm',
-		display: 'flex',
-		alignItems: 'center',
-		gap: 3,
-		_hover: {
-			color: 'fg.default',
-		},
-		_selected: {
-			color: 'fg.default',
+const SidebarButton = styled(
+	ark.button,
+	{
+		base: {
+			w: 'full',
+			px: 4,
+			py: 2.5,
+			color: 'fg.muted',
+			cursor: 'pointer',
+			rounded: 'sm',
+			display: 'flex',
+			alignItems: 'center',
+			gap: 3,
+			_hover: {
+				color: 'fg.default',
+			},
+			_selected: {
+				color: 'fg.default',
+			},
 		},
 	},
-});
+	{
+		defaultProps: {
+			type: 'submit',
+		},
+	},
+);
