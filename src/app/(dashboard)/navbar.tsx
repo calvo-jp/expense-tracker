@@ -23,7 +23,6 @@ import {Portal} from '@ark-ui/react';
 import {BellIcon, ChevronRightIcon} from 'lucide-react';
 import {Fragment} from 'react';
 import {ChangePassword} from './change-password';
-import {SignOut} from './sign-out';
 
 export function Navbar() {
 	return (
@@ -70,7 +69,6 @@ function ProfileMenu() {
 				<MenuContent w="14rem" shadow="none" borderWidth="1px">
 					<MenuItemGroup id="profile-settings-menu">
 						<ChangePassword />
-						<SignOut />
 					</MenuItemGroup>
 				</MenuContent>
 			</MenuPositioner>

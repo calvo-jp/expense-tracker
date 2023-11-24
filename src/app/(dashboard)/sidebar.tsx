@@ -1,12 +1,16 @@
 import {Icon} from '@/components/icon';
 import {Link} from '@/components/link';
+import {css} from '@/styled-system/css';
 import {Box, styled} from '@/styled-system/jsx';
 import {
 	CoinsIcon,
 	FilePieChartIcon,
 	LineChartIcon,
+	PowerIcon,
 	SettingsIcon,
 } from 'lucide-react';
+import {cookies} from 'next/headers';
+import {redirect} from 'next/navigation';
 import {Fragment} from 'react';
 
 export function Sidebar() {
@@ -24,31 +28,31 @@ export function Sidebar() {
 				<styled.ul py={6} px={4}>
 					{links.map((link) => (
 						<styled.li key={link.path}>
-							<Link
-								href={link.path}
-								css={{
-									w: 'full',
-									px: 4,
-									py: 2.5,
-									color: 'fg.muted',
-									cursor: 'pointer',
-									rounded: 'sm',
-									display: 'flex',
-									alignItems: 'center',
-									gap: 3,
-									_hover: {
-										color: 'fg.default',
-									},
-									_selected: {
-										color: 'fg.default',
-									},
-								}}
-							>
+							<Link href={link.path} className={linkCls}>
 								<Icon>{link.icon}</Icon>
 								<styled.span>{link.label}</styled.span>
 							</Link>
 						</styled.li>
 					))}
+
+					<styled.li>
+						<styled.form
+							action={async () => {
+								'use server';
+
+								const cookieStore = cookies();
+								cookieStore.delete('user');
+								redirect('/');
+							}}
+						>
+							<styled.button type="submit" className={linkCls}>
+								<Icon>
+									<PowerIcon />
+								</Icon>
+								<styled.span>Sign out</styled.span>
+							</styled.button>
+						</styled.form>
+					</styled.li>
 				</styled.ul>
 			</styled.nav>
 
@@ -56,6 +60,24 @@ export function Sidebar() {
 		</Fragment>
 	);
 }
+
+const linkCls = css({
+	w: 'full',
+	px: 4,
+	py: 2.5,
+	color: 'fg.muted',
+	cursor: 'pointer',
+	rounded: 'sm',
+	display: 'flex',
+	alignItems: 'center',
+	gap: 3,
+	_hover: {
+		color: 'fg.default',
+	},
+	_selected: {
+		color: 'fg.default',
+	},
+});
 
 const links = [
 	{
