@@ -35,16 +35,16 @@ export default function Reports() {
 				<Table variant="outline">
 					<TableHeader>
 						<TableRow>
-							<TableHead>Frequency</TableHead>
 							<TableHead>Inclusion Date</TableHead>
+							<TableHead>Frequency</TableHead>
 							<TableHead>Total</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
 						{items.map((item) => (
 							<TableRow key={item.id}>
-								<TableHead>{item.frequency}</TableHead>
 								<TableCell>{item.inclusionDate}</TableCell>
+								<TableHead>{item.frequency}</TableHead>
 								<TableCell fontVariantNumeric="tabular-nums">
 									{numberFormatter.format(item.amount)}
 								</TableCell>
