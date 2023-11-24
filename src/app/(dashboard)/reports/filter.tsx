@@ -1,11 +1,13 @@
 'use client';
 
+import {Button} from '@/components/button';
 import {
 	Drawer,
 	DrawerBackdrop,
 	DrawerBody,
 	DrawerCloseTrigger,
 	DrawerContent,
+	DrawerFooter,
 	DrawerHeader,
 	DrawerPositioner,
 	DrawerTrigger,
@@ -42,6 +44,14 @@ export function Filter() {
 							</Flex>
 						</DrawerHeader>
 						<DrawerBody></DrawerBody>
+						<DrawerFooter gap="3">
+							<DrawerCloseTrigger asChild>
+								<Button w="6rem" variant="outline">
+									Cancel
+								</Button>
+							</DrawerCloseTrigger>
+							<Button w="6rem">Save</Button>
+						</DrawerFooter>
 					</DrawerContent>
 				</DrawerPositioner>
 			</Portal>
