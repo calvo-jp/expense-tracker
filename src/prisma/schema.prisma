@@ -8,9 +8,13 @@ generator client {
 }
 
 model User {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  username String @unique
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  username String    @unique
   password String
+  expenses Expense[]
+  reports  Report[]
+
+  @@map("users")
 }
 
 model Expense {
@@ -21,4 +25,29 @@ model Expense {
   amount    Float
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @db.ObjectId
+
+  @@map("expenses")
+}
+
+model Report {
+  id            String     @id @default(auto()) @map("_id") @db.ObjectId
+  frequency     Frequency
+  inclusionDate DateTime[]
+  amount        Float
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  user          User       @relation(fields: [userId], references: [id])
+  userId        String     @db.ObjectId
+
+  @@map("reports")
+}
+
+enum Frequency {
+  Daily
+  Weekly
+  Monthly
+  Annually
+  Yearly
 }
