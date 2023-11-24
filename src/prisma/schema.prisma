@@ -48,6 +48,6 @@ enum Frequency {
   Daily
   Weekly
   Monthly
+  Quarterly
   Annually
-  Yearly
 }
