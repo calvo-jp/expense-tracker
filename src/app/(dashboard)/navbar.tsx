@@ -52,6 +52,7 @@ export function Navbar() {
 function ProfileMenu() {
 	return (
 		<Menu
+			lazyMount
 			positioning={{
 				flip: true,
 				placement: 'bottom-end',
@@ -79,7 +80,7 @@ function ProfileMenu() {
 
 function Notifications() {
 	return (
-		<Drawer>
+		<Drawer lazyMount>
 			<DrawerTrigger asChild>
 				<IconButton variant="ghost">
 					<Icon w={6} h={6}>
