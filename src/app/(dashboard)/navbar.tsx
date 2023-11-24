@@ -22,12 +22,7 @@ import {Box, Flex, Spacer, styled} from '@/styled-system/jsx';
 import {getUser} from '@/utils/user';
 import {Portal} from '@ark-ui/react';
 import assert from 'assert';
-import {
-	BellIcon,
-	ChevronRightIcon,
-	ListChecksIcon,
-	RotateCcwIcon,
-} from 'lucide-react';
+import {BellIcon, ChevronRightIcon} from 'lucide-react';
 import {cookies} from 'next/headers';
 import {Fragment} from 'react';
 import {ChangePassword} from './change-password';
@@ -116,17 +111,6 @@ function Notifications() {
 										</Icon>
 									</IconButton>
 								</DrawerCloseTrigger>
-								<Spacer />
-								<IconButton variant="outline">
-									<Icon>
-										<ListChecksIcon />
-									</Icon>
-								</IconButton>
-								<IconButton variant="outline">
-									<Icon>
-										<RotateCcwIcon />
-									</Icon>
-								</IconButton>
 							</Flex>
 						</DrawerHeader>
 						<DrawerBody></DrawerBody>
