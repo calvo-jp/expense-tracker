@@ -20,7 +20,7 @@ import {ChevronRightIcon, SearchIcon} from 'lucide-react';
 
 export function Filter() {
 	return (
-		<Drawer>
+		<Drawer lazyMount>
 			<DrawerTrigger asChild>
 				<IconButton variant="outline">
 					<Icon>
