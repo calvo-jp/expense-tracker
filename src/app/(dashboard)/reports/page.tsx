@@ -35,6 +35,7 @@ export default function Reports() {
 				<Table variant="outline">
 					<TableHeader>
 						<TableRow>
+							<TableHead>Frequency</TableHead>
 							<TableHead>Inclusion Date</TableHead>
 							<TableHead>Total</TableHead>
 						</TableRow>
@@ -42,6 +43,7 @@ export default function Reports() {
 					<TableBody>
 						{items.map((item) => (
 							<TableRow key={item.id}>
+								<TableHead>{item.frequency}</TableHead>
 								<TableCell>{item.inclusionDate}</TableCell>
 								<TableCell fontVariantNumeric="tabular-nums">
 									{numberFormatter.format(item.amount)}
@@ -51,7 +53,7 @@ export default function Reports() {
 					</TableBody>
 					<TableFooter>
 						<TableRow>
-							<TableCell>Total</TableCell>
+							<TableCell colSpan={2}>Total</TableCell>
 							<TableCell fontVariantNumeric="tabular-nums">
 								{numberFormatter.format(
 									items.reduce((total, item) => total + item.amount, 0),
@@ -72,11 +74,19 @@ export default function Reports() {
 const items = [
 	{
 		id: 1,
-		inclusionDate: 'Jan 24-30, 2023',
+		frequency: 'Daily',
+		inclusionDate: 'Dec 25, 2022',
 		amount: 399,
 	},
 	{
 		id: 1,
+		frequency: 'Weekly',
+		inclusionDate: 'Jan 01-07, 2023',
+		amount: 399,
+	},
+	{
+		id: 1,
+		frequency: 'Monthly',
 		inclusionDate: 'Feb 01-30, 2023',
 		amount: 399,
 	},
