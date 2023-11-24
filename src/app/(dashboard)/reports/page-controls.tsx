@@ -92,6 +92,7 @@ export function PageControls() {
 				items={sizes}
 				positioning={{sameWidth: true}}
 				value={[sizes[0].value]}
+				lazyMount
 			>
 				<SelectControl>
 					<SelectTrigger>

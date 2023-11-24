@@ -79,6 +79,7 @@ export default function Expenses() {
 								<TableCell>{item.where}</TableCell>
 								<TableCell>
 									<Tooltip
+										lazyMount
 										positioning={{
 											placement: 'right',
 										}}

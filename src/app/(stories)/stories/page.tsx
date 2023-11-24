@@ -7,9 +7,7 @@ import {
 	AccordionItemIndicator,
 	AccordionItemTrigger,
 } from '@/components/accordion';
-import {Avatar, AvatarFallback, AvatarImage} from '@/components/avatar';
 import {Button} from '@/components/button';
-import {Checkbox, CheckboxControl} from '@/components/checkbox';
 import {
 	Combobox,
 	ComboboxContent,
@@ -56,34 +54,9 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '@/components/dialog';
-import {
-	Drawer,
-	DrawerBackdrop,
-	DrawerBody,
-	DrawerCloseTrigger,
-	DrawerContent,
-	DrawerDescription,
-	DrawerFooter,
-	DrawerHeader,
-	DrawerPositioner,
-	DrawerTitle,
-	DrawerTrigger,
-} from '@/components/drawer';
 import {Icon} from '@/components/icon';
 import {IconButton} from '@/components/icon-button';
 import {Input} from '@/components/input';
-import {Label} from '@/components/label';
-import {
-	Menu,
-	MenuContent,
-	MenuItem,
-	MenuItemGroup,
-	MenuItemGroupLabel,
-	MenuPositioner,
-	MenuSeparator,
-	MenuTrigger,
-	MenuTriggerItem,
-} from '@/components/menu';
 import {
 	NumberInput,
 	NumberInputControl,
@@ -93,46 +66,12 @@ import {
 	NumberInputLabel,
 } from '@/components/number-input';
 import {
-	Pagination,
-	PaginationEllipsis,
-	PaginationItem,
-	PaginationNextTrigger,
-	PaginationPrevTrigger,
-} from '@/components/pagination';
-import {
-	Select,
-	SelectContent,
-	SelectControl,
-	SelectItem,
-	SelectItemGroup,
-	SelectItemIndicator,
-	SelectItemText,
-	SelectLabel,
-	SelectPositioner,
-	SelectTrigger,
-	SelectValueText,
-} from '@/components/select';
-import {Switch, SwitchControl, SwitchLabel, SwitchThumb} from '@/components/switch';
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableFooter,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from '@/components/table';
-import {Textarea} from '@/components/textarea';
-import {toast} from '@/components/toaster';
-import {
-	Tooltip,
-	TooltipArrow,
-	TooltipArrowTip,
-	TooltipContent,
-	TooltipPositioner,
-	TooltipTrigger,
-} from '@/components/tooltip';
-import {Box, Stack, VStack, styled} from '@/styled-system/jsx';
+	Switch,
+	SwitchControl,
+	SwitchLabel,
+	SwitchThumb,
+} from '@/components/switch';
+import {Box, Stack, styled} from '@/styled-system/jsx';
 import {Portal} from '@ark-ui/react';
 import {
 	CalendarIcon,
@@ -142,87 +81,12 @@ import {
 	ChevronRightIcon,
 	ChevronUpIcon,
 	ChevronsUpDownIcon,
-	MinusIcon,
-	Settings2Icon,
 	XIcon,
 } from 'lucide-react';
 
 export default function Index() {
 	return (
 		<styled.div p={4}>
-			<Tooltip openDelay={0} closeDelay={0} open={true}>
-				<TooltipTrigger>
-					<Avatar>
-						<AvatarFallback>JP</AvatarFallback>
-						<AvatarImage src="https://i.pravatar.cc/150" alt="" />
-					</Avatar>
-				</TooltipTrigger>
-				<Portal>
-					<TooltipPositioner>
-						<TooltipContent>
-							<TooltipArrow
-								css={{
-									'--arrow-size': 'token(sizes.3)',
-									'--arrow-background': 'colors.fg.default',
-								}}
-							>
-								<TooltipArrowTip />
-							</TooltipArrow>
-							Hello whats up?
-						</TooltipContent>
-					</TooltipPositioner>
-				</Portal>
-			</Tooltip>
-
-			<Box mt={5}>
-				<IconButton
-					onClick={() => {
-						toast.create({
-							title: 'Title',
-							description: 'Description',
-						});
-					}}
-				>
-					<Icon>
-						<Settings2Icon />
-					</Icon>
-				</IconButton>
-			</Box>
-
-			<Box mt={5}>
-				<Menu>
-					<MenuTrigger asChild>
-						<Button variant="outline">Open Menu</Button>
-					</MenuTrigger>
-					<MenuPositioner>
-						<MenuContent>
-							<MenuItemGroup id="group-1">
-								<MenuItemGroupLabel htmlFor="group-1">My Account</MenuItemGroupLabel>
-								<MenuSeparator />
-								<MenuItem id="1">One</MenuItem>
-								<MenuItem id="2">Two</MenuItem>
-								<Menu positioning={{placement: 'right-start', gutter: -2}}>
-									<MenuTriggerItem justifyContent="space-between">Three</MenuTriggerItem>
-									<MenuPositioner>
-										<MenuContent>
-											<MenuItem id="3">Four</MenuItem>
-											<MenuItem id="4">Five</MenuItem>
-										</MenuContent>
-									</MenuPositioner>
-								</Menu>
-								<MenuSeparator />
-								<MenuItem id="5">Logout</MenuItem>
-							</MenuItemGroup>
-						</MenuContent>
-					</MenuPositioner>
-				</Menu>
-			</Box>
-
-			<VStack mt={5} gap={1.5} alignItems="start">
-				<Label>Name</Label>
-				<Input placeholder="Placeholder" />
-			</VStack>
-
 			<NumberInput mt={5}>
 				<NumberInputLabel>Amount</NumberInputLabel>
 				<NumberInputControl>
@@ -239,48 +103,6 @@ export default function Index() {
 					</NumberInputDecrementTrigger>
 				</NumberInputControl>
 			</NumberInput>
-
-			<Select
-				mt={5}
-				loop
-				positioning={{sameWidth: true}}
-				items={PRODUCTS.map((product) => ({
-					label: product.name,
-					value: product.id,
-				}))}
-			>
-				<SelectLabel>Product</SelectLabel>
-				<SelectControl>
-					<SelectTrigger>
-						<SelectValueText placeholder="Select a Product" />
-						<Icon>
-							<ChevronsUpDownIcon />
-						</Icon>
-					</SelectTrigger>
-				</SelectControl>
-
-				<Portal>
-					<SelectPositioner>
-						<SelectContent>
-							<SelectItemGroup id="products--select">
-								{PRODUCTS.map((product) => ({
-									label: product.name,
-									value: product.id,
-								})).map((product) => (
-									<SelectItem key={product.value} item={product}>
-										<SelectItemText>{product.label}</SelectItemText>
-										<SelectItemIndicator>
-											<Icon>
-												<CheckIcon />
-											</Icon>
-										</SelectItemIndicator>
-									</SelectItem>
-								))}
-							</SelectItemGroup>
-						</SelectContent>
-					</SelectPositioner>
-				</Portal>
-			</Select>
 
 			<Combobox
 				mt={5}
@@ -384,7 +206,9 @@ export default function Index() {
 													{week.map((day, id) => (
 														<DatePickerTableCell key={id} value={day}>
 															<DatePickerTableCellTrigger asChild>
-																<IconButton variant="ghost">{day.day}</IconButton>
+																<IconButton variant="ghost">
+																	{day.day}
+																</IconButton>
 															</DatePickerTableCellTrigger>
 														</DatePickerTableCell>
 													))}
@@ -485,167 +309,6 @@ export default function Index() {
 				</DatePickerPositioner>
 			</DatePicker>
 
-			<VStack mt={5} gap={1.5} alignItems="start">
-				<Label>Comments</Label>
-				<Textarea placeholder="Placeholder" />
-			</VStack>
-
-			<Button
-				mt={5}
-				onClick={() => {
-					toast.create({
-						title: 'Title',
-						description: 'Description',
-					});
-				}}
-			>
-				Submit
-			</Button>
-
-			<Box mt={16}>
-				<Table variant="outline">
-					<TableHeader>
-						<TableRow>
-							<TableHead>
-								<Checkbox checked="indeterminate">
-									{(state) => (
-										<>
-											<CheckboxControl>
-												{state.isChecked && (
-													<Icon size="sm">
-														<CheckIcon />
-													</Icon>
-												)}
-
-												{state.isIndeterminate && (
-													<Icon size="sm">
-														<MinusIcon />
-													</Icon>
-												)}
-											</CheckboxControl>
-										</>
-									)}
-								</Checkbox>
-							</TableHead>
-							<TableHead>ID</TableHead>
-							<TableHead>Name</TableHead>
-							<TableHead>Stock</TableHead>
-							<TableHead textAlign="right">Price</TableHead>
-						</TableRow>
-					</TableHeader>
-					<TableBody>
-						{PRODUCTS.map((product, index) => (
-							<TableRow key={index}>
-								<TableCell>
-									<Checkbox defaultChecked>
-										{(state) => (
-											<>
-												<CheckboxControl>
-													{state.isChecked && (
-														<Icon size="sm">
-															<CheckIcon />
-														</Icon>
-													)}
-
-													{state.isIndeterminate && (
-														<Icon size="sm">
-															<MinusIcon />
-														</Icon>
-													)}
-												</CheckboxControl>
-											</>
-										)}
-									</Checkbox>
-								</TableCell>
-								<TableCell fontWeight="medium">{product.id}</TableCell>
-								<TableCell>{product.name}</TableCell>
-								<TableCell>{product.stock}</TableCell>
-								<TableCell textAlign="right">{product.price}</TableCell>
-							</TableRow>
-						))}
-					</TableBody>
-					<TableFooter>
-						<TableRow>
-							<TableCell colSpan={2}>Totals</TableCell>
-							<TableCell>87</TableCell>
-							<TableCell textAlign="right">$34,163.00</TableCell>
-						</TableRow>
-					</TableFooter>
-				</Table>
-			</Box>
-
-			<Pagination
-				mt={5}
-				w="fit"
-				count={90}
-				pageSize={10}
-				siblingCount={1}
-				defaultPage={2}
-			>
-				{({pages}) => (
-					<>
-						<PaginationPrevTrigger asChild>
-							<IconButton variant="outline" aria-label="Next Page">
-								<Icon>
-									<ChevronLeftIcon />
-								</Icon>
-							</IconButton>
-						</PaginationPrevTrigger>
-
-						{pages.map((page, index) =>
-							page.type === 'page' ? (
-								<PaginationItem key={index} {...page} asChild>
-									<Button variant="outline">{page.value}</Button>
-								</PaginationItem>
-							) : (
-								<PaginationEllipsis key={index} index={index}>
-									&#8230;
-								</PaginationEllipsis>
-							),
-						)}
-
-						<PaginationNextTrigger asChild>
-							<IconButton variant="outline" aria-label="Next Page">
-								<Icon>
-									<ChevronRightIcon />
-								</Icon>
-							</IconButton>
-						</PaginationNextTrigger>
-					</>
-				)}
-			</Pagination>
-
-			<Drawer>
-				<DrawerTrigger asChild>
-					<Button mt={16}>Open Drawer</Button>
-				</DrawerTrigger>
-				<Portal>
-					<DrawerBackdrop />
-					<DrawerPositioner>
-						<DrawerContent>
-							<DrawerHeader>
-								<DrawerTitle>Title</DrawerTitle>
-								<DrawerDescription>Description</DrawerDescription>
-								<DrawerCloseTrigger asChild position="absolute" top="3" right="4">
-									<IconButton variant="ghost">
-										<Icon>
-											<XIcon />
-										</Icon>
-									</IconButton>
-								</DrawerCloseTrigger>
-							</DrawerHeader>
-							<DrawerBody>{/* Content */}</DrawerBody>
-							<DrawerFooter gap="3">
-								<DrawerCloseTrigger asChild>
-									<Button variant="outline">Cancel</Button>
-								</DrawerCloseTrigger>
-								<Button>Primary</Button>
-							</DrawerFooter>
-						</DrawerContent>
-					</DrawerPositioner>
-				</Portal>
-			</Drawer>
-
 			<Box mt={5}>
 				<Dialog>
 					<DialogTrigger asChild>
@@ -669,8 +332,17 @@ export default function Index() {
 										<Button width="full">Confirm</Button>
 									</Stack>
 								</Stack>
-								<DialogCloseTrigger asChild position="absolute" top="2" right="2">
-									<IconButton aria-label="Close Dialog" variant="ghost" size="sm">
+								<DialogCloseTrigger
+									asChild
+									position="absolute"
+									top="2"
+									right="2"
+								>
+									<IconButton
+										aria-label="Close Dialog"
+										variant="ghost"
+										size="sm"
+									>
 										<XIcon />
 									</IconButton>
 								</DialogCloseTrigger>
@@ -700,8 +372,9 @@ export default function Index() {
 						</AccordionItemTrigger>
 						<AccordionItemContent>
 							<div>
-								Pudding donut gummies chupa chups oat cake marzipan biscuit tart. Dessert
-								macaroon ice cream bonbon jelly. Jelly topping tiramisu halvah lollipop.
+								Pudding donut gummies chupa chups oat cake marzipan biscuit
+								tart. Dessert macaroon ice cream bonbon jelly. Jelly topping
+								tiramisu halvah lollipop.
 							</div>
 						</AccordionItemContent>
 					</AccordionItem>

@@ -88,10 +88,13 @@ export function PageControls() {
 
 			<Select
 				w={28}
-				loop
-				items={sizes}
-				positioning={{sameWidth: true}}
 				value={[sizes[0].value]}
+				items={sizes}
+				loop
+				lazyMount
+				positioning={{
+					sameWidth: true,
+				}}
 			>
 				<SelectControl>
 					<SelectTrigger>
