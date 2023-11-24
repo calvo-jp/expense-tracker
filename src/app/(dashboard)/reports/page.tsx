@@ -79,13 +79,13 @@ const items = [
 		amount: 399,
 	},
 	{
-		id: 1,
+		id: 2,
 		frequency: 'Weekly',
 		inclusionDate: 'Jan 01-07, 2023',
 		amount: 399,
 	},
 	{
-		id: 1,
+		id: 3,
 		frequency: 'Monthly',
 		inclusionDate: 'Feb 01-30, 2023',
 		amount: 399,
