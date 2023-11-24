@@ -1,13 +1,12 @@
 import {Icon} from '@/components/icon';
 import {Link} from '@/components/link';
-import {css} from '@/styled-system/css';
 import {Box, styled} from '@/styled-system/jsx';
+import {ark} from '@ark-ui/react';
 import {
 	CoinsIcon,
 	FilePieChartIcon,
 	LineChartIcon,
 	PowerIcon,
-	SettingsIcon,
 } from 'lucide-react';
 import {cookies} from 'next/headers';
 import {redirect} from 'next/navigation';
@@ -26,15 +25,36 @@ export function Sidebar() {
 				borderRightWidth="1px"
 			>
 				<styled.ul py={6} px={4}>
-					{links.map((link) => (
-						<styled.li key={link.path}>
-							<Link href={link.path} className={linkCls}>
-								<Icon>{link.icon}</Icon>
-								<styled.span>{link.label}</styled.span>
+					<styled.li>
+						<MenuButton asChild>
+							<Link href="/dashboard">
+								<Icon>
+									<LineChartIcon />
+								</Icon>
+								<styled.span>Dashboard</styled.span>
 							</Link>
-						</styled.li>
-					))}
-
+						</MenuButton>
+					</styled.li>
+					<styled.li>
+						<MenuButton asChild>
+							<Link href="/expenses">
+								<Icon>
+									<CoinsIcon />
+								</Icon>
+								<styled.span>Expenses</styled.span>
+							</Link>
+						</MenuButton>
+					</styled.li>
+					<styled.li>
+						<MenuButton asChild>
+							<Link href="/reports">
+								<Icon>
+									<FilePieChartIcon />
+								</Icon>
+								<styled.span>Reports</styled.span>
+							</Link>
+						</MenuButton>
+					</styled.li>
 					<styled.li>
 						<styled.form
 							action={async () => {
@@ -45,12 +65,12 @@ export function Sidebar() {
 								redirect('/');
 							}}
 						>
-							<styled.button type="submit" className={linkCls}>
+							<MenuButton type="submit">
 								<Icon>
 									<PowerIcon />
 								</Icon>
 								<styled.span>Sign out</styled.span>
-							</styled.button>
+							</MenuButton>
 						</styled.form>
 					</styled.li>
 				</styled.ul>
@@ -61,43 +81,22 @@ export function Sidebar() {
 	);
 }
 
-const linkCls = css({
-	w: 'full',
-	px: 4,
-	py: 2.5,
-	color: 'fg.muted',
-	cursor: 'pointer',
-	rounded: 'sm',
-	display: 'flex',
-	alignItems: 'center',
-	gap: 3,
-	_hover: {
-		color: 'fg.default',
-	},
-	_selected: {
-		color: 'fg.default',
+const MenuButton = styled(ark.button, {
+	base: {
+		w: 'full',
+		px: 4,
+		py: 2.5,
+		color: 'fg.muted',
+		cursor: 'pointer',
+		rounded: 'sm',
+		display: 'flex',
+		alignItems: 'center',
+		gap: 3,
+		_hover: {
+			color: 'fg.default',
+		},
+		_selected: {
+			color: 'fg.default',
+		},
 	},
 });
-
-const links = [
-	{
-		icon: <LineChartIcon />,
-		path: '/dashboard',
-		label: 'Dashboard',
-	},
-	{
-		icon: <CoinsIcon />,
-		path: '/expenses',
-		label: 'Expenses',
-	},
-	{
-		icon: <FilePieChartIcon />,
-		path: '/reports',
-		label: 'Reports',
-	},
-	{
-		icon: <SettingsIcon />,
-		path: '/settings',
-		label: 'Settings',
-	},
-];

@@ -19,12 +19,20 @@ import {
 	MenuTrigger,
 } from '@/components/menu';
 import {Box, Flex, Spacer, styled} from '@/styled-system/jsx';
+import {getUser} from '@/utils/user';
 import {Portal} from '@ark-ui/react';
-import {BellIcon, ChevronRightIcon} from 'lucide-react';
+import assert from 'assert';
+import {
+	BellIcon,
+	ChevronRightIcon,
+	ListChecksIcon,
+	RotateCcwIcon,
+} from 'lucide-react';
+import {cookies} from 'next/headers';
 import {Fragment} from 'react';
 import {ChangePassword} from './change-password';
 
-export function Navbar() {
+export async function Navbar() {
 	return (
 		<Fragment>
 			<styled.header
@@ -48,7 +56,14 @@ export function Navbar() {
 	);
 }
 
-function ProfileMenu() {
+async function ProfileMenu() {
+	const cookieStore = cookies();
+	const userId = cookieStore.get('user')?.value;
+
+	assert(userId);
+
+	const user = await getUser(userId);
+
 	return (
 		<Menu
 			lazyMount
@@ -60,7 +75,9 @@ function ProfileMenu() {
 			<MenuTrigger asChild>
 				<styled.button cursor="pointer">
 					<Avatar>
-						<AvatarFallback>JP</AvatarFallback>
+						<AvatarFallback>
+							{user.username.charAt(0).toUpperCase()}
+						</AvatarFallback>
 					</Avatar>
 				</styled.button>
 			</MenuTrigger>
@@ -91,7 +108,7 @@ function Notifications() {
 				<DrawerPositioner>
 					<DrawerContent>
 						<DrawerHeader p={0}>
-							<Flex h="navbar.height" pr={4} pl={6} alignItems="center">
+							<Flex h="navbar.height" pr={4} pl={6} gap={2} alignItems="center">
 								<DrawerCloseTrigger asChild>
 									<IconButton variant="outline">
 										<Icon>
@@ -99,6 +116,17 @@ function Notifications() {
 										</Icon>
 									</IconButton>
 								</DrawerCloseTrigger>
+								<Spacer />
+								<IconButton variant="outline">
+									<Icon>
+										<ListChecksIcon />
+									</Icon>
+								</IconButton>
+								<IconButton variant="outline">
+									<Icon>
+										<RotateCcwIcon />
+									</Icon>
+								</IconButton>
 							</Flex>
 						</DrawerHeader>
 						<DrawerBody></DrawerBody>
