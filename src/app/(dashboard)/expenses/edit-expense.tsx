@@ -1,3 +1,5 @@
+'use client';
+
 import {Icon} from '@/components/icon';
 import {MenuItem} from '@/components/menu';
 import {HStack, styled} from '@/styled-system/jsx';
