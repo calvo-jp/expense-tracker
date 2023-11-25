@@ -6,7 +6,7 @@ import {Input} from '@/components/input';
 import {styled} from '@/styled-system/jsx';
 import {AlertCircleIcon} from 'lucide-react';
 import {useFormState, useFormStatus} from 'react-dom';
-import {login} from './actions';
+import {login} from '../actions';
 
 export function LoginForm() {
 	const [error, action] = useFormState(login, null);

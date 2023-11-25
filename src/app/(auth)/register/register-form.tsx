@@ -6,7 +6,7 @@ import {Input} from '@/components/input';
 import {styled} from '@/styled-system/jsx';
 import {AlertCircleIcon} from 'lucide-react';
 import {useFormState, useFormStatus} from 'react-dom';
-import {register} from './actions';
+import {register} from '../actions';
 
 export function RegisterForm() {
 	const [error, action] = useFormState(register, null);
