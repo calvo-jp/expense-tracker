@@ -9,12 +9,11 @@ import {
 	PowerIcon,
 	SettingsIcon,
 } from 'lucide-react';
-import {Fragment} from 'react';
 import {logout} from './actions';
 
 export function Sidebar() {
 	return (
-		<Fragment>
+		<>
 			<styled.nav
 				w="sidebar.width"
 				h="calc(100vh - token(sizes.navbar.height))"
@@ -78,8 +77,8 @@ export function Sidebar() {
 				</styled.ul>
 			</styled.nav>
 
-			<Box id="sidebar-placeholder" w="sidebar.width" />
-		</Fragment>
+			<Box w="sidebar.width" />
+		</>
 	);
 }
 

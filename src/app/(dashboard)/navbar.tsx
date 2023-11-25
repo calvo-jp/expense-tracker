@@ -24,13 +24,12 @@ import {Portal} from '@ark-ui/react';
 import assert from 'assert';
 import {BellIcon, ChevronRightIcon} from 'lucide-react';
 import {cookies} from 'next/headers';
-import {Fragment} from 'react';
 import {ChangePassword} from './change-password';
 import {Signout} from './sign-out';
 
 export async function Navbar() {
 	return (
-		<Fragment>
+		<>
 			<styled.header
 				h="navbar.height"
 				w="full"
@@ -47,8 +46,8 @@ export async function Navbar() {
 				</Flex>
 			</styled.header>
 
-			<Box id="navbar-placeholder" h="navbar.height" />
-		</Fragment>
+			<Box h="navbar.height" />
+		</>
 	);
 }
 
@@ -62,7 +61,6 @@ async function ProfileMenu() {
 		<Menu
 			lazyMount
 			positioning={{
-				flip: true,
 				placement: 'bottom-end',
 			}}
 		>

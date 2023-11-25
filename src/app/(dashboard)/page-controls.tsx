@@ -30,7 +30,6 @@ import {
 	ChevronRightIcon,
 	ChevronsUpDownIcon,
 } from 'lucide-react';
-import {Fragment} from 'react';
 
 interface Value {
 	page: number;
@@ -50,7 +49,7 @@ export function PageControls() {
 			<Spacer />
 			<Pagination count={90} pageSize={10} siblingCount={1} defaultPage={2}>
 				{({pages}) => (
-					<Fragment>
+					<>
 						<PaginationPrevTrigger asChild>
 							<IconButton variant="outline" aria-label="Next Page">
 								<Icon>
@@ -82,7 +81,7 @@ export function PageControls() {
 								</Icon>
 							</IconButton>
 						</PaginationNextTrigger>
-					</Fragment>
+					</>
 				)}
 			</Pagination>
 
