@@ -30,7 +30,7 @@ export function Filter() {
 			</DrawerTrigger>
 			<Portal>
 				<DrawerBackdrop />
-				<DrawerPositioner>
+				<DrawerPositioner w="token(sizes.xs)">
 					<DrawerContent>
 						<DrawerHeader p={0}>
 							<Flex h="navbar.height" pr={4} pl={6} alignItems="center">
@@ -43,14 +43,16 @@ export function Filter() {
 								</DrawerCloseTrigger>
 							</Flex>
 						</DrawerHeader>
+
 						<DrawerBody></DrawerBody>
-						<DrawerFooter gap="3">
+
+						<DrawerFooter gap="3" justifyContent="start">
 							<DrawerCloseTrigger asChild>
-								<Button w="6rem" variant="outline">
+								<Button w="full" variant="outline">
 									Cancel
 								</Button>
 							</DrawerCloseTrigger>
-							<Button w="6rem">Save</Button>
+							<Button w="full">Save</Button>
 						</DrawerFooter>
 					</DrawerContent>
 				</DrawerPositioner>
