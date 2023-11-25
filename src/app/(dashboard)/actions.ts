@@ -2,10 +2,10 @@
 
 import {prisma} from '@/config/prisma';
 import {formdataToJson} from '@/utils/formdata-to-json';
-import assert from 'assert';
 import bcrypt from 'bcrypt';
 import {cookies} from 'next/headers';
 import {redirect} from 'next/navigation';
+import assert from 'node:assert';
 import {z} from 'zod';
 
 export async function logout() {

@@ -8,8 +8,8 @@ import {
 } from '@/components/menu';
 import {prisma} from '@/config/prisma';
 import {Box, Flex, Spacer, styled} from '@/styled-system/jsx';
-import assert from 'assert';
 import {cookies} from 'next/headers';
+import assert from 'node:assert';
 import {ChangePassword} from './change-password';
 import {Notifications} from './notifications';
 import {Signout} from './sign-out';
