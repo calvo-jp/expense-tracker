@@ -9,8 +9,11 @@ export default defineConfig({
 		extend: {
 			tokens: {
 				fonts: {
-					sans: {
-						value: 'var(--font-sans)',
+					body: {
+						value: 'var(--font-body)',
+					},
+					heading: {
+						value: 'var(--font-heading)',
 					},
 				},
 				sizes: {

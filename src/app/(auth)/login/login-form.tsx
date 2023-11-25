@@ -12,7 +12,7 @@ export function LoginForm() {
 	const [error, action] = useFormState(login, null);
 
 	return (
-		<styled.form action={action}>
+		<styled.form action={action} autoComplete="off">
 			{error && (
 				<Alert mb={8}>
 					<AlertIcon asChild>

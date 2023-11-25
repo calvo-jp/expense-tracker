@@ -45,7 +45,7 @@ export default async function Expenses() {
 	return (
 		<Box>
 			<Flex>
-				<styled.h1 textStyle="3xl" fontWeight="bold" letterSpacing="wide">
+				<styled.h1 textStyle="3xl" fontFamily="heading" fontWeight="bold">
 					Expenses
 				</styled.h1>
 				<Spacer />

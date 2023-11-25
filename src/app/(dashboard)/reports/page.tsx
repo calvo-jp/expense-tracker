@@ -21,7 +21,7 @@ export default function Reports() {
 	return (
 		<Box>
 			<Flex>
-				<styled.h1 textStyle="3xl" fontWeight="bold" letterSpacing="wide">
+				<styled.h1 textStyle="3xl" fontFamily="heading" fontWeight="bold">
 					Reports
 				</styled.h1>
 				<Spacer />
