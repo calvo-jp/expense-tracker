@@ -7,7 +7,7 @@ import {cookies} from 'next/headers';
 import {redirect} from 'next/navigation';
 import {z} from 'zod';
 
-export const CredentialsSchema = z.object({
+const CredentialsSchema = z.object({
 	username: z
 		.string()
 		.min(5, 'Username too short')
