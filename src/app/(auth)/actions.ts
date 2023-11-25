@@ -1,6 +1,7 @@
 'use server';
 
 import {prisma} from '@/config/prisma';
+import {formdataToJson} from '@/utils/formdata-to-json';
 import bcrypt from 'bcrypt';
 import {addDays} from 'date-fns';
 import {cookies} from 'next/headers';
@@ -24,10 +25,11 @@ export async function login(_: unknown, formdata: FormData) {
 	const cookieStore = cookies();
 
 	try {
-		const {username, password} = CredentialsSchema.parse({
-			username: formdata.get('username'),
-			password: formdata.get('password'),
-		});
+		const parsed = CredentialsSchema.safeParse(formdataToJson(formdata));
+
+		if (!parsed.success) return parsed.error.errors[0].message;
+
+		const {username, password} = parsed.data;
 
 		const user = await prisma.user.findUniqueOrThrow({where: {username}});
 		const matches = await bcrypt.compare(password, user.password);
@@ -36,7 +38,7 @@ export async function login(_: unknown, formdata: FormData) {
 
 		cookieStore.set('user', user.id, {expires: addDays(new Date(), 30)});
 		redirect('/dashboard');
-	} catch (error) {
+	} catch {
 		return 'Invalid username or password';
 	}
 }
@@ -45,10 +47,7 @@ export async function register(_: unknown, formdata: FormData) {
 	const cookieStore = cookies();
 
 	try {
-		const data = CredentialsSchema.parse({
-			username: formdata.get('username'),
-			password: formdata.get('password'),
-		});
+		const data = CredentialsSchema.parse(formdataToJson(formdata));
 
 		data.password = await bcrypt.hash(data.password, await bcrypt.genSalt(16));
 
