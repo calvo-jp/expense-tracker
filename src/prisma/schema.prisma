@@ -46,7 +46,6 @@ enum ExpenseCategory {
   Savings
   Education
   Clothing
-  GiftsOrDonations
   Miscellaneous
   Others
 }

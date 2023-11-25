@@ -62,8 +62,8 @@ export default async function Expenses() {
 						<TableRow>
 							<TableHead>Category</TableHead>
 							<TableHead>Description</TableHead>
-							<TableHead>Transaction Date</TableHead>
 							<TableHead>Location</TableHead>
+							<TableHead>Transaction date</TableHead>
 							<TableHead>Amount</TableHead>
 							<TableHead>Actions</TableHead>
 						</TableRow>
@@ -73,6 +73,7 @@ export default async function Expenses() {
 							<TableRow key={expense.id}>
 								<TableCell>{expense.category}</TableCell>
 								<TableCell>{expense.description}</TableCell>
+								<TableCell>{expense.location}</TableCell>
 								<TableCell>
 									<Tooltip
 										lazyMount
@@ -101,7 +102,6 @@ export default async function Expenses() {
 										</TooltipPositioner>
 									</Tooltip>
 								</TableCell>
-								<TableCell>{expense.location}</TableCell>
 								<TableCell fontVariantNumeric="tabular-nums">
 									{numberFormatter.format(expense.amount)}
 								</TableCell>

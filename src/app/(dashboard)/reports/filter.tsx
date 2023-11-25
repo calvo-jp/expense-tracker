@@ -286,24 +286,22 @@ export function Filter() {
 									</SelectTrigger>
 								</SelectControl>
 
-								<Portal>
-									<SelectPositioner>
-										<SelectContent zIndex="modal">
-											<SelectItemGroup id="reports.filter.frequency">
-												{frequencies.map((frequency) => (
-													<SelectItem key={frequency.value} item={frequency}>
-														<SelectItemText>{frequency.label}</SelectItemText>
-														<SelectItemIndicator>
-															<Icon>
-																<CheckIcon />
-															</Icon>
-														</SelectItemIndicator>
-													</SelectItem>
-												))}
-											</SelectItemGroup>
-										</SelectContent>
-									</SelectPositioner>
-								</Portal>
+								<SelectPositioner>
+									<SelectContent>
+										<SelectItemGroup id="reports.filter.frequency">
+											{frequencies.map((frequency) => (
+												<SelectItem key={frequency.value} item={frequency}>
+													<SelectItemText>{frequency.label}</SelectItemText>
+													<SelectItemIndicator>
+														<Icon>
+															<CheckIcon />
+														</Icon>
+													</SelectItemIndicator>
+												</SelectItem>
+											))}
+										</SelectItemGroup>
+									</SelectContent>
+								</SelectPositioner>
 							</Select>
 						</DrawerBody>
 
