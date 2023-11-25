@@ -53,11 +53,9 @@ export async function Navbar() {
 
 async function ProfileMenu() {
 	const cookieStore = cookies();
-	const userId = cookieStore.get('user')?.value;
-
-	assert(userId);
-
-	const user = await getUser(userId);
+	const id = cookieStore.get('user')?.value;
+	assert(id);
+	const user = await getUser({id});
 
 	return (
 		<Menu

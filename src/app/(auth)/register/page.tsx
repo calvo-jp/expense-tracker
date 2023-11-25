@@ -1,8 +1,7 @@
 import {Button} from '@/components/button';
 import {Input} from '@/components/input';
-import {prisma} from '@/config/prisma';
 import {styled} from '@/styled-system/jsx';
-import bcrypt from 'bcrypt';
+import {createUser} from '@/utils/user';
 import {addDays} from 'date-fns';
 import {Metadata} from 'next';
 import {cookies} from 'next/headers';
@@ -26,15 +25,7 @@ export default function Register() {
 					password: formdata.get('password'),
 				});
 
-				const user = await prisma.user.create({
-					data: {
-						username: input.username,
-						password: await bcrypt.hash(
-							input.password,
-							await bcrypt.genSalt(16),
-						),
-					},
-				});
+				const user = await createUser(input);
 
 				cookieStore.set('user', user.id, {expires: addDays(new Date(), 30)});
 				redirect('/dashboard');

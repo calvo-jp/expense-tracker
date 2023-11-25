@@ -1,7 +1,7 @@
 import {Button} from '@/components/button';
 import {Input} from '@/components/input';
-import {prisma} from '@/config/prisma';
 import {styled} from '@/styled-system/jsx';
+import {getUser} from '@/utils/user';
 import bcrypt from 'bcrypt';
 import {addDays} from 'date-fns';
 import {Metadata} from 'next';
@@ -26,7 +26,7 @@ export default function Login() {
 					password: formdata.get('password'),
 				});
 
-				const user = await prisma.user.findUniqueOrThrow({where: {username}});
+				const user = await getUser({username});
 
 				if (await bcrypt.compare(password, user.password)) {
 					cookieStore.set('user', user.id, {expires: addDays(new Date(), 30)});
