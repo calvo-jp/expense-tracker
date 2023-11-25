@@ -25,7 +25,7 @@
 	},
 	"devDependencies": {
 		"@pandacss/dev": "0.19.0",
-		"@park-ui/panda-preset": "0.24.0",
+		"@park-ui/panda-preset": "0.23.0",
 		"@types/bcrypt": "5.0.2",
 		"@types/node": "^20",
 		"@types/react": "^18",
