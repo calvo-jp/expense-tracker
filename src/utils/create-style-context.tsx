@@ -1,3 +1,5 @@
+'use client';
+
 import {cx} from '@/styled-system/css';
 import * as React from 'react';
 
@@ -11,8 +13,13 @@ type StyleSlotRecipe<R extends StyleRecipe> = Record<StyleSlot<R>, string>;
 type StyleVariantProps<R extends StyleRecipe> = Parameters<R>[0];
 type CombineProps<T, U> = Omit<T, keyof U> & U;
 
-interface ComponentVariants<T extends React.ElementType, R extends StyleRecipe> {
-	(props: CombineProps<React.ComponentProps<T>, StyleVariantProps<R>>): JSX.Element;
+interface ComponentVariants<
+	T extends React.ElementType,
+	R extends StyleRecipe,
+> {
+	(
+		props: CombineProps<React.ComponentProps<T>, StyleVariantProps<R>>,
+	): JSX.Element;
 }
 
 export const createStyleContext = <R extends StyleRecipe>(recipe: R) => {
@@ -21,24 +28,22 @@ export const createStyleContext = <R extends StyleRecipe>(recipe: R) => {
 	const withProvider = <T extends React.ElementType>(
 		Component: T,
 		slot?: StyleSlot<R>,
-	): ComponentVariants<T, R> => {
-		const StyledComponent = React.forwardRef((props: React.ComponentProps<T>, ref) => {
+	) => {
+		const StyledComponent = React.forwardRef(function StyledComponent(
+			props: React.ComponentProps<T>,
+			ref,
+		) {
 			const [variantProps, otherProps] = recipe.splitVariantProps(props);
 			const slotStyles = recipe(variantProps) as StyleSlotRecipe<R>;
 
+			otherProps.className = cx(slot && slotStyles[slot], otherProps.className);
+
 			return (
 				<StyleContext.Provider value={slotStyles}>
-					<Component
-						ref={ref}
-						{...otherProps}
-						className={cx(slotStyles[slot ?? ''], otherProps.className)}
-					/>
+					<Component ref={ref} {...otherProps} />
 				</StyleContext.Provider>
 			);
 		});
-
-		// @ts-expect-error
-		StyledComponent.displayName = Component.displayname ?? Component.name ?? 'Component';
 
 		return StyledComponent as unknown as ComponentVariants<T, R>;
 	};
@@ -46,21 +51,21 @@ export const createStyleContext = <R extends StyleRecipe>(recipe: R) => {
 	const withContext = <T extends React.ElementType>(
 		Component: T,
 		slot?: StyleSlot<R>,
-	): T => {
+	) => {
 		if (!slot) return Component;
 
-		const StyledComponent = React.forwardRef((props: React.ComponentProps<T>, ref) => {
+		const StyledComponent = React.forwardRef(function StyledComponent(
+			props: React.ComponentProps<T>,
+			ref,
+		) {
 			const slotStyles = React.useContext(StyleContext);
 
 			return React.createElement(Component, {
 				...props,
-				className: cx(slotStyles?.[slot ?? ''], props.className),
+				className: cx(slotStyles && slotStyles[slot], props.className),
 				ref,
 			});
 		});
-
-		// @ts-expect-error
-		StyledComponent.displayName = Component.displayname ?? Component.name ?? 'Component';
 
 		return StyledComponent as unknown as T;
 	};
