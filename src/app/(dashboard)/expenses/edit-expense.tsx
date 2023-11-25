@@ -10,7 +10,7 @@ export function EditExpense() {
 	const id = useId();
 
 	return (
-		<MenuItem id={`expenses-menu--${id}--item-1`}>
+		<MenuItem id={`expenses.items.${id}.menu.edit`}>
 			<HStack>
 				<Icon>
 					<FileEditIcon />

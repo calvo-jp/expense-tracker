@@ -85,21 +85,31 @@ export function Filter() {
 
 						<DrawerBody>
 							<Box>
-								<Label>What</Label>
-								<Input mt={1} placeholder="eg. Bill" />
+								<Label htmlFor="expenses.filter.what">What</Label>
+								<Input
+									mt={1}
+									id="expenses.filter.what"
+									placeholder="eg. Bill"
+								/>
 							</Box>
 
 							<Box mt={4}>
-								<Label>Where</Label>
-								<Input mt={1} placeholder="eg. Mcdo" />
+								<Label htmlFor="expenses.filter.where">Where</Label>
+								<Input
+									mt={1}
+									id="expenses.filter.where"
+									placeholder="eg. Mcdo"
+								/>
 							</Box>
 
 							<DatePicker
 								mt={4}
-								positioning={{sameWidth: true}}
 								startOfWeek={1}
 								lazyMount
 								selectionMode="range"
+								positioning={{
+									placement: 'bottom-end',
+								}}
 							>
 								<DatePickerLabel>When</DatePickerLabel>
 								<DatePickerControl>

@@ -77,7 +77,7 @@ async function ProfileMenu() {
 
 			<MenuPositioner>
 				<MenuContent w="14rem" shadow="none" borderWidth="1px">
-					<MenuItemGroup id="profile-settings-menu">
+					<MenuItemGroup id="navbar.profile-settings">
 						<ChangePassword />
 					</MenuItemGroup>
 				</MenuContent>

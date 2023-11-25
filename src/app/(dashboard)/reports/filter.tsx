@@ -2,6 +2,28 @@
 
 import {Button} from '@/components/button';
 import {
+	DatePicker,
+	DatePickerContent,
+	DatePickerControl,
+	DatePickerInput,
+	DatePickerLabel,
+	DatePickerNextTrigger,
+	DatePickerPositioner,
+	DatePickerPrevTrigger,
+	DatePickerRangeText,
+	DatePickerTable,
+	DatePickerTableBody,
+	DatePickerTableCell,
+	DatePickerTableCellTrigger,
+	DatePickerTableHead,
+	DatePickerTableHeader,
+	DatePickerTableRow,
+	DatePickerTrigger,
+	DatePickerView,
+	DatePickerViewControl,
+	DatePickerViewTrigger,
+} from '@/components/date-picker';
+import {
 	Drawer,
 	DrawerBackdrop,
 	DrawerBody,
@@ -14,9 +36,31 @@ import {
 } from '@/components/drawer';
 import {Icon} from '@/components/icon';
 import {IconButton} from '@/components/icon-button';
+import {Input} from '@/components/input';
+import {
+	Select,
+	SelectContent,
+	SelectControl,
+	SelectItem,
+	SelectItemGroup,
+	SelectItemIndicator,
+	SelectItemText,
+	SelectLabel,
+	SelectPositioner,
+	SelectTrigger,
+	SelectValueText,
+} from '@/components/select';
 import {Flex} from '@/styled-system/jsx';
 import {Portal} from '@ark-ui/react';
-import {ChevronRightIcon, SearchIcon} from 'lucide-react';
+import {Frequency} from '@prisma/client';
+import {
+	CalendarIcon,
+	CheckIcon,
+	ChevronLeftIcon,
+	ChevronRightIcon,
+	ChevronsUpDownIcon,
+	SearchIcon,
+} from 'lucide-react';
 
 export function Filter() {
 	return (
@@ -44,7 +88,224 @@ export function Filter() {
 							</Flex>
 						</DrawerHeader>
 
-						<DrawerBody></DrawerBody>
+						<DrawerBody>
+							<DatePicker
+								lazyMount
+								startOfWeek={1}
+								selectionMode="range"
+								positioning={{
+									placement: 'bottom-end',
+								}}
+							>
+								<DatePickerLabel>Inclusion Date</DatePickerLabel>
+								<DatePickerControl>
+									<DatePickerInput asChild>
+										<Input placeholder="Choose a date" />
+									</DatePickerInput>
+									<DatePickerTrigger asChild>
+										<IconButton variant="outline" aria-label="Open date picker">
+											<Icon>
+												<CalendarIcon />
+											</Icon>
+										</IconButton>
+									</DatePickerTrigger>
+								</DatePickerControl>
+								<DatePickerPositioner>
+									<DatePickerContent>
+										<DatePickerView view="day">
+											{(api) => (
+												<>
+													<DatePickerViewControl>
+														<DatePickerPrevTrigger asChild>
+															<IconButton variant="ghost" size="sm">
+																<Icon>
+																	<ChevronLeftIcon />
+																</Icon>
+															</IconButton>
+														</DatePickerPrevTrigger>
+														<DatePickerViewTrigger asChild>
+															<Button variant="ghost" size="sm">
+																<DatePickerRangeText />
+															</Button>
+														</DatePickerViewTrigger>
+														<DatePickerNextTrigger asChild>
+															<IconButton variant="ghost" size="sm">
+																<Icon>
+																	<ChevronRightIcon />
+																</Icon>
+															</IconButton>
+														</DatePickerNextTrigger>
+													</DatePickerViewControl>
+													<DatePickerTable>
+														<DatePickerTableHead>
+															<DatePickerTableRow>
+																{api.weekDays.map((weekDay, id) => (
+																	<DatePickerTableHeader key={id}>
+																		{weekDay.narrow}
+																	</DatePickerTableHeader>
+																))}
+															</DatePickerTableRow>
+														</DatePickerTableHead>
+														<DatePickerTableBody>
+															{api.weeks.map((week, id) => (
+																<DatePickerTableRow key={id}>
+																	{week.map((day, id) => (
+																		<DatePickerTableCell key={id} value={day}>
+																			<DatePickerTableCellTrigger asChild>
+																				<IconButton variant="ghost">
+																					{day.day}
+																				</IconButton>
+																			</DatePickerTableCellTrigger>
+																		</DatePickerTableCell>
+																	))}
+																</DatePickerTableRow>
+															))}
+														</DatePickerTableBody>
+													</DatePickerTable>
+												</>
+											)}
+										</DatePickerView>
+										<DatePickerView view="month">
+											{(api) => (
+												<>
+													<DatePickerViewControl>
+														<DatePickerPrevTrigger asChild>
+															<IconButton variant="ghost" size="sm">
+																<Icon>
+																	<ChevronLeftIcon />
+																</Icon>
+															</IconButton>
+														</DatePickerPrevTrigger>
+														<DatePickerViewTrigger asChild>
+															<Button variant="ghost" size="sm">
+																<DatePickerRangeText />
+															</Button>
+														</DatePickerViewTrigger>
+														<DatePickerNextTrigger asChild>
+															<IconButton variant="ghost" size="sm">
+																<Icon>
+																	<ChevronRightIcon />
+																</Icon>
+															</IconButton>
+														</DatePickerNextTrigger>
+													</DatePickerViewControl>
+													<DatePickerTable>
+														<DatePickerTableBody>
+															{api
+																.getMonthsGrid({columns: 4, format: 'short'})
+																.map((months, id) => (
+																	<DatePickerTableRow key={id}>
+																		{months.map((month, id) => (
+																			<DatePickerTableCell
+																				key={id}
+																				value={month.value}
+																			>
+																				<DatePickerTableCellTrigger asChild>
+																					<Button variant="ghost">
+																						{month.label}
+																					</Button>
+																				</DatePickerTableCellTrigger>
+																			</DatePickerTableCell>
+																		))}
+																	</DatePickerTableRow>
+																))}
+														</DatePickerTableBody>
+													</DatePickerTable>
+												</>
+											)}
+										</DatePickerView>
+										<DatePickerView view="year">
+											{(api) => (
+												<>
+													<DatePickerViewControl>
+														<DatePickerPrevTrigger asChild>
+															<IconButton variant="ghost" size="sm">
+																<Icon>
+																	<ChevronLeftIcon />
+																</Icon>
+															</IconButton>
+														</DatePickerPrevTrigger>
+														<DatePickerViewTrigger asChild>
+															<Button variant="ghost" size="sm">
+																<DatePickerRangeText />
+															</Button>
+														</DatePickerViewTrigger>
+														<DatePickerNextTrigger asChild>
+															<IconButton variant="ghost" size="sm">
+																<Icon>
+																	<ChevronRightIcon />
+																</Icon>
+															</IconButton>
+														</DatePickerNextTrigger>
+													</DatePickerViewControl>
+													<DatePickerTable>
+														<DatePickerTableBody>
+															{api
+																.getYearsGrid({columns: 4})
+																.map((years, id) => (
+																	<DatePickerTableRow key={id}>
+																		{years.map((year, id) => (
+																			<DatePickerTableCell
+																				key={id}
+																				value={year.value}
+																			>
+																				<DatePickerTableCellTrigger asChild>
+																					<Button variant="ghost">
+																						{year.label}
+																					</Button>
+																				</DatePickerTableCellTrigger>
+																			</DatePickerTableCell>
+																		))}
+																	</DatePickerTableRow>
+																))}
+														</DatePickerTableBody>
+													</DatePickerTable>
+												</>
+											)}
+										</DatePickerView>
+									</DatePickerContent>
+								</DatePickerPositioner>
+							</DatePicker>
+
+							<Select
+								mt={4}
+								items={frequencies}
+								loop
+								lazyMount
+								positioning={{
+									sameWidth: true,
+								}}
+							>
+								<SelectLabel>Frequency</SelectLabel>
+								<SelectControl>
+									<SelectTrigger>
+										<SelectValueText placeholder="Choose frequency" />
+										<Icon>
+											<ChevronsUpDownIcon />
+										</Icon>
+									</SelectTrigger>
+								</SelectControl>
+
+								<Portal>
+									<SelectPositioner>
+										<SelectContent zIndex="modal">
+											<SelectItemGroup id="reports.filter.frequency">
+												{frequencies.map((frequency) => (
+													<SelectItem key={frequency.value} item={frequency}>
+														<SelectItemText>{frequency.label}</SelectItemText>
+														<SelectItemIndicator>
+															<Icon>
+																<CheckIcon />
+															</Icon>
+														</SelectItemIndicator>
+													</SelectItem>
+												))}
+											</SelectItemGroup>
+										</SelectContent>
+									</SelectPositioner>
+								</Portal>
+							</Select>
+						</DrawerBody>
 
 						<DrawerFooter gap="3" justifyContent="start">
 							<DrawerCloseTrigger asChild>
@@ -60,3 +321,8 @@ export function Filter() {
 		</Drawer>
 	);
 }
+
+const frequencies = Object.values(Frequency).map((frequency) => ({
+	label: frequency,
+	value: frequency,
+}));

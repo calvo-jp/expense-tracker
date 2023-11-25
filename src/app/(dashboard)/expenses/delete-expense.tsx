@@ -25,7 +25,7 @@ export function DeleteExpense() {
 	return (
 		<>
 			<MenuItem
-				id={`expenses-menu--${id}--item-2`}
+				id={`expenses.items.${id}.menu.delete`}
 				onClick={() => {
 					setOpen(true);
 				}}
