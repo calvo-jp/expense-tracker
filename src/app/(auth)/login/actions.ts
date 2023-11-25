@@ -1,7 +1,7 @@
 'use server';
 
+import {prisma} from '@/config/prisma';
 import {CredentialsSchema} from '@/utils/types';
-import {getUser} from '@/utils/user';
 import bcrypt from 'bcrypt';
 import {addDays} from 'date-fns';
 import {cookies} from 'next/headers';
@@ -16,7 +16,7 @@ export async function login(_: unknown, formdata: FormData) {
 			password: formdata.get('password'),
 		});
 
-		const user = await getUser({username});
+		const user = await prisma.user.findUniqueOrThrow({where: {username}});
 		const matches = await bcrypt.compare(password, user.password);
 
 		if (!matches) throw new Error();

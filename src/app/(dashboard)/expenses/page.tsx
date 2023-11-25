@@ -23,16 +23,9 @@ import {
 	TooltipPositioner,
 	TooltipTrigger,
 } from '@/components/tooltip';
+import {prisma} from '@/config/prisma';
 import {Box, Flex, Spacer, styled} from '@/styled-system/jsx';
-import {
-	format,
-	formatDistanceToNow,
-	subDays,
-	subMinutes,
-	subSeconds,
-	subWeeks,
-	subYears,
-} from 'date-fns';
+import {format, formatDistanceToNow} from 'date-fns';
 import {SettingsIcon} from 'lucide-react';
 import {Metadata} from 'next';
 import {PageControls} from '../page-controls';
@@ -46,7 +39,9 @@ export const metadata: Metadata = {
 	title: 'Expenses',
 };
 
-export default function Expenses() {
+export default async function Expenses() {
+	const expenses = await prisma.expense.findMany();
+
 	return (
 		<Box>
 			<Flex>
@@ -73,10 +68,10 @@ export default function Expenses() {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{items.map((item) => (
-							<TableRow key={item.id}>
-								<TableCell>{item.what}</TableCell>
-								<TableCell>{item.where}</TableCell>
+						{expenses.map((expense) => (
+							<TableRow key={expense.id}>
+								<TableCell>{expense.what}</TableCell>
+								<TableCell>{expense.where}</TableCell>
 								<TableCell>
 									<Tooltip
 										lazyMount
@@ -86,7 +81,7 @@ export default function Expenses() {
 									>
 										<TooltipTrigger asChild>
 											<styled.span>
-												{formatDistanceToNow(item.when)}
+												{formatDistanceToNow(expense.when)}
 											</styled.span>
 										</TooltipTrigger>
 										<TooltipPositioner>
@@ -100,13 +95,13 @@ export default function Expenses() {
 													<TooltipArrowTip />
 												</TooltipArrow>
 
-												{format(item.when, 'yyyy MMM dd hh:mm a')}
+												{format(expense.when, 'yyyy MMM dd hh:mm a')}
 											</TooltipContent>
 										</TooltipPositioner>
 									</Tooltip>
 								</TableCell>
 								<TableCell fontVariantNumeric="tabular-nums">
-									{numberFormatter.format(item.amount)}
+									{numberFormatter.format(expense.amount)}
 								</TableCell>
 								<TableCell>
 									<Menu
@@ -125,7 +120,7 @@ export default function Expenses() {
 
 										<MenuPositioner>
 											<MenuContent w="12rem" shadow="none" borderWidth="1px">
-												<MenuItemGroup id={`expenses-menu--${item.id}`}>
+												<MenuItemGroup id={`expenses-menu--${expense.id}`}>
 													<EditExpense />
 													<DeleteExpense />
 												</MenuItemGroup>
@@ -141,7 +136,10 @@ export default function Expenses() {
 							<TableCell colSpan={3}>Total</TableCell>
 							<TableCell fontVariantNumeric="tabular-nums">
 								{numberFormatter.format(
-									items.reduce((total, item) => total + item.amount, 0),
+									expenses.reduce(
+										(total, expense) => total + expense.amount,
+										0,
+									),
 								)}
 							</TableCell>
 							<TableCell />
@@ -156,44 +154,6 @@ export default function Expenses() {
 		</Box>
 	);
 }
-
-const items = [
-	{
-		id: 1,
-		what: 'Mcdo',
-		when: subWeeks(new Date(), 1),
-		where: 'Sagay City',
-		amount: 1999,
-	},
-	{
-		id: 2,
-		what: 'Shopping',
-		when: subDays(new Date(), 3),
-		where: 'Cadiz City',
-		amount: 249,
-	},
-	{
-		id: 3,
-		what: 'Others',
-		when: subMinutes(new Date(), 5),
-		where: 'Bacolod City',
-		amount: 79,
-	},
-	{
-		id: 4,
-		what: 'Shoes',
-		when: subSeconds(new Date(), 15),
-		where: 'Bacolod City',
-		amount: 599,
-	},
-	{
-		id: 5,
-		what: 'Pizza',
-		when: subYears(new Date(), 1),
-		where: 'Fabrica',
-		amount: 29,
-	},
-];
 
 const numberFormatter = new Intl.NumberFormat('en-US', {
 	style: 'currency',
