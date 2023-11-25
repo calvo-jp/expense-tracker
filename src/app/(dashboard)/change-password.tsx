@@ -7,7 +7,7 @@ import {LockIcon} from 'lucide-react';
 
 export function ChangePassword() {
 	return (
-		<MenuItem id="profile-settings-menu--change-password">
+		<MenuItem id="navbar.profile-settings.change-password">
 			<HStack>
 				<Icon>
 					<LockIcon />

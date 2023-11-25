@@ -26,6 +26,7 @@ import {BellIcon, ChevronRightIcon} from 'lucide-react';
 import {cookies} from 'next/headers';
 import {Fragment} from 'react';
 import {ChangePassword} from './change-password';
+import {Signout} from './sign-out';
 
 export async function Navbar() {
 	return (
@@ -79,6 +80,7 @@ async function ProfileMenu() {
 				<MenuContent w="14rem" shadow="none" borderWidth="1px">
 					<MenuItemGroup id="navbar.profile-settings">
 						<ChangePassword />
+						<Signout />
 					</MenuItemGroup>
 				</MenuContent>
 			</MenuPositioner>

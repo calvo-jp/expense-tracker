@@ -8,9 +8,8 @@ import {
 	LineChartIcon,
 	PowerIcon,
 } from 'lucide-react';
-import {cookies} from 'next/headers';
-import {redirect} from 'next/navigation';
 import {Fragment} from 'react';
+import {logout} from './actions';
 
 export function Sidebar() {
 	return (
@@ -56,15 +55,7 @@ export function Sidebar() {
 						</SidebarButton>
 					</styled.li>
 					<styled.li>
-						<styled.form
-							action={async () => {
-								'use server';
-
-								const cookieStore = cookies();
-								cookieStore.delete('user');
-								redirect('/');
-							}}
-						>
+						<styled.form action={logout}>
 							<SidebarButton type="submit">
 								<Icon>
 									<PowerIcon />
