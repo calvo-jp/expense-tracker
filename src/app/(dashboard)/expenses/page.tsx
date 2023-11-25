@@ -28,6 +28,7 @@ import {Box, Flex, Spacer, styled} from '@/styled-system/jsx';
 import {format, formatDistanceToNow} from 'date-fns';
 import {SettingsIcon} from 'lucide-react';
 import {Metadata} from 'next';
+import {cookies} from 'next/headers';
 import {PageControls} from '../page-controls';
 import {CreateExpense} from './create-expense';
 import {DeleteExpense} from './delete-expense';
@@ -40,7 +41,31 @@ export const metadata: Metadata = {
 };
 
 export default async function Expenses() {
-	const expenses = await prisma.expense.findMany();
+	const id = cookies().get('user')?.value;
+
+	const user = await prisma.user.findUnique({
+		where: {id},
+		select: {
+			currency: true,
+		},
+	});
+
+	const expenses = await prisma.expense.findMany({
+		include: {
+			user: {
+				select: {
+					currency: true,
+				},
+			},
+		},
+	});
+
+	const numberFormatter = new Intl.NumberFormat('en-US', {
+		style: 'currency',
+		currency: user?.currency ?? 'USD',
+		minimumFractionDigits: 1,
+		maximumFractionDigits: 2,
+	});
 
 	return (
 		<Box>
@@ -155,10 +180,3 @@ export default async function Expenses() {
 		</Box>
 	);
 }
-
-const numberFormatter = new Intl.NumberFormat('en-US', {
-	style: 'currency',
-	currency: 'USD',
-	minimumFractionDigits: 1,
-	maximumFractionDigits: 2,
-});

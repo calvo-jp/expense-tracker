@@ -119,25 +119,16 @@ export function Filter() {
 										<ComboboxPositioner>
 											<ComboboxContent>
 												<ComboboxItemGroup id="framework">
-													{categories
-														.slice()
-														.filter(({label}) => {
-															return label
-																.toLowerCase()
-																.startsWith(api.inputValue.toLowerCase());
-														})
-														.map((item) => (
-															<ComboboxItem key={item.value} item={item}>
-																<ComboboxItemText>
-																	{item.label}
-																</ComboboxItemText>
-																<ComboboxItemIndicator>
-																	<Icon>
-																		<CheckIcon />
-																	</Icon>
-																</ComboboxItemIndicator>
-															</ComboboxItem>
-														))}
+													{categories.map((item) => (
+														<ComboboxItem key={item.value} item={item}>
+															<ComboboxItemText>{item.label}</ComboboxItemText>
+															<ComboboxItemIndicator>
+																<Icon>
+																	<CheckIcon />
+																</Icon>
+															</ComboboxItemIndicator>
+														</ComboboxItem>
+													))}
 												</ComboboxItemGroup>
 											</ComboboxContent>
 										</ComboboxPositioner>

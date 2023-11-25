@@ -88,6 +88,7 @@ export function PageControls() {
 			<Select
 				w={28}
 				items={sizes}
+				defaultValue={['10']}
 				loop
 				lazyMount
 				positioning={{
