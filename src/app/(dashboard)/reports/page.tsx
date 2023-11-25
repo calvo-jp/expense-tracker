@@ -35,9 +35,9 @@ export default function Reports() {
 				<Table variant="outline">
 					<TableHeader>
 						<TableRow>
-							<TableHead>Inclusion Date</TableHead>
+							<TableHead>Inclusion date</TableHead>
 							<TableHead>Frequency</TableHead>
-							<TableHead>Total</TableHead>
+							<TableHead>Amount</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>

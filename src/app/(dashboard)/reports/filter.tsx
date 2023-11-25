@@ -38,6 +38,14 @@ import {Icon} from '@/components/icon';
 import {IconButton} from '@/components/icon-button';
 import {Input} from '@/components/input';
 import {
+	NumberInput,
+	NumberInputControl,
+	NumberInputDecrementTrigger,
+	NumberInputIncrementTrigger,
+	NumberInputInput,
+	NumberInputLabel,
+} from '@/components/number-input';
+import {
 	Select,
 	SelectContent,
 	SelectControl,
@@ -50,14 +58,16 @@ import {
 	SelectTrigger,
 	SelectValueText,
 } from '@/components/select';
-import {Flex} from '@/styled-system/jsx';
+import {Flex, HStack} from '@/styled-system/jsx';
 import {Portal} from '@ark-ui/react';
 import {Frequency} from '@prisma/client';
 import {
 	CalendarIcon,
 	CheckIcon,
+	ChevronDownIcon,
 	ChevronLeftIcon,
 	ChevronRightIcon,
+	ChevronUpIcon,
 	ChevronsUpDownIcon,
 	SearchIcon,
 } from 'lucide-react';
@@ -97,10 +107,10 @@ export function Filter() {
 									placement: 'bottom-end',
 								}}
 							>
-								<DatePickerLabel>Inclusion Date</DatePickerLabel>
+								<DatePickerLabel>Inclusion date</DatePickerLabel>
 								<DatePickerControl>
 									<DatePickerInput asChild>
-										<Input placeholder="Choose a date" />
+										<Input placeholder="Choose date" />
 									</DatePickerInput>
 									<DatePickerTrigger asChild>
 										<IconButton variant="outline" aria-label="Open date picker">
@@ -267,15 +277,7 @@ export function Filter() {
 								</DatePickerPositioner>
 							</DatePicker>
 
-							<Select
-								mt={4}
-								items={frequencies}
-								loop
-								lazyMount
-								positioning={{
-									sameWidth: true,
-								}}
-							>
+							<Select mt={4} items={frequencies} loop lazyMount>
 								<SelectLabel>Frequency</SelectLabel>
 								<SelectControl>
 									<SelectTrigger>
@@ -303,6 +305,41 @@ export function Filter() {
 									</SelectContent>
 								</SelectPositioner>
 							</Select>
+
+							<HStack mt={4} alignItems="end" gap={4}>
+								<NumberInput>
+									<NumberInputLabel>Amount</NumberInputLabel>
+									<NumberInputControl>
+										<NumberInputInput placeholder="Min" />
+										<NumberInputIncrementTrigger>
+											<Icon size="sm">
+												<ChevronUpIcon />
+											</Icon>
+										</NumberInputIncrementTrigger>
+										<NumberInputDecrementTrigger>
+											<Icon size="sm">
+												<ChevronDownIcon />
+											</Icon>
+										</NumberInputDecrementTrigger>
+									</NumberInputControl>
+								</NumberInput>
+
+								<NumberInput>
+									<NumberInputControl>
+										<NumberInputInput placeholder="Max" />
+										<NumberInputIncrementTrigger>
+											<Icon size="sm">
+												<ChevronUpIcon />
+											</Icon>
+										</NumberInputIncrementTrigger>
+										<NumberInputDecrementTrigger>
+											<Icon size="sm">
+												<ChevronDownIcon />
+											</Icon>
+										</NumberInputDecrementTrigger>
+									</NumberInputControl>
+								</NumberInput>
+							</HStack>
 						</DrawerBody>
 
 						<DrawerFooter gap="3" justifyContent="start">

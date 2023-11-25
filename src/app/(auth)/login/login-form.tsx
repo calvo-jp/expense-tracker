@@ -1,6 +1,6 @@
 'use client';
 
-import {Alert, AlertIcon, AlertTitle} from '@/components/alert';
+import {Alert, AlertContent, AlertIcon, AlertTitle} from '@/components/alert';
 import {Button} from '@/components/button';
 import {Input} from '@/components/input';
 import {styled} from '@/styled-system/jsx';
@@ -18,7 +18,9 @@ export function LoginForm() {
 					<AlertIcon asChild>
 						<AlertCircleIcon />
 					</AlertIcon>
-					<AlertTitle>{error}</AlertTitle>
+					<AlertContent>
+						<AlertTitle>{error}</AlertTitle>
+					</AlertContent>
 				</Alert>
 			)}
 
