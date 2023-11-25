@@ -3,6 +3,8 @@ import {cookies} from 'next/headers';
 import {redirect} from 'next/navigation';
 import {Fragment, PropsWithChildren} from 'react';
 
+export const revalidate = 0;
+
 export default function Layout(props: PropsWithChildren) {
 	const cookieStore = cookies();
 
