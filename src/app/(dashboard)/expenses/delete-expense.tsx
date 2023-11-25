@@ -1,5 +1,6 @@
 'use client';
 
+import {Button} from '@/components/button';
 import {
 	Dialog,
 	DialogBackdrop,
@@ -11,19 +12,23 @@ import {
 	DialogTrigger,
 } from '@/components/dialog';
 import {Icon} from '@/components/icon';
-import {IconButton} from '@/components/icon-button';
 import {MenuItem} from '@/components/menu';
 import {toast} from '@/components/toaster';
-import {HStack, styled} from '@/styled-system/jsx';
+import {Box, Flex, HStack, styled} from '@/styled-system/jsx';
 import {Portal} from '@ark-ui/react';
-import {FileX2Icon, XIcon} from 'lucide-react';
+import {FileX2Icon} from 'lucide-react';
 import {useId} from 'react';
 
 export function DeleteExpense() {
 	const id = useId();
 
 	return (
-		<Dialog lazyMount unmountOnExit>
+		<Dialog
+			lazyMount
+			unmountOnExit
+			closeOnEscapeKeyDown={false}
+			closeOnInteractOutside={false}
+		>
 			<DialogTrigger asChild>
 				<MenuItem id={`expenses.items.${id}.menu.delete`}>
 					<HStack>
@@ -38,26 +43,30 @@ export function DeleteExpense() {
 			<Portal>
 				<DialogBackdrop />
 				<DialogPositioner>
-					<DialogContent>
-						<DialogTitle>Dialog Title</DialogTitle>
-						<DialogDescription>Dialog Description</DialogDescription>
+					<DialogContent asChild>
+						<Box p={6}>
+							<DialogTitle>Delete Record</DialogTitle>
+							<DialogDescription>
+								This action is irreversible. Are you sure you want to continue?
+							</DialogDescription>
 
-						<DialogCloseTrigger
-							asChild
-							position="absolute"
-							top="2"
-							right="2"
-							onClick={() => {
-								toast.success({
-									title: 'Success',
-									description: 'Item has been deleted',
-								});
-							}}
-						>
-							<IconButton aria-label="Close Dialog" variant="ghost" size="sm">
-								<XIcon />
-							</IconButton>
-						</DialogCloseTrigger>
+							<Flex mt={8} gap={3} justifyContent="end">
+								<DialogCloseTrigger asChild>
+									<Button variant="outline">Cancel</Button>
+								</DialogCloseTrigger>
+								<DialogCloseTrigger
+									asChild
+									onClick={() => {
+										toast.success({
+											title: 'Success',
+											description: 'Item has been deleted',
+										});
+									}}
+								>
+									<Button>Proceed</Button>
+								</DialogCloseTrigger>
+							</Flex>
+						</Box>
 					</DialogContent>
 				</DialogPositioner>
 			</Portal>
