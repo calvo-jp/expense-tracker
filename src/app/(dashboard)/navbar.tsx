@@ -1,17 +1,5 @@
 import {Avatar, AvatarFallback} from '@/components/avatar';
 import {
-	Drawer,
-	DrawerBackdrop,
-	DrawerBody,
-	DrawerCloseTrigger,
-	DrawerContent,
-	DrawerHeader,
-	DrawerPositioner,
-	DrawerTrigger,
-} from '@/components/drawer';
-import {Icon} from '@/components/icon';
-import {IconButton} from '@/components/icon-button';
-import {
 	Menu,
 	MenuContent,
 	MenuItemGroup,
@@ -20,11 +8,10 @@ import {
 } from '@/components/menu';
 import {prisma} from '@/config/prisma';
 import {Box, Flex, Spacer, styled} from '@/styled-system/jsx';
-import {Portal} from '@ark-ui/react';
 import assert from 'assert';
-import {BellIcon, ChevronRightIcon} from 'lucide-react';
 import {cookies} from 'next/headers';
 import {ChangePassword} from './change-password';
+import {Notifications} from './notifications';
 import {Signout} from './sign-out';
 
 export async function Navbar() {
@@ -39,6 +26,7 @@ export async function Navbar() {
 			>
 				<Flex h="full" px={8} alignItems="center">
 					<Spacer />
+
 					<Flex gap={4}>
 						<Notifications />
 						<ProfileMenu />
@@ -83,38 +71,5 @@ async function ProfileMenu() {
 				</MenuContent>
 			</MenuPositioner>
 		</Menu>
-	);
-}
-
-async function Notifications() {
-	return (
-		<Drawer lazyMount>
-			<DrawerTrigger asChild>
-				<IconButton variant="ghost">
-					<Icon w={6} h={6}>
-						<BellIcon />
-					</Icon>
-				</IconButton>
-			</DrawerTrigger>
-			<Portal>
-				<DrawerBackdrop />
-				<DrawerPositioner>
-					<DrawerContent>
-						<DrawerHeader p={0}>
-							<Flex h="navbar.height" pr={4} pl={6} gap={2} alignItems="center">
-								<DrawerCloseTrigger asChild>
-									<IconButton variant="outline">
-										<Icon>
-											<ChevronRightIcon />
-										</Icon>
-									</IconButton>
-								</DrawerCloseTrigger>
-							</Flex>
-						</DrawerHeader>
-						<DrawerBody></DrawerBody>
-					</DrawerContent>
-				</DrawerPositioner>
-			</Portal>
-		</Drawer>
 	);
 }
