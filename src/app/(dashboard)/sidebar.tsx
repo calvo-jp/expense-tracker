@@ -7,6 +7,7 @@ import {
 	FilePieChartIcon,
 	LineChartIcon,
 	PowerIcon,
+	SettingsIcon,
 } from 'lucide-react';
 import {Fragment} from 'react';
 import {logout} from './actions';
@@ -51,6 +52,16 @@ export function Sidebar() {
 									<FilePieChartIcon />
 								</Icon>
 								<styled.span>Reports</styled.span>
+							</Link>
+						</SidebarButton>
+					</styled.li>
+					<styled.li>
+						<SidebarButton asChild>
+							<Link href="/settings">
+								<Icon>
+									<SettingsIcon />
+								</Icon>
+								<styled.span>Settings</styled.span>
 							</Link>
 						</SidebarButton>
 					</styled.li>

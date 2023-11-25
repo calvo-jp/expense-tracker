@@ -60,18 +60,19 @@ export default async function Expenses() {
 				<Table variant="outline">
 					<TableHeader>
 						<TableRow>
-							<TableHead>What</TableHead>
-							<TableHead>Where</TableHead>
-							<TableHead>When</TableHead>
+							<TableHead>Category</TableHead>
+							<TableHead>Description</TableHead>
+							<TableHead>Transaction Date</TableHead>
 							<TableHead>Amount</TableHead>
+							<TableHead>Location</TableHead>
 							<TableHead>Actions</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
 						{expenses.map((expense) => (
 							<TableRow key={expense.id}>
-								<TableCell>{expense.what}</TableCell>
-								<TableCell>{expense.where}</TableCell>
+								<TableCell>{expense.category}</TableCell>
+								<TableCell>{expense.description}</TableCell>
 								<TableCell>
 									<Tooltip
 										lazyMount
@@ -81,7 +82,7 @@ export default async function Expenses() {
 									>
 										<TooltipTrigger asChild>
 											<styled.span>
-												{formatDistanceToNow(expense.when)}
+												{formatDistanceToNow(expense.transactionDate)}
 											</styled.span>
 										</TooltipTrigger>
 										<TooltipPositioner>
@@ -95,7 +96,7 @@ export default async function Expenses() {
 													<TooltipArrowTip />
 												</TooltipArrow>
 
-												{format(expense.when, 'yyyy MMM dd hh:mm a')}
+												{format(expense.transactionDate, 'yyyy MMM dd')}
 											</TooltipContent>
 										</TooltipPositioner>
 									</Tooltip>
@@ -117,7 +118,6 @@ export default async function Expenses() {
 												</Icon>
 											</styled.button>
 										</MenuTrigger>
-
 										<MenuPositioner>
 											<MenuContent w="12rem" shadow="none" borderWidth="1px">
 												<MenuItemGroup id={`expenses-menu--${expense.id}`}>
@@ -133,7 +133,9 @@ export default async function Expenses() {
 					</TableBody>
 					<TableFooter>
 						<TableRow>
-							<TableCell colSpan={3}>Total</TableCell>
+							<TableCell>Total</TableCell>
+							<TableCell />
+							<TableCell />
 							<TableCell fontVariantNumeric="tabular-nums">
 								{numberFormatter.format(
 									expenses.reduce(
@@ -142,6 +144,7 @@ export default async function Expenses() {
 									),
 								)}
 							</TableCell>
+							<TableCell />
 							<TableCell />
 						</TableRow>
 					</TableFooter>
