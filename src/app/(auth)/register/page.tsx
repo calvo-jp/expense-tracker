@@ -1,12 +1,12 @@
 import {Button} from '@/components/button';
 import {Input} from '@/components/input';
 import {styled} from '@/styled-system/jsx';
+import {CredentialsSchema} from '@/utils/types';
 import {createUser} from '@/utils/user';
 import {addDays} from 'date-fns';
 import {Metadata} from 'next';
 import {cookies} from 'next/headers';
 import {redirect} from 'next/navigation';
-import {z} from 'zod';
 
 export const metadata: Metadata = {
 	title: 'Register',
@@ -20,7 +20,7 @@ export default function Register() {
 
 				const cookieStore = cookies();
 
-				const input = RegisterSchema.parse({
+				const input = CredentialsSchema.parse({
 					username: formdata.get('username'),
 					password: formdata.get('password'),
 				});
@@ -45,10 +45,3 @@ export default function Register() {
 		</styled.form>
 	);
 }
-
-const RegisterSchema = z
-	.object({
-		username: z.string().min(5).max(25).trim(),
-		password: z.string().min(8).max(150),
-	})
-	.required();

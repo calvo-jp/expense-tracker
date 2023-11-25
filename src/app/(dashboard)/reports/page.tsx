@@ -9,9 +9,9 @@ import {
 } from '@/components/table';
 import {Box, Flex, Spacer, styled} from '@/styled-system/jsx';
 import {Metadata} from 'next';
+import {PageControls} from '../page-controls';
 import {Export} from './export';
 import {Filter} from './filter';
-import {PageControls} from './page-controls';
 
 export const metadata: Metadata = {
 	title: 'Reports',

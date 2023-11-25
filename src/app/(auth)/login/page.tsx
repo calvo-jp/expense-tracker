@@ -1,13 +1,13 @@
 import {Button} from '@/components/button';
 import {Input} from '@/components/input';
 import {styled} from '@/styled-system/jsx';
+import {CredentialsSchema} from '@/utils/types';
 import {getUser} from '@/utils/user';
 import bcrypt from 'bcrypt';
 import {addDays} from 'date-fns';
 import {Metadata} from 'next';
 import {cookies} from 'next/headers';
 import {redirect} from 'next/navigation';
-import {z} from 'zod';
 
 export const metadata: Metadata = {
 	title: 'Login',
@@ -21,7 +21,7 @@ export default function Login() {
 
 				const cookieStore = cookies();
 
-				const {username, password} = LoginSchema.parse({
+				const {username, password} = CredentialsSchema.parse({
 					username: formdata.get('username'),
 					password: formdata.get('password'),
 				});
@@ -48,8 +48,3 @@ export default function Login() {
 		</styled.form>
 	);
 }
-
-const LoginSchema = z.object({
-	username: z.string(),
-	password: z.string(),
-});

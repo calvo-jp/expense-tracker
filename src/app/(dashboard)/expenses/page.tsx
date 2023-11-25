@@ -35,12 +35,12 @@ import {
 } from 'date-fns';
 import {SettingsIcon} from 'lucide-react';
 import {Metadata} from 'next';
+import {PageControls} from '../page-controls';
 import {CreateExpense} from './create-expense';
 import {DeleteExpense} from './delete-expense';
 import {EditExpense} from './edit-expense';
 import {Export} from './export';
 import {Filter} from './filter';
-import {PageControls} from './page-controls';
 
 export const metadata: Metadata = {
 	title: 'Expenses',
