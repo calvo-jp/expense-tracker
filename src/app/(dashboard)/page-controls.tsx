@@ -88,7 +88,6 @@ export function PageControls() {
 
 			<Select
 				w={28}
-				value={[sizes[0].value]}
 				items={sizes}
 				loop
 				lazyMount
