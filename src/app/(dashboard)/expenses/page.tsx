@@ -63,8 +63,8 @@ export default async function Expenses() {
 							<TableHead>Category</TableHead>
 							<TableHead>Description</TableHead>
 							<TableHead>Transaction Date</TableHead>
-							<TableHead>Amount</TableHead>
 							<TableHead>Location</TableHead>
+							<TableHead>Amount</TableHead>
 							<TableHead>Actions</TableHead>
 						</TableRow>
 					</TableHeader>
@@ -101,6 +101,7 @@ export default async function Expenses() {
 										</TooltipPositioner>
 									</Tooltip>
 								</TableCell>
+								<TableCell>{expense.location}</TableCell>
 								<TableCell fontVariantNumeric="tabular-nums">
 									{numberFormatter.format(expense.amount)}
 								</TableCell>
@@ -133,9 +134,7 @@ export default async function Expenses() {
 					</TableBody>
 					<TableFooter>
 						<TableRow>
-							<TableCell>Total</TableCell>
-							<TableCell />
-							<TableCell />
+							<TableCell colSpan={4}>Total</TableCell>
 							<TableCell fontVariantNumeric="tabular-nums">
 								{numberFormatter.format(
 									expenses.reduce(
@@ -144,7 +143,6 @@ export default async function Expenses() {
 									),
 								)}
 							</TableCell>
-							<TableCell />
 							<TableCell />
 						</TableRow>
 					</TableFooter>
