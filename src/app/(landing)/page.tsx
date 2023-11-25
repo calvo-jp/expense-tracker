@@ -6,7 +6,7 @@ import {
 	AccordionItemTrigger,
 } from '@/components/accordion';
 import {Button} from '@/components/button';
-import {Link} from '@/components/link';
+import {Link} from '@/components/next-js/link';
 import {Box, Flex, HStack, Spacer, styled} from '@/styled-system/jsx';
 import {ChevronDownIcon} from 'lucide-react';
 
