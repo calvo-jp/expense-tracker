@@ -60,6 +60,7 @@ import {
 	NumberInputLabel,
 } from '@/components/number-input';
 import {Box, Flex, HStack} from '@/styled-system/jsx';
+import {pascalToSentenceCase} from '@/utils/pascal-to-sentence-case';
 import {Portal} from '@ark-ui/react';
 import {ExpenseCategory} from '@prisma/client';
 import {
@@ -376,6 +377,6 @@ export function Filter() {
 }
 
 const categories = Object.values(ExpenseCategory).map((category) => ({
-	label: category.replace(/([A-Z])/g, ' $1'),
+	label: pascalToSentenceCase(category),
 	value: category,
 }));

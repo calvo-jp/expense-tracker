@@ -1,4 +1,4 @@
-import { Icon } from '@/components/icon';
+import {Icon} from '@/components/icon';
 import {
 	Menu,
 	MenuContent,
@@ -23,18 +23,18 @@ import {
 	TooltipPositioner,
 	TooltipTrigger,
 } from '@/components/tooltip';
-import { prisma } from '@/config/prisma';
-import { Box, Flex, Spacer, styled } from '@/styled-system/jsx';
-import { format, formatDistanceToNow } from 'date-fns';
-import { SettingsIcon } from 'lucide-react';
-import { Metadata } from 'next';
-import { cookies } from 'next/headers';
-import { PageControls } from '../page-controls';
-import { CreateExpense } from './create-expense';
-import { DeleteExpense } from './delete-expense';
-import { EditExpense } from './edit-expense';
-import { Export } from './export';
-import { Filter } from './filter';
+import {prisma} from '@/config/prisma';
+import {Box, Flex, Spacer, styled} from '@/styled-system/jsx';
+import {format, formatDistanceToNow} from 'date-fns';
+import {SettingsIcon} from 'lucide-react';
+import {Metadata} from 'next';
+import {cookies} from 'next/headers';
+import {PageControls} from '../page-controls';
+import CreateExpense from './create-expense';
+import {DeleteExpense} from './delete-expense';
+import {EditExpense} from './edit-expense';
+import {Export} from './export';
+import {Filter} from './filter';
 
 export const metadata: Metadata = {
 	title: 'Expenses',
@@ -108,8 +108,8 @@ export default async function Expenses() {
 									>
 										<TooltipTrigger asChild>
 											<styled.span>
-												{formatDistanceToNow(expense.transactionDate,{
-													addSuffix:true
+												{formatDistanceToNow(expense.transactionDate, {
+													addSuffix: true,
 												})}
 											</styled.span>
 										</TooltipTrigger>
