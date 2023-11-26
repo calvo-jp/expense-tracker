@@ -36,13 +36,12 @@ export default async function Dashboard() {
 
 	return (
 		<Box>
-			<Flex alignItems="center">
+			<Flex>
 				<Box fontFamily="heading">
-					<styled.h1 textStyle="3xl" fontWeight="bold" lineHeight="none">
+					<styled.h1 textStyle="3xl" fontWeight="bold">
 						Dashboard
 					</styled.h1>
 					<styled.p
-						mt={1}
 						color="fg.muted"
 						fontSize="sm"
 						display="flex"
