@@ -64,7 +64,7 @@ import {pascalToSentenceCase} from '@/utils/pascal-to-sentence-case';
 import {stringToPrismaEnum} from '@/utils/string-to-prisma-enum';
 import {Portal} from '@ark-ui/react';
 import {zodResolver} from '@hookform/resolvers/zod';
-import {ExpenseCategory} from '@prisma/client';
+import {Expense, ExpenseCategory} from '@prisma/client';
 import {format} from 'date-fns';
 import {
 	CalendarIcon,
@@ -74,18 +74,29 @@ import {
 	ChevronRightIcon,
 	ChevronUpIcon,
 	ChevronsUpDownIcon,
-	PlusIcon,
 } from 'lucide-react';
-import {useTransition} from 'react';
+import {ReactNode, useTransition} from 'react';
 import {useForm} from 'react-hook-form';
 import {createExpense} from './actions';
-import {CreateExpenseSchema, TCreateExpenseSchema} from './schema';
+import {TUpsertExpenseSchema, UpsertExpenseSchema} from './schema';
 
-export function CreateExpense() {
+type UpsertExpenseProps = (
+	| {
+			type: 'create';
+	  }
+	| {
+			type: 'update';
+			data: Expense;
+	  }
+) & {
+	children: ReactNode;
+};
+
+export function UpsertExpense(props: UpsertExpenseProps) {
 	const [pending, startTransition] = useTransition();
 
-	const form = useForm<TCreateExpenseSchema>({
-		resolver: zodResolver(CreateExpenseSchema),
+	const form = useForm<TUpsertExpenseSchema>({
+		resolver: zodResolver(UpsertExpenseSchema),
 	});
 
 	return (
@@ -97,14 +108,7 @@ export function CreateExpense() {
 		>
 			{(api) => (
 				<>
-					<DialogTrigger asChild>
-						<Button variant="outline">
-							<Icon>
-								<PlusIcon />
-							</Icon>
-							Add new
-						</Button>
-					</DialogTrigger>
+					<DialogTrigger asChild>{props.children}</DialogTrigger>
 
 					<Portal>
 						<DialogBackdrop />

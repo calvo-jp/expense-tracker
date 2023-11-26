@@ -1,7 +1,9 @@
+import {Button} from '@/components/button';
 import {Icon} from '@/components/icon';
 import {
 	Menu,
 	MenuContent,
+	MenuItem,
 	MenuItemGroup,
 	MenuPositioner,
 	MenuTrigger,
@@ -24,17 +26,16 @@ import {
 	TooltipTrigger,
 } from '@/components/tooltip';
 import {prisma} from '@/config/prisma';
-import {Box, Flex, Spacer, styled} from '@/styled-system/jsx';
+import {Box, Flex, HStack, Spacer, styled} from '@/styled-system/jsx';
 import {format, formatDistanceToNow} from 'date-fns';
-import {SettingsIcon} from 'lucide-react';
+import {FileEditIcon, PlusIcon, SettingsIcon} from 'lucide-react';
 import {Metadata} from 'next';
 import {cookies} from 'next/headers';
 import {PageControls} from '../page-controls';
-import {CreateExpense} from './create-expense';
 import {DeleteExpense} from './delete-expense';
-import {EditExpense} from './edit-expense';
 import {Export} from './export';
 import {Filter} from './filter';
+import {UpsertExpense} from './upsert-expense';
 
 export const metadata: Metadata = {
 	title: 'Expenses',
@@ -80,7 +81,14 @@ export default async function Expenses() {
 				<Flex gap={3}>
 					<Export />
 					<Filter />
-					<CreateExpense />
+					<UpsertExpense type="create">
+						<Button variant="outline">
+							<Icon>
+								<PlusIcon />
+							</Icon>
+							Add new
+						</Button>
+					</UpsertExpense>
 				</Flex>
 			</Flex>
 
@@ -152,7 +160,19 @@ export default async function Expenses() {
 										<MenuPositioner>
 											<MenuContent w="12rem" shadow="none" borderWidth="1px">
 												<MenuItemGroup id={`expenses-menu--${expense.id}`}>
-													<EditExpense />
+													<UpsertExpense type="update" data={expense}>
+														<MenuItem
+															id={`expenses.items.${expense.id}.menu.edit`}
+														>
+															<HStack>
+																<Icon>
+																	<FileEditIcon />
+																</Icon>
+																<styled.span>Edit</styled.span>
+															</HStack>
+														</MenuItem>
+													</UpsertExpense>
+
 													<DeleteExpense data={expense} />
 												</MenuItemGroup>
 											</MenuContent>
