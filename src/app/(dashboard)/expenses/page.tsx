@@ -152,8 +152,7 @@ export default async function Expenses({
 								<TableCell>
 									<Menu
 										positioning={{
-											flip: true,
-											placement: 'bottom',
+											placement: 'bottom-start',
 										}}
 									>
 										<MenuTrigger asChild>
