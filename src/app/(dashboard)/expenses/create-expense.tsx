@@ -108,7 +108,7 @@ export default function CreateExpense() {
 
 					<Portal>
 						<DialogBackdrop />
-						<DialogPositioner overflowY="auto">
+						<DialogPositioner>
 							<DialogContent w="28rem" p={8}>
 								<styled.form
 									onSubmit={form.handleSubmit((data) => {
