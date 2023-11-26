@@ -16,7 +16,7 @@ import {BellIcon, ChevronRightIcon} from 'lucide-react';
 
 export function Notifications() {
 	return (
-		<Drawer lazyMount>
+		<Drawer>
 			<DrawerTrigger asChild>
 				<IconButton variant="ghost">
 					<Icon w={6} h={6}>

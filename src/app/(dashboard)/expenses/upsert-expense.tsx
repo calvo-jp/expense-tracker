@@ -112,7 +112,6 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 
 	return (
 		<Dialog
-			lazyMount
 			unmountOnExit
 			closeOnEscapeKeyDown={false}
 			closeOnInteractOutside={false}
@@ -157,7 +156,6 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 									<VStack gap={3} alignItems="stretch">
 										<Combobox
 											items={categories}
-											lazyMount
 											value={[form.watch('category')]}
 											onValueChange={(details) => {
 												form.setValue(
@@ -170,7 +168,7 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 												);
 											}}
 										>
-											{() => (
+											{(api) => (
 												<>
 													<ComboboxLabel>Category</ComboboxLabel>
 													<ComboboxControl>
@@ -197,18 +195,26 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 													<ComboboxPositioner>
 														<ComboboxContent>
 															<ComboboxItemGroup id="framework">
-																{categories.map((item) => (
-																	<ComboboxItem key={item.value} item={item}>
-																		<ComboboxItemText>
-																			{item.label}
-																		</ComboboxItemText>
-																		<ComboboxItemIndicator>
-																			<Icon>
-																				<CheckIcon />
-																			</Icon>
-																		</ComboboxItemIndicator>
-																	</ComboboxItem>
-																))}
+																{categories
+																	.filter(({label}) =>
+																		label
+																			.toLowerCase()
+																			.startsWith(
+																				api.inputValue.toLowerCase().trim(),
+																			),
+																	)
+																	.map((item) => (
+																		<ComboboxItem key={item.value} item={item}>
+																			<ComboboxItemText>
+																				{item.label}
+																			</ComboboxItemText>
+																			<ComboboxItemIndicator>
+																				<Icon>
+																					<CheckIcon />
+																				</Icon>
+																			</ComboboxItemIndicator>
+																		</ComboboxItem>
+																	))}
 															</ComboboxItemGroup>
 														</ComboboxContent>
 													</ComboboxPositioner>
@@ -249,7 +255,6 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 										</Flex>
 
 										<DatePicker
-											lazyMount
 											startOfWeek={1}
 											selectionMode="single"
 											positioning={{

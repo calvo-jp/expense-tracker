@@ -14,6 +14,7 @@ export const Menu = withProvider(
 		{
 			defaultProps: {
 				loop: true,
+				lazyMount: true,
 			},
 		},
 	),

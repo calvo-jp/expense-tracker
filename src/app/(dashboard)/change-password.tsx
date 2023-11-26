@@ -33,7 +33,6 @@ export function ChangePassword() {
 
 	return (
 		<Dialog
-			lazyMount
 			unmountOnExit
 			closeOnEscapeKeyDown={false}
 			closeOnInteractOutside={false}

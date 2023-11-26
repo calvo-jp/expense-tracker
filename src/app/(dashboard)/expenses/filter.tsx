@@ -98,7 +98,7 @@ export function Filter() {
 	}, [searchParams]);
 
 	return (
-		<Drawer lazyMount>
+		<Drawer>
 			<DrawerTrigger asChild>
 				<IconButton variant="outline">
 					<Icon>
@@ -188,7 +188,6 @@ export function Filter() {
 							<DatePicker
 								mt={4}
 								startOfWeek={1}
-								lazyMount
 								selectionMode="range"
 								positioning={{
 									placement: 'bottom-end',

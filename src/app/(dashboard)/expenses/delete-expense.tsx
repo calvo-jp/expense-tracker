@@ -30,7 +30,6 @@ export function DeleteExpense(props: DeleteExpenseProps) {
 
 	return (
 		<Dialog
-			lazyMount
 			unmountOnExit
 			closeOnEscapeKeyDown={false}
 			closeOnInteractOutside={false}

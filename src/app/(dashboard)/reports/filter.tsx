@@ -74,7 +74,7 @@ import {
 
 export function Filter() {
 	return (
-		<Drawer lazyMount>
+		<Drawer>
 			<DrawerTrigger asChild>
 				<IconButton variant="outline">
 					<Icon>
@@ -100,7 +100,6 @@ export function Filter() {
 
 						<DrawerBody>
 							<DatePicker
-								lazyMount
 								startOfWeek={1}
 								selectionMode="range"
 								positioning={{
@@ -277,7 +276,7 @@ export function Filter() {
 								</DatePickerPositioner>
 							</DatePicker>
 
-							<Select mt={4} items={frequencies} loop lazyMount>
+							<Select mt={4} items={frequencies}>
 								<SelectLabel>Frequency</SelectLabel>
 								<SelectControl>
 									<SelectTrigger>

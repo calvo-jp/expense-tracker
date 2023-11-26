@@ -5,7 +5,24 @@ import {Combobox as parts} from '@ark-ui/react';
 
 const {withProvider, withContext} = createStyleContext(combobox);
 
-export const Combobox = withProvider(styled(parts.Root), 'root');
+export const Combobox = withProvider(
+	styled(
+		parts.Root,
+		{},
+		{
+			defaultProps: {
+				loop: true,
+				items: [],
+				lazyMount: true,
+				positioning: {
+					sameWidth: true,
+				},
+			},
+		},
+	),
+	'root',
+);
+
 export const ComboboxClearTrigger = withContext(
 	styled(parts.ClearTrigger),
 	'clearTrigger',

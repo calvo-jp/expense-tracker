@@ -48,7 +48,6 @@ async function ProfileMenu() {
 
 	return (
 		<Menu
-			lazyMount
 			positioning={{
 				placement: 'bottom-end',
 			}}

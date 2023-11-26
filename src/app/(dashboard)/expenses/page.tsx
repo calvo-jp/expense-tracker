@@ -119,7 +119,6 @@ export default async function Expenses({
 								<TableCell>{expense.location}</TableCell>
 								<TableCell>
 									<Tooltip
-										lazyMount
 										positioning={{
 											placement: 'right',
 										}}

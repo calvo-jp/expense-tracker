@@ -125,8 +125,6 @@ export function PageControls(props: PageControlsProps) {
 
 			<Select
 				w={28}
-				loop
-				lazyMount
 				items={sizes}
 				value={[pagination.size.toString()]}
 				onValueChange={({value}) => {
