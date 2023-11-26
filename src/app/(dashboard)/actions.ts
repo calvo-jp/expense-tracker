@@ -1,43 +1,24 @@
 'use server';
 
 import {prisma} from '@/config/prisma';
-import {formdataToJson} from '@/utils/formdata-to-json';
 import bcrypt from 'bcrypt';
 import {cookies} from 'next/headers';
 import {redirect} from 'next/navigation';
-import {z} from 'zod';
+import {ChangePasswordSchema} from './schema';
 
 export async function logout() {
 	cookies().delete('user');
 	redirect('/');
 }
 
-const ChangePasswordSchema = z
-	.object({
-		oldPassword: z.string(),
-		newPassword: z
-			.string()
-			.min(8, 'Password too short')
-			.max(150, 'Password too long'),
-		confirmPassword: z.string(),
-	})
-	.superRefine(({newPassword, confirmPassword}, ctx) => {
-		if (newPassword !== confirmPassword) {
-			ctx.addIssue({
-				code: 'custom',
-				message: "Passwords don't match",
-			});
-		}
-	});
-
-export async function changePassword(_: unknown, formdata: FormData) {
+export async function changePassword(input: unknown) {
 	const id = cookies().get('user')?.value;
 
 	if (!id) return 'Auth required';
 
 	try {
 		const user = await prisma.user.findUniqueOrThrow({where: {id}});
-		const parsed = ChangePasswordSchema.safeParse(formdataToJson(formdata));
+		const parsed = ChangePasswordSchema.safeParse(input);
 
 		if (!parsed.success) return parsed.error.errors[0].message;
 
