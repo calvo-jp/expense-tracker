@@ -105,7 +105,7 @@ const SidebarButton = styled(
 	},
 	{
 		defaultProps: {
-			type: 'submit',
+			type: 'button',
 		},
 	},
 );
