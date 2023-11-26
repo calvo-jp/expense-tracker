@@ -1,3 +1,4 @@
+import {Box, styled} from '@/styled-system/jsx';
 import {Metadata} from 'next';
 
 export const metadata: Metadata = {
@@ -5,5 +6,11 @@ export const metadata: Metadata = {
 };
 
 export default function Settings() {
-	return null;
+	return (
+		<Box>
+			<styled.h1 fontFamily="heading" textStyle="3xl" fontWeight="bold">
+				Settings
+			</styled.h1>
+		</Box>
+	);
 }
