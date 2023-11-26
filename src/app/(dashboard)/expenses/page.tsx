@@ -100,106 +100,124 @@ export default async function Expenses({
 			</Flex>
 
 			<Box mt={8}>
-				<Table variant="outline">
-					<TableHeader>
-						<TableRow>
-							<TableHead>Category</TableHead>
-							<TableHead>Description</TableHead>
-							<TableHead>Location</TableHead>
-							<TableHead>Transaction date</TableHead>
-							<TableHead>Amount</TableHead>
-							<TableHead>Actions</TableHead>
-						</TableRow>
-					</TableHeader>
-					<TableBody>
-						{expenses.map((expense) => (
-							<TableRow key={expense.id}>
-								<TableCell>{expense.category}</TableCell>
-								<TableCell>{expense.description}</TableCell>
-								<TableCell>{expense.location}</TableCell>
-								<TableCell>
-									<Tooltip
-										positioning={{
-											placement: 'right',
-										}}
-									>
-										<TooltipTrigger asChild>
-											<styled.span>
-												{formatDistanceToNow(expense.transactionDate, {
-													addSuffix: true,
-												})}
-											</styled.span>
-										</TooltipTrigger>
-										<TooltipPositioner>
-											<TooltipContent>
-												<TooltipArrow
-													css={{
-														'--arrow-size': 'token(sizes.3)',
-														'--arrow-background': 'colors.fg.default',
-													}}
-												>
-													<TooltipArrowTip />
-												</TooltipArrow>
-
-												{format(expense.transactionDate, 'yyyy MMM dd')}
-											</TooltipContent>
-										</TooltipPositioner>
-									</Tooltip>
-								</TableCell>
-								<TableCell fontVariantNumeric="tabular-nums">
-									{currencyFormatter.format(expense.amount, user?.currency)}
-								</TableCell>
-								<TableCell>
-									<Menu
-										positioning={{
-											placement: 'bottom-start',
-										}}
-									>
-										<MenuTrigger asChild>
-											<styled.button cursor="pointer">
-												<Icon>
-													<SettingsIcon />
-												</Icon>
-											</styled.button>
-										</MenuTrigger>
-										<MenuPositioner>
-											<MenuContent w="12rem" shadow="none" borderWidth="1px">
-												<MenuItemGroup id={`expenses-menu--${expense.id}`}>
-													<UpsertExpense type="update" data={expense}>
-														<MenuItem
-															id={`expenses.items.${expense.id}.menu.edit`}
-														>
-															<HStack>
-																<Icon>
-																	<FileEditIcon />
-																</Icon>
-																<styled.span>Edit</styled.span>
-															</HStack>
-														</MenuItem>
-													</UpsertExpense>
-
-													<DeleteExpense data={expense} />
-												</MenuItemGroup>
-											</MenuContent>
-										</MenuPositioner>
-									</Menu>
-								</TableCell>
+				<Box
+					maxW="full"
+					display="block"
+					overflowX="auto"
+					overflowY="hidden"
+					whiteSpace="nowrap"
+					WebkitOverflowScrolling="touch"
+					borderWidth="1px"
+				>
+					<Table variant="outline" border="none">
+						<TableHeader>
+							<TableRow>
+								<TableHead>Category</TableHead>
+								<TableHead>Description</TableHead>
+								<TableHead>Location</TableHead>
+								<TableHead>Transaction date</TableHead>
+								<TableHead>Amount</TableHead>
+								<TableHead>Actions</TableHead>
 							</TableRow>
-						))}
-					</TableBody>
-					<TableFooter>
-						<TableRow>
-							<TableCell colSpan={4}>Total</TableCell>
-							<TableCell fontVariantNumeric="tabular-nums">
-								{currencyFormatter.format(
-									expenses.reduce((total, {amount}) => total + amount, 0),
-									user?.currency,
-								)}
-							</TableCell>
-							<TableCell />
-						</TableRow>
-					</TableFooter>
-				</Table>
+						</TableHeader>
+						<TableBody>
+							{expenses.map((expense) => (
+								<TableRow key={expense.id}>
+									<TableCell>{expense.category}</TableCell>
+									<TableCell>
+										<styled.div maxW="8rem" truncate>
+											{expense.description}
+										</styled.div>
+									</TableCell>
+									<TableCell>
+										<styled.div maxW="5rem" truncate>
+											{expense.location}
+										</styled.div>
+									</TableCell>
+									<TableCell>
+										<Tooltip
+											positioning={{
+												placement: 'right',
+											}}
+										>
+											<TooltipTrigger asChild>
+												<styled.span>
+													{formatDistanceToNow(expense.transactionDate, {
+														addSuffix: true,
+													})}
+												</styled.span>
+											</TooltipTrigger>
+											<TooltipPositioner>
+												<TooltipContent>
+													<TooltipArrow
+														css={{
+															'--arrow-size': 'token(sizes.3)',
+															'--arrow-background': 'colors.fg.default',
+														}}
+													>
+														<TooltipArrowTip />
+													</TooltipArrow>
+
+													{format(expense.transactionDate, 'yyyy MMM dd')}
+												</TooltipContent>
+											</TooltipPositioner>
+										</Tooltip>
+									</TableCell>
+									<TableCell fontVariantNumeric="tabular-nums">
+										{currencyFormatter.format(expense.amount, user?.currency)}
+									</TableCell>
+									<TableCell>
+										<Menu
+											positioning={{
+												placement: 'bottom-start',
+											}}
+										>
+											<MenuTrigger asChild>
+												<styled.button cursor="pointer">
+													<Icon>
+														<SettingsIcon />
+													</Icon>
+												</styled.button>
+											</MenuTrigger>
+											<MenuPositioner>
+												<MenuContent w="12rem" shadow="none" borderWidth="1px">
+													<MenuItemGroup id={`expenses-menu--${expense.id}`}>
+														<UpsertExpense type="update" data={expense}>
+															<MenuItem
+																id={`expenses.items.${expense.id}.menu.edit`}
+															>
+																<HStack>
+																	<Icon>
+																		<FileEditIcon />
+																	</Icon>
+																	<styled.span>Edit</styled.span>
+																</HStack>
+															</MenuItem>
+														</UpsertExpense>
+
+														<DeleteExpense data={expense} />
+													</MenuItemGroup>
+												</MenuContent>
+											</MenuPositioner>
+										</Menu>
+									</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+						<TableFooter>
+							<TableRow>
+								<TableCell colSpan={4}>Total</TableCell>
+								<TableCell fontVariantNumeric="tabular-nums">
+									{currencyFormatter.format(
+										expenses.reduce((total, {amount}) => total + amount, 0),
+										user?.currency,
+									)}
+								</TableCell>
+								<TableCell />
+							</TableRow>
+						</TableFooter>
+					</Table>
+				</Box>
 			</Box>
 
 			<Suspense fallback={null}>

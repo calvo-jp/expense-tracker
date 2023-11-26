@@ -20,6 +20,7 @@ export default function Layout(props: PropsWithChildren) {
 
 				<styled.main
 					p={10}
+					w="calc(100vw - token(sizes.sidebar.width))"
 					bg="bg.default"
 					minH="calc(100vh - token(sizes.navbar.height))"
 					flexGrow={1}
