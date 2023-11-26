@@ -24,7 +24,15 @@ export const DatePickerClearTrigger = withContext(
 	styled(parts.ClearTrigger),
 	'clearTrigger',
 );
-export const DatePickerContent = withContext(styled(parts.Content), 'content');
+export const DatePickerContent = withContext(
+	styled(parts.Content, {
+		base: {
+			shadow: 'none',
+			borderWidth: '1px',
+		},
+	}),
+	'content',
+);
 export const DatePickerControl = withContext(styled(parts.Control), 'control');
 export const DatePickerInput = withContext(styled(parts.Input), 'input');
 export const DatePickerLabel = withContext(styled(parts.Label), 'label');

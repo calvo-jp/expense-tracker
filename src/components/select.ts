@@ -29,7 +29,15 @@ export const SelectClearTrigger = withContext(
 	styled(parts.ClearTrigger),
 	'clearTrigger',
 );
-export const SelectContent = withContext(styled(parts.Content), 'content');
+export const SelectContent = withContext(
+	styled(parts.Content, {
+		base: {
+			shadow: 'none',
+			borderWidth: '1px',
+		},
+	}),
+	'content',
+);
 export const SelectControl = withContext(styled(parts.Control), 'control');
 export const SelectItem = withContext(styled(parts.Item), 'item');
 export const SelectItemGroup = withContext(

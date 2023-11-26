@@ -27,7 +27,15 @@ export const ComboboxClearTrigger = withContext(
 	styled(parts.ClearTrigger),
 	'clearTrigger',
 );
-export const ComboboxContent = withContext(styled(parts.Content), 'content');
+export const ComboboxContent = withContext(
+	styled(parts.Content, {
+		base: {
+			shadow: 'none',
+			borderWidth: '1px',
+		},
+	}),
+	'content',
+);
 export const ComboboxControl = withContext(styled(parts.Control), 'control');
 export const ComboboxInput = withContext(styled(parts.Input), 'input');
 export const ComboboxItem = withContext(styled(parts.Item), 'item');

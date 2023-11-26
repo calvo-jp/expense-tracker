@@ -22,7 +22,15 @@ export const Menu = withProvider(
 
 export const MenuArrow = withContext(styled(parts.Arrow), 'arrow');
 export const MenuArrowTip = withContext(styled(parts.ArrowTip), 'arrowTip');
-export const MenuContent = withContext(styled(parts.Content), 'content');
+export const MenuContent = withContext(
+	styled(parts.Content, {
+		base: {
+			shadow: 'none',
+			borderWidth: '1px',
+		},
+	}),
+	'content',
+);
 export const MenuContextTrigger = withContext(
 	styled(parts.ContextTrigger),
 	'contextTrigger',

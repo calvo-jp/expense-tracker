@@ -5,7 +5,21 @@ import {Toast as parts} from '@ark-ui/react';
 
 const {withProvider, withContext} = createStyleContext(toast);
 
-export const Toast = withProvider(styled(parts.Root), 'root');
+export const Toast = withProvider(
+	styled(parts.Root, {
+		base: {
+			shadow: 'none',
+			borderWidth: '1px',
+		},
+	}),
+	'root',
+);
 export const ToastTitle = withContext(styled(parts.Title), 'title');
-export const ToastDescription = withContext(styled(parts.Description), 'description');
-export const ToastCloseTrigger = withContext(styled(parts.CloseTrigger), 'closeTrigger');
+export const ToastDescription = withContext(
+	styled(parts.Description),
+	'description',
+);
+export const ToastCloseTrigger = withContext(
+	styled(parts.CloseTrigger),
+	'closeTrigger',
+);

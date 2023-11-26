@@ -8,6 +8,7 @@ import {
 } from '@/components/menu';
 import {prisma} from '@/config/prisma';
 import {Box, Flex, Spacer, styled} from '@/styled-system/jsx';
+import {Portal} from '@ark-ui/react';
 import assert from 'assert';
 import {cookies} from 'next/headers';
 import {Logo} from '../logo';
@@ -67,14 +68,16 @@ async function ProfileMenu() {
 				</styled.button>
 			</MenuTrigger>
 
-			<MenuPositioner>
-				<MenuContent w="14rem" shadow="none" borderWidth="1px">
-					<MenuItemGroup id="navbar.profile-settings">
-						<ChangePassword />
-						<Signout />
-					</MenuItemGroup>
-				</MenuContent>
-			</MenuPositioner>
+			<Portal>
+				<MenuPositioner>
+					<MenuContent w="14rem">
+						<MenuItemGroup id="navbar.profile-settings">
+							<ChangePassword />
+							<Signout />
+						</MenuItemGroup>
+					</MenuContent>
+				</MenuPositioner>
+			</Portal>
 		</Menu>
 	);
 }
