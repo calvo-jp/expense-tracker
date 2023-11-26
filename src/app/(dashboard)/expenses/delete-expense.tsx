@@ -70,9 +70,7 @@ export function DeleteExpense(props: DeleteExpenseProps) {
 											disabled={pending}
 											onClick={async () => {
 												startTransition(async () => {
-													const id = props.data.id;
-
-													await deleteExpense({id});
+													await deleteExpense(props.data.id);
 
 													api.close();
 													toast.success({
