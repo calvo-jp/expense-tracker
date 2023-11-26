@@ -23,3 +23,20 @@ export const ChangePasswordSchema = z
 	});
 
 export type TChangePasswordSchema = z.infer<typeof ChangePasswordSchema>;
+
+export const PaginationSchema = z
+	.object({
+		page: z
+			.union([z.number(), z.string().transform(Number)])
+			.nullable()
+			.optional()
+			.transform((v) => (v && v > 0 ? v : 1)),
+		size: z
+			.union([z.number(), z.string().transform(Number)])
+			.nullable()
+			.optional()
+			.transform((v) => (v && [10, 25, 50].includes(v) ? v : 10)),
+	})
+	.optional()
+	.nullable()
+	.transform((v) => v ?? {page: 1, size: 10});

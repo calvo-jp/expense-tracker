@@ -30,24 +30,62 @@ import {
 	ChevronRightIcon,
 	ChevronsUpDownIcon,
 } from 'lucide-react';
+import {usePathname, useRouter, useSearchParams} from 'next/navigation';
+import {PaginationSchema} from './schema';
 
-interface Value {
-	page: number;
-	size: number;
-}
-
-interface PageControlsProps {
-	value: Value;
-	onChange(value: Value): void;
-	count: number;
-}
+const sizes = [10, 25, 50].map((size) => ({
+	value: `${size}`,
+	label: `${size} rows`,
+}));
 
 export function PageControls() {
+	const router = useRouter();
+	const pathname = usePathname();
+	const searchParams = useSearchParams();
+
+	const pagination = PaginationSchema.parse({
+		page: searchParams.get('page') ?? 1,
+		size: searchParams.get('size') ?? 10,
+	});
+
+	const update = (value: {page: string | number; size: string | number}) => {
+		const s = new URLSearchParams(searchParams);
+
+		s.delete('page');
+		s.delete('size');
+
+		s.set('page', `${value.page}`);
+		s.set('size', `${value.size}`);
+
+		router.push(`${pathname}?${s.toString()}`);
+	};
+
+	const count = 100;
+	const start = 1 + (pagination.page - 1) * pagination.size;
+	const until = clamp(
+		pagination.page * pagination.size,
+		pagination.size,
+		count,
+	);
+
 	return (
 		<Flex gap={4} alignItems="center">
-			<Box fontSize="sm">Showing 1-10 of 1001</Box>
+			<Box fontSize="sm">
+				Showing {start}-{until} of {count}
+			</Box>
 			<Spacer />
-			<Pagination count={90} pageSize={10} siblingCount={1} defaultPage={2}>
+			<Pagination
+				count={count}
+				// @ts-expect-error
+				page={pagination.page}
+				pageSize={pagination.size}
+				onPageChange={(o) => {
+					update({
+						page: o.page,
+						size: o.pageSize,
+					});
+				}}
+			>
 				{({pages}) => (
 					<>
 						<PaginationPrevTrigger asChild>
@@ -59,15 +97,11 @@ export function PageControls() {
 						</PaginationPrevTrigger>
 
 						{pages.map((page, index) => {
-							if (page.type === 'page') {
-								return (
-									<PaginationItem key={index} {...page} asChild>
-										<Button variant="outline">{page.value}</Button>
-									</PaginationItem>
-								);
-							}
-
-							return (
+							return page.type === 'page' ? (
+								<PaginationItem key={index} asChild {...page}>
+									<Button variant="outline">{page.value}</Button>
+								</PaginationItem>
+							) : (
 								<PaginationEllipsis key={index} index={index}>
 									...
 								</PaginationEllipsis>
@@ -87,12 +121,15 @@ export function PageControls() {
 
 			<Select
 				w={28}
-				items={sizes}
-				defaultValue={['10']}
 				loop
 				lazyMount
-				positioning={{
-					sameWidth: true,
+				items={sizes}
+				value={[pagination.size.toString()]}
+				onValueChange={({value}) => {
+					update({
+						page: 1,
+						size: value[0],
+					});
 				}}
 			>
 				<SelectControl>
@@ -127,7 +164,8 @@ export function PageControls() {
 	);
 }
 
-const sizes = [10, 25, 50].map((size) => ({
-	value: `${size}`,
-	label: `${size} rows`,
-}));
+function clamp(n: number, min: number, max: number) {
+	if (n < min) return min;
+	if (n > max) return max;
+	return n;
+}
