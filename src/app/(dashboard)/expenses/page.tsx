@@ -1,3 +1,4 @@
+import {currencyFormatter} from '@/common/formatter';
 import {Button} from '@/components/button';
 import {Icon} from '@/components/icon';
 import {
@@ -64,14 +65,12 @@ export default async function Expenses() {
 		},
 	});
 
-	const numberFormatter = new Intl.NumberFormat('en-US', {
-		style: 'currency',
-		currency: user?.currency ?? 'USD',
-		minimumFractionDigits: 1,
-		maximumFractionDigits: 2,
-	});
-
 	const count = await prisma.expense.count();
+
+	const totalExpenses = expenses.reduce(
+		(total, expense) => total + expense.amount,
+		0,
+	);
 
 	return (
 		<Box>
@@ -143,7 +142,7 @@ export default async function Expenses() {
 									</Tooltip>
 								</TableCell>
 								<TableCell fontVariantNumeric="tabular-nums">
-									{numberFormatter.format(expense.amount)}
+									{currencyFormatter.format(expense.amount, user?.currency)}
 								</TableCell>
 								<TableCell>
 									<Menu
@@ -188,12 +187,7 @@ export default async function Expenses() {
 						<TableRow>
 							<TableCell colSpan={4}>Total</TableCell>
 							<TableCell fontVariantNumeric="tabular-nums">
-								{numberFormatter.format(
-									expenses.reduce(
-										(total, expense) => total + expense.amount,
-										0,
-									),
-								)}
+								{currencyFormatter.format(totalExpenses, user?.currency)}
 							</TableCell>
 							<TableCell />
 						</TableRow>
