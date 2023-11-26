@@ -10,6 +10,7 @@ import {prisma} from '@/config/prisma';
 import {Box, Flex, Spacer, styled} from '@/styled-system/jsx';
 import {cookies} from 'next/headers';
 import assert from 'node:assert';
+import {Logo} from '../logo';
 import {ChangePassword} from './change-password';
 import {Notifications} from './notifications';
 import {Signout} from './sign-out';
@@ -20,17 +21,18 @@ export async function Navbar() {
 			<styled.header
 				h="navbar.height"
 				w="full"
+				px={8}
 				bg="bg.canvas"
 				pos="fixed"
+				display="flex"
+				alignItems="center"
 				borderBottomWidth="1px"
 			>
-				<Flex h="full" px={8} alignItems="center">
-					<Spacer />
-
-					<Flex gap={4}>
-						<Notifications />
-						<ProfileMenu />
-					</Flex>
+				<Logo />
+				<Spacer />
+				<Flex gap={4}>
+					<Notifications />
+					<ProfileMenu />
 				</Flex>
 			</styled.header>
 
