@@ -5,12 +5,10 @@ import {formdataToJson} from '@/utils/formdata-to-json';
 import bcrypt from 'bcrypt';
 import {cookies} from 'next/headers';
 import {redirect} from 'next/navigation';
-import assert from 'node:assert';
 import {z} from 'zod';
 
 export async function logout() {
-	const cookieStore = cookies();
-	cookieStore.delete('user');
+	cookies().delete('user');
 	redirect('/');
 }
 
@@ -33,13 +31,11 @@ const ChangePasswordSchema = z
 	});
 
 export async function changePassword(_: unknown, formdata: FormData) {
-	const cookieStore = cookies();
+	const id = cookies().get('user')?.value;
+
+	if (!id) return 'Auth required';
 
 	try {
-		const id = cookieStore.get('user')?.value;
-
-		assert(id);
-
 		const user = await prisma.user.findUniqueOrThrow({where: {id}});
 		const parsed = ChangePasswordSchema.safeParse(formdataToJson(formdata));
 

@@ -8,9 +8,7 @@ import {Sidebar} from './sidebar';
 export const revalidate = 0;
 
 export default function Layout(props: PropsWithChildren) {
-	const cookieStore = cookies();
-
-	if (!cookieStore.has('user')) {
+	if (!cookies().has('user')) {
 		redirect('/login');
 	}
 
