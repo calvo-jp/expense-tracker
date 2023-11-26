@@ -1,3 +1,4 @@
+import {currencyFormatter} from '@/common/formatter';
 import {
 	Table,
 	TableBody,
@@ -9,7 +10,10 @@ import {
 } from '@/components/table';
 import {prisma} from '@/config/prisma';
 import {Box, Flex, Spacer, styled} from '@/styled-system/jsx';
+import {DateRange} from '@prisma/client';
+import {format, isSameMonth, isSameYear} from 'date-fns';
 import {Metadata} from 'next';
+import {cookies} from 'next/headers';
 import {PageControls} from '../page-controls';
 import {Export} from './export';
 import {Filter} from './filter';
@@ -19,7 +23,21 @@ export const metadata: Metadata = {
 };
 
 export default async function Reports() {
+	const id = cookies().get('user')?.value;
+
+	const user = await prisma.user.findUnique({
+		where: {id},
+		select: {
+			currency: true,
+		},
+	});
+
+	const items = await prisma.report.findMany({
+		where: {user: {id}},
+	});
+
 	const count = await prisma.report.count();
+	const totalExpenses = items.reduce((total, item) => total + item.amount, 0);
 
 	return (
 		<Box>
@@ -46,10 +64,10 @@ export default async function Reports() {
 					<TableBody>
 						{items.map((item) => (
 							<TableRow key={item.id}>
-								<TableCell>{item.inclusionDate}</TableCell>
+								<TableCell>{formatInclusionDate(item.inclusionDate)}</TableCell>
 								<TableHead>{item.frequency}</TableHead>
 								<TableCell fontVariantNumeric="tabular-nums">
-									{numberFormatter.format(item.amount)}
+									{currencyFormatter.format(item.amount, user?.currency)}
 								</TableCell>
 							</TableRow>
 						))}
@@ -58,9 +76,7 @@ export default async function Reports() {
 						<TableRow>
 							<TableCell colSpan={2}>Total</TableCell>
 							<TableCell fontVariantNumeric="tabular-nums">
-								{numberFormatter.format(
-									items.reduce((total, item) => total + item.amount, 0),
-								)}
+								{currencyFormatter.format(totalExpenses, user?.currency)}
 							</TableCell>
 						</TableRow>
 					</TableFooter>
@@ -74,30 +90,22 @@ export default async function Reports() {
 	);
 }
 
-const items = [
-	{
-		id: 1,
-		frequency: 'Daily',
-		inclusionDate: 'Dec 25, 2022',
-		amount: 399,
-	},
-	{
-		id: 2,
-		frequency: 'Weekly',
-		inclusionDate: 'Jan 01-07, 2023',
-		amount: 399,
-	},
-	{
-		id: 3,
-		frequency: 'Monthly',
-		inclusionDate: 'Feb 01-30, 2023',
-		amount: 399,
-	},
-];
+function formatInclusionDate({start, until}: DateRange): string {
+	const sy = format(start, 'yyyy');
+	const sm = format(start, 'MMM');
+	const sd = format(start, 'd');
 
-const numberFormatter = new Intl.NumberFormat('en-US', {
-	style: 'currency',
-	currency: 'USD',
-	minimumFractionDigits: 1,
-	maximumFractionDigits: 2,
-});
+	const uy = format(until, 'yyyy');
+	const um = format(until, 'MMM');
+	const ud = format(until, 'd');
+
+	if (!isSameYear(start, until)) {
+		return `${sm} ${sd}, ${sy} - ${um} ${ud}, ${uy}`; /* Jan 1, 2022 - Jan 1,2023 */
+	}
+
+	if (!isSameMonth(start, until)) {
+		return `${sm} ${sd} - ${um} ${ud}, ${sy}`; /* Jan 1 - Feb 1, 2023 */
+	}
+
+	return `${sm} ${sd}-${ud}, ${sy}`; /* Jan 1-31, 2023 */
+}

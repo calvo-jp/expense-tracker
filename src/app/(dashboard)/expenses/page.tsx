@@ -53,6 +53,7 @@ export default async function Expenses() {
 	});
 
 	const expenses = await prisma.expense.findMany({
+		where: {user: {id}},
 		include: {
 			user: {
 				select: {
