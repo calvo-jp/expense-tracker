@@ -65,7 +65,7 @@ export function PageControls(props: PageControlsProps) {
 	};
 
 	const count = props.__SSR_DATA.count;
-	const start = 1 + (pagination.page - 1) * pagination.size;
+	const start = clamp(1 + (pagination.page - 1) * pagination.size, 0, count);
 	const until = clamp(
 		pagination.page * pagination.size,
 		pagination.size,

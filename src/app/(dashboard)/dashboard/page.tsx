@@ -31,13 +31,9 @@ export default function Dashboard() {
 					<styled.h1 textStyle="3xl" fontWeight="bold" lineHeight="none">
 						Dashboard
 					</styled.h1>
-					<styled.p mt={1} color="fg.muted" fontSize="sm">
-						<styled.span mr={1}>Welcome back,</styled.span>
-						<Suspense fallback="Loading">
-							<Username />
-						</Suspense>
-						<styled.span>!</styled.span>
-					</styled.p>
+					<Suspense fallback={null}>
+						<Greeting />
+					</Suspense>
 				</Box>
 				<Spacer />
 				<Select
@@ -76,7 +72,7 @@ export default function Dashboard() {
 	);
 }
 
-async function Username() {
+async function Greeting() {
 	const id = cookies().get('user')?.value;
 
 	assert(id);
@@ -88,7 +84,19 @@ async function Username() {
 		},
 	});
 
-	return <styled.strong fontWeight="semibold">{user.username}</styled.strong>;
+	return (
+		<styled.p
+			mt={1}
+			color="fg.muted"
+			fontSize="sm"
+			display="flex"
+			alignItems="center"
+		>
+			<styled.span mr={1}>Welcome back,</styled.span>
+			<styled.strong fontWeight="semibold">{user.username}</styled.strong>
+			<styled.span>!</styled.span>
+		</styled.p>
+	);
 }
 
 const timeAdverbs = [
