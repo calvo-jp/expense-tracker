@@ -33,6 +33,8 @@ import {format, formatDistanceToNow} from 'date-fns';
 import {FileEditIcon, PlusIcon, SettingsIcon} from 'lucide-react';
 import {Metadata} from 'next';
 import {cookies} from 'next/headers';
+import assert from 'node:assert';
+import {Suspense} from 'react';
 import {PageControls} from '../page-controls';
 import {DeleteExpense} from './delete-expense';
 import {Export} from './export';
@@ -50,6 +52,8 @@ export default async function Expenses({
 }) {
 	const id = cookies().get('user')?.value;
 
+	assert(id);
+
 	const user = await prisma.user.findUnique({
 		where: {id},
 		select: {
@@ -58,7 +62,6 @@ export default async function Expenses({
 	});
 
 	const pagination = PaginationSchema.parse(searchParams);
-
 	const expenses = await prisma.expense.findMany({
 		where: {user: {id}},
 		include: {
@@ -74,13 +77,6 @@ export default async function Expenses({
 		take: pagination.size,
 		skip: pagination.size * (pagination.page - 1),
 	});
-
-	const count = await prisma.expense.count();
-
-	const totalExpenses = expenses.reduce(
-		(total, expense) => total + expense.amount,
-		0,
-	);
 
 	return (
 		<Box>
@@ -197,7 +193,10 @@ export default async function Expenses({
 						<TableRow>
 							<TableCell colSpan={4}>Total</TableCell>
 							<TableCell fontVariantNumeric="tabular-nums">
-								{currencyFormatter.format(totalExpenses, user?.currency)}
+								{currencyFormatter.format(
+									expenses.reduce((total, {amount}) => total + amount, 0),
+									user?.currency,
+								)}
 							</TableCell>
 							<TableCell />
 						</TableRow>
@@ -205,9 +204,19 @@ export default async function Expenses({
 				</Table>
 			</Box>
 
-			<Box mt={8}>
-				<PageControls __SSR_DATA={{count}} />
-			</Box>
+			<Suspense fallback={null}>
+				<BottomControls />
+			</Suspense>
+		</Box>
+	);
+}
+
+async function BottomControls() {
+	const count = await prisma.expense.count();
+
+	return (
+		<Box mt={8}>
+			<PageControls __SSR_DATA={{count}} />
 		</Box>
 	);
 }

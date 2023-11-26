@@ -10,10 +10,13 @@ import {
 import {prisma} from '@/config/prisma';
 import {Box, Flex, Spacer, styled} from '@/styled-system/jsx';
 import {currencyFormatter} from '@/utils/formatter';
+import {PaginationSchema} from '@/utils/schema';
 import {DateRange} from '@prisma/client';
+import assert from 'assert';
 import {format, isSameMonth, isSameYear} from 'date-fns';
 import {Metadata} from 'next';
 import {cookies} from 'next/headers';
+import {Suspense} from 'react';
 import {PageControls} from '../page-controls';
 import {Export} from './export';
 import {Filter} from './filter';
@@ -22,8 +25,14 @@ export const metadata: Metadata = {
 	title: 'Reports',
 };
 
-export default async function Reports() {
+export default async function Reports({
+	searchParams,
+}: {
+	searchParams: {[key: string]: string | string[]};
+}) {
 	const id = cookies().get('user')?.value;
+
+	assert(id);
 
 	const user = await prisma.user.findUnique({
 		where: {id},
@@ -32,12 +41,15 @@ export default async function Reports() {
 		},
 	});
 
-	const items = await prisma.report.findMany({
+	const pagination = PaginationSchema.parse(searchParams);
+	const reports = await prisma.report.findMany({
 		where: {user: {id}},
+		orderBy: {
+			createdAt: 'desc',
+		},
+		take: pagination.size,
+		skip: pagination.size * (pagination.page - 1),
 	});
-
-	const count = await prisma.report.count();
-	const totalExpenses = items.reduce((total, item) => total + item.amount, 0);
 
 	return (
 		<Box>
@@ -62,12 +74,14 @@ export default async function Reports() {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{items.map((item) => (
-							<TableRow key={item.id}>
-								<TableCell>{formatInclusionDate(item.inclusionDate)}</TableCell>
-								<TableHead>{item.frequency}</TableHead>
+						{reports.map((report) => (
+							<TableRow key={report.id}>
+								<TableCell>
+									{formatInclusionDate(report.inclusionDate)}
+								</TableCell>
+								<TableHead>{report.frequency}</TableHead>
 								<TableCell fontVariantNumeric="tabular-nums">
-									{currencyFormatter.format(item.amount, user?.currency)}
+									{currencyFormatter.format(report.amount, user?.currency)}
 								</TableCell>
 							</TableRow>
 						))}
@@ -76,16 +90,29 @@ export default async function Reports() {
 						<TableRow>
 							<TableCell colSpan={2}>Total</TableCell>
 							<TableCell fontVariantNumeric="tabular-nums">
-								{currencyFormatter.format(totalExpenses, user?.currency)}
+								{currencyFormatter.format(
+									reports.reduce((total, {amount}) => total + amount, 0),
+									user?.currency,
+								)}
 							</TableCell>
 						</TableRow>
 					</TableFooter>
 				</Table>
 			</Box>
 
-			<Box mt={8}>
-				<PageControls __SSR_DATA={{count}} />
-			</Box>
+			<Suspense fallback={null}>
+				<BottomControls />
+			</Suspense>
+		</Box>
+	);
+}
+
+async function BottomControls() {
+	const count = await prisma.report.count();
+
+	return (
+		<Box mt={8}>
+			<PageControls __SSR_DATA={{count}} />
 		</Box>
 	);
 }
