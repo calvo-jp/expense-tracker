@@ -2,6 +2,7 @@ import {stringToPrismaEnum} from '@/utils/string-to-prisma-enum';
 import {ExpenseCategory} from '@prisma/client';
 import {z} from 'zod';
 
+export type TCredentialsSchema = z.infer<typeof CredentialsSchema>;
 export const CredentialsSchema = z.object({
 	username: z
 		.string()
@@ -15,8 +16,7 @@ export const CredentialsSchema = z.object({
 		.max(150, 'Password too long'),
 });
 
-export type TCredentialsSchema = z.infer<typeof CredentialsSchema>;
-
+export type TChangePasswordSchema = z.infer<typeof ChangePasswordSchema>;
 export const ChangePasswordSchema = z
 	.object({
 		oldPassword: z
@@ -39,8 +39,7 @@ export const ChangePasswordSchema = z
 		}
 	});
 
-export type TChangePasswordSchema = z.infer<typeof ChangePasswordSchema>;
-
+export type TPaginationSchema = z.infer<typeof PaginationSchema>;
 export const PaginationSchema = z
 	.object({
 		page: z
@@ -58,8 +57,7 @@ export const PaginationSchema = z
 	.nullable()
 	.transform((v) => v ?? {page: 1, size: 10});
 
-export type TPaginationSchema = z.infer<typeof PaginationSchema>;
-
+export type TUpsertExpenseSchema = z.infer<typeof UpsertExpenseSchema>;
 export const UpsertExpenseSchema = z.object({
 	category: z.preprocess(
 		(value) => stringToPrismaEnum(ExpenseCategory, value),
@@ -71,8 +69,7 @@ export const UpsertExpenseSchema = z.object({
 	transactionDate: z.union([z.string().pipe(z.coerce.date()), z.date()]),
 });
 
-export type TUpsertExpenseSchema = z.infer<typeof UpsertExpenseSchema>;
-
+export type TExpenseFilterSchema = z.infer<typeof ExpenseFilterSchema>;
 export const ExpenseFilterSchema = z.object({
 	category: z
 		.union([
@@ -113,5 +110,3 @@ export const ExpenseFilterSchema = z.object({
 		.nullable()
 		.catch(() => undefined),
 });
-
-export type TExpenseFilterSchema = z.infer<typeof ExpenseFilterSchema>;
