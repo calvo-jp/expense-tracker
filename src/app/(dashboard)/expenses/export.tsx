@@ -22,5 +22,7 @@ export function Export() {
 }
 
 async function download() {
-	/* logic */
+	await sleep();
 }
+
+const sleep = (ms = 2500) => new Promise((r) => setTimeout(r, ms));
