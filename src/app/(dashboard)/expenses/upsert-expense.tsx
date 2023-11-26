@@ -1,7 +1,5 @@
 'use client';
 
-import {createExpense, updateExpense} from '@/common/actions';
-import {TUpsertExpenseSchema, UpsertExpenseSchema} from '@/common/schema';
 import {Button} from '@/components/button';
 import {
 	Combobox,
@@ -62,7 +60,9 @@ import {
 import {Textarea} from '@/components/textarea';
 import {toast} from '@/components/toaster';
 import {Flex, HStack, VStack, styled} from '@/styled-system/jsx';
+import {createExpense, updateExpense} from '@/utils/actions';
 import {pascalToSentenceCase} from '@/utils/pascal-to-sentence-case';
+import {TUpsertExpenseSchema, UpsertExpenseSchema} from '@/utils/schema';
 import {stringToPrismaEnum} from '@/utils/string-to-prisma-enum';
 import {Portal} from '@ark-ui/react';
 import {zodResolver} from '@hookform/resolvers/zod';

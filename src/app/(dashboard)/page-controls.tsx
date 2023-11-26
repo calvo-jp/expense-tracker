@@ -1,6 +1,5 @@
 'use client';
 
-import {PaginationSchema} from '@/common/schema';
 import {Button} from '@/components/button';
 import {Icon} from '@/components/icon';
 import {IconButton} from '@/components/icon-button';
@@ -24,6 +23,7 @@ import {
 	SelectValueText,
 } from '@/components/select';
 import {Box, Flex, Spacer} from '@/styled-system/jsx';
+import {PaginationSchema} from '@/utils/schema';
 import {Portal} from '@ark-ui/react';
 import {
 	CheckIcon,

@@ -1,4 +1,3 @@
-import {currencyFormatter} from '@/common/formatter';
 import {Button} from '@/components/button';
 import {Icon} from '@/components/icon';
 import {
@@ -28,6 +27,7 @@ import {
 } from '@/components/tooltip';
 import {prisma} from '@/config/prisma';
 import {Box, Flex, HStack, Spacer, styled} from '@/styled-system/jsx';
+import {currencyFormatter} from '@/utils/formatter';
 import {format, formatDistanceToNow} from 'date-fns';
 import {FileEditIcon, PlusIcon, SettingsIcon} from 'lucide-react';
 import {Metadata} from 'next';

@@ -1,4 +1,3 @@
-import {currencyFormatter} from '@/common/formatter';
 import {
 	Table,
 	TableBody,
@@ -10,6 +9,7 @@ import {
 } from '@/components/table';
 import {prisma} from '@/config/prisma';
 import {Box, Flex, Spacer, styled} from '@/styled-system/jsx';
+import {currencyFormatter} from '@/utils/formatter';
 import {DateRange} from '@prisma/client';
 import {format, isSameMonth, isSameYear} from 'date-fns';
 import {Metadata} from 'next';

@@ -1,7 +1,5 @@
 'use client';
 
-import {changePassword} from '@/common/actions';
-import {ChangePasswordSchema, TChangePasswordSchema} from '@/common/schema';
 import {Button} from '@/components/button';
 import {
 	Dialog,
@@ -18,6 +16,8 @@ import {Label} from '@/components/label';
 import {MenuItem} from '@/components/menu';
 import {toast} from '@/components/toaster';
 import {Flex, HStack, VStack, styled} from '@/styled-system/jsx';
+import {changePassword} from '@/utils/actions';
+import {ChangePasswordSchema, TChangePasswordSchema} from '@/utils/schema';
 import {Portal} from '@ark-ui/react';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {LockIcon} from 'lucide-react';

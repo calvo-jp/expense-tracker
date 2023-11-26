@@ -1,6 +1,5 @@
 'use client';
 
-import {deleteExpense} from '@/common/actions';
 import {Button} from '@/components/button';
 import {
 	Dialog,
@@ -16,6 +15,7 @@ import {Icon} from '@/components/icon';
 import {MenuItem} from '@/components/menu';
 import {toast} from '@/components/toaster';
 import {Box, Flex, HStack, styled} from '@/styled-system/jsx';
+import {deleteExpense} from '@/utils/actions';
 import {Portal} from '@ark-ui/react';
 import {Expense} from '@prisma/client';
 import {FileX2Icon} from 'lucide-react';

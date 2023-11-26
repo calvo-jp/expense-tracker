@@ -75,6 +75,10 @@ import {
 } from 'lucide-react';
 
 export function Filter() {
+	const filters = {};
+
+	const update = () => {};
+
 	return (
 		<Drawer lazyMount>
 			<DrawerTrigger asChild>
@@ -119,17 +123,28 @@ export function Filter() {
 										</ComboboxControl>
 										<ComboboxPositioner>
 											<ComboboxContent>
-												<ComboboxItemGroup id="framework">
-													{categories.map((item) => (
-														<ComboboxItem key={item.value} item={item}>
-															<ComboboxItemText>{item.label}</ComboboxItemText>
-															<ComboboxItemIndicator>
-																<Icon>
-																	<CheckIcon />
-																</Icon>
-															</ComboboxItemIndicator>
-														</ComboboxItem>
-													))}
+												<ComboboxItemGroup id="expenses.filter.category.items">
+													{categories
+														.slice()
+														.filter(({label}) => {
+															return label
+																.toLowerCase()
+																.startsWith(
+																	api.inputValue.toLowerCase().trim(),
+																);
+														})
+														.map((item) => (
+															<ComboboxItem key={item.value} item={item}>
+																<ComboboxItemText>
+																	{item.label}
+																</ComboboxItemText>
+																<ComboboxItemIndicator>
+																	<Icon>
+																		<CheckIcon />
+																	</Icon>
+																</ComboboxItemIndicator>
+															</ComboboxItem>
+														))}
 												</ComboboxItemGroup>
 											</ComboboxContent>
 										</ComboboxPositioner>

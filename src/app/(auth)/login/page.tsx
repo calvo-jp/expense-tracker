@@ -1,12 +1,12 @@
 'use client';
 
-import {login} from '@/common/actions';
-import {CredentialsSchema} from '@/common/schema';
 import {Button} from '@/components/button';
 import {Input} from '@/components/input';
 import {Link} from '@/components/next-js/link';
 import {toast} from '@/components/toaster';
 import {Flex, styled} from '@/styled-system/jsx';
+import {login} from '@/utils/actions';
+import {CredentialsSchema} from '@/utils/schema';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useRouter} from 'next/navigation';
 import {useTransition} from 'react';
