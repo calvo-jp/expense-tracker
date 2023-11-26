@@ -1,4 +1,21 @@
+import {stringToPrismaEnum} from '@/utils/string-to-prisma-enum';
+import {ExpenseCategory} from '@prisma/client';
 import {z} from 'zod';
+
+export const CredentialsSchema = z.object({
+	username: z
+		.string()
+		.min(5, 'Username too short')
+		.max(25, 'Username too long')
+		.regex(/^[a-z][a-z0-9]{4,}$/i, 'Invalid username')
+		.trim(),
+	password: z
+		.string()
+		.min(8, 'Password too short')
+		.max(150, 'Password too long'),
+});
+
+export type TCredentialsSchema = z.infer<typeof CredentialsSchema>;
 
 export const ChangePasswordSchema = z
 	.object({
@@ -40,3 +57,18 @@ export const PaginationSchema = z
 	.optional()
 	.nullable()
 	.transform((v) => v ?? {page: 1, size: 10});
+
+export type TPaginationSchema = z.infer<typeof PaginationSchema>;
+
+export const UpsertExpenseSchema = z.object({
+	category: z.preprocess(
+		(value) => stringToPrismaEnum(ExpenseCategory, value),
+		z.nativeEnum(ExpenseCategory),
+	),
+	description: z.string().trim().min(4).max(150),
+	location: z.string().trim().max(150).optional(),
+	amount: z.preprocess(Number, z.number().min(1)),
+	transactionDate: z.union([z.string().pipe(z.coerce.date()), z.date()]),
+});
+
+export type TUpsertExpenseSchema = z.infer<typeof UpsertExpenseSchema>;

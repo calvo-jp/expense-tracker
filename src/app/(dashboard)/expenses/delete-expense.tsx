@@ -1,5 +1,6 @@
 'use client';
 
+import {deleteExpense} from '@/common/actions';
 import {Button} from '@/components/button';
 import {
 	Dialog,
@@ -19,7 +20,6 @@ import {Portal} from '@ark-ui/react';
 import {Expense} from '@prisma/client';
 import {FileX2Icon} from 'lucide-react';
 import {useTransition} from 'react';
-import {deleteExpense} from './actions';
 
 interface DeleteExpenseProps {
 	data: Expense;

@@ -1,5 +1,7 @@
 'use client';
 
+import {register} from '@/common/actions';
+import {CredentialsSchema} from '@/common/schema';
 import {Button} from '@/components/button';
 import {Input} from '@/components/input';
 import {Link} from '@/components/next-js/link';
@@ -9,8 +11,6 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import {useRouter} from 'next/navigation';
 import {useTransition} from 'react';
 import {useForm} from 'react-hook-form';
-import {register} from '../actions';
-import {CredentialsSchema} from '../schema';
 
 export default function Register() {
 	const [pending, startTransition] = useTransition();

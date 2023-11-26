@@ -1,5 +1,7 @@
 'use client';
 
+import {changePassword} from '@/common/actions';
+import {ChangePasswordSchema, TChangePasswordSchema} from '@/common/schema';
 import {Button} from '@/components/button';
 import {
 	Dialog,
@@ -21,8 +23,6 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import {LockIcon} from 'lucide-react';
 import {useTransition} from 'react';
 import {useForm} from 'react-hook-form';
-import {changePassword} from './actions';
-import {ChangePasswordSchema, TChangePasswordSchema} from './schema';
 
 export function ChangePassword() {
 	const [pending, startTransition] = useTransition();

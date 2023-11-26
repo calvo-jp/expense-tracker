@@ -1,5 +1,6 @@
 'use client';
 
+import {PaginationSchema} from '@/common/schema';
 import {Button} from '@/components/button';
 import {Icon} from '@/components/icon';
 import {IconButton} from '@/components/icon-button';
@@ -31,7 +32,6 @@ import {
 	ChevronsUpDownIcon,
 } from 'lucide-react';
 import {usePathname, useRouter, useSearchParams} from 'next/navigation';
-import {PaginationSchema} from './schema';
 
 const sizes = [10, 25, 50].map((size) => ({
 	value: `${size}`,

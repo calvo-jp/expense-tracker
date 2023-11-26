@@ -1,5 +1,7 @@
 'use client';
 
+import {createExpense, updateExpense} from '@/common/actions';
+import {TUpsertExpenseSchema, UpsertExpenseSchema} from '@/common/schema';
 import {Button} from '@/components/button';
 import {
 	Combobox,
@@ -77,8 +79,6 @@ import {
 } from 'lucide-react';
 import {ReactNode, useEffect, useTransition} from 'react';
 import {useForm} from 'react-hook-form';
-import {createExpense, updateExpense} from './actions';
-import {TUpsertExpenseSchema, UpsertExpenseSchema} from './schema';
 
 type UpsertExpenseProps = (
 	| {

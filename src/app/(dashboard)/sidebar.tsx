@@ -1,3 +1,4 @@
+import {logout} from '@/common/actions';
 import {Icon} from '@/components/icon';
 import {Link} from '@/components/next-js/link';
 import {Box, styled} from '@/styled-system/jsx';
@@ -9,7 +10,6 @@ import {
 	PowerIcon,
 	SettingsIcon,
 } from 'lucide-react';
-import {logout} from './actions';
 
 export function Sidebar() {
 	return (
