@@ -71,6 +71,8 @@ export default async function Expenses() {
 		maximumFractionDigits: 2,
 	});
 
+	const count = await prisma.expense.count();
+
 	return (
 		<Box>
 			<Flex>
@@ -200,7 +202,7 @@ export default async function Expenses() {
 			</Box>
 
 			<Box mt={8}>
-				<PageControls />
+				<PageControls __SSR_DATA={{count}} />
 			</Box>
 		</Box>
 	);

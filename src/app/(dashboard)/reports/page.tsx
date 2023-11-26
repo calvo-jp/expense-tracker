@@ -7,6 +7,7 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/table';
+import {prisma} from '@/config/prisma';
 import {Box, Flex, Spacer, styled} from '@/styled-system/jsx';
 import {Metadata} from 'next';
 import {PageControls} from '../page-controls';
@@ -17,7 +18,9 @@ export const metadata: Metadata = {
 	title: 'Reports',
 };
 
-export default function Reports() {
+export default async function Reports() {
+	const count = await prisma.report.count();
+
 	return (
 		<Box>
 			<Flex>
@@ -65,7 +68,7 @@ export default function Reports() {
 			</Box>
 
 			<Box mt={8}>
-				<PageControls />
+				<PageControls __SSR_DATA={{count}} />
 			</Box>
 		</Box>
 	);

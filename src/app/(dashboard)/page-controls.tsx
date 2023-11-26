@@ -38,7 +38,11 @@ const sizes = [10, 25, 50].map((size) => ({
 	label: `${size} rows`,
 }));
 
-export function PageControls() {
+interface PageControlsProps {
+	__SSR_DATA: {count: number};
+}
+
+export function PageControls(props: PageControlsProps) {
 	const router = useRouter();
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
@@ -60,7 +64,7 @@ export function PageControls() {
 		router.push(`${pathname}?${s.toString()}`);
 	};
 
-	const count = 100;
+	const count = props.__SSR_DATA.count;
 	const start = 1 + (pagination.page - 1) * pagination.size;
 	const until = clamp(
 		pagination.page * pagination.size,
