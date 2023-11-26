@@ -30,9 +30,3 @@ export default async function Index() {
 		</>
 	);
 }
-
-const FAQS = [
-	{id: 'P001', name: 'MacBook Pro', stock: 12, price: '$1999.00'},
-	{id: 'P002', name: 'AirPods Pro', stock: 25, price: '$249.00'},
-	{id: 'P003', name: 'Leather Wallet', stock: 50, price: '$79.00'},
-];
