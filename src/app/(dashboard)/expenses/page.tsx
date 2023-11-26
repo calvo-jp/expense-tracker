@@ -30,7 +30,7 @@ import {SettingsIcon} from 'lucide-react';
 import {Metadata} from 'next';
 import {cookies} from 'next/headers';
 import {PageControls} from '../page-controls';
-import CreateExpense from './create-expense';
+import {CreateExpense} from './create-expense';
 import {DeleteExpense} from './delete-expense';
 import {EditExpense} from './edit-expense';
 import {Export} from './export';

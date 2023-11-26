@@ -81,7 +81,7 @@ import {useForm} from 'react-hook-form';
 import {createExpense} from './actions';
 import {CreateExpenseSchema, TCreateExpenseSchema} from './schema';
 
-export default function CreateExpense() {
+export function CreateExpense() {
 	const [pending, startTransition] = useTransition();
 
 	const form = useForm<TCreateExpenseSchema>({
