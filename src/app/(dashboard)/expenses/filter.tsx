@@ -61,6 +61,7 @@ import {
 } from '@/components/number-input';
 import {Box, Flex, HStack} from '@/styled-system/jsx';
 import {pascalToSentenceCase} from '@/utils/pascal-to-sentence-case';
+import {ExpenseFilterSchema} from '@/utils/schema';
 import {Portal} from '@ark-ui/react';
 import {ExpenseCategory} from '@prisma/client';
 import {
@@ -73,11 +74,28 @@ import {
 	ChevronsUpDownIcon,
 	SearchIcon,
 } from 'lucide-react';
+import {usePathname, useRouter, useSearchParams} from 'next/navigation';
+import {useMemo} from 'react';
 
 export function Filter() {
-	const filters = {};
+	const router = useRouter();
+	const pathname = usePathname();
+	const searchParams = useSearchParams();
 
-	const update = () => {};
+	const values = useMemo(() => {
+		const parsed = ExpenseFilterSchema.safeParse({
+			category: searchParams.getAll('category'),
+			location: searchParams.get('location'),
+			minAmount: searchParams.get('minAmount'),
+			maxAmount: searchParams.get('maxAmount'),
+			transactionDateStart: searchParams.get('transactionDateStart'),
+			transactionDateUntil: searchParams.get('transactionDateUntil'),
+		});
+
+		if (!parsed.success) return {};
+
+		return parsed.data;
+	}, [searchParams]);
 
 	return (
 		<Drawer lazyMount>
@@ -105,7 +123,11 @@ export function Filter() {
 						</DrawerHeader>
 
 						<DrawerBody>
-							<Combobox items={categories}>
+							<Combobox
+								items={categories}
+								value={values.category ?? []}
+								onValueChange={(details) => {}}
+							>
 								{(api) => (
 									<>
 										<ComboboxLabel>Category</ComboboxLabel>
@@ -157,6 +179,8 @@ export function Filter() {
 								<Input
 									mt={1}
 									id="expenses.filter.location"
+									value={values.location ?? ''}
+									onChange={() => {}}
 									placeholder="Enter location"
 								/>
 							</Box>
@@ -341,7 +365,10 @@ export function Filter() {
 							</DatePicker>
 
 							<HStack mt={4} alignItems="end" gap={4}>
-								<NumberInput>
+								<NumberInput
+									value={values.minAmount?.toString() ?? ''}
+									onChange={(details) => {}}
+								>
 									<NumberInputLabel>Amount</NumberInputLabel>
 									<NumberInputControl>
 										<NumberInputInput placeholder="Min" />
@@ -358,7 +385,10 @@ export function Filter() {
 									</NumberInputControl>
 								</NumberInput>
 
-								<NumberInput>
+								<NumberInput
+									value={values.maxAmount?.toString() ?? ''}
+									onChange={(details) => {}}
+								>
 									<NumberInputControl>
 										<NumberInputInput placeholder="Max" />
 										<NumberInputIncrementTrigger>
