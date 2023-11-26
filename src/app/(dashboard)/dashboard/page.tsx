@@ -17,13 +17,23 @@ import assert from 'assert';
 import {CheckIcon, ChevronsUpDownIcon} from 'lucide-react';
 import {Metadata} from 'next';
 import {cookies} from 'next/headers';
-import {Suspense} from 'react';
 
 export const metadata: Metadata = {
 	title: 'Dashboard',
 };
 
-export default function Dashboard() {
+export default async function Dashboard() {
+	const id = cookies().get('user')?.value;
+
+	assert(id);
+
+	const user = await prisma.user.findUniqueOrThrow({
+		where: {id},
+		select: {
+			username: true,
+		},
+	});
+
 	return (
 		<Box>
 			<Flex alignItems="center">
@@ -31,9 +41,17 @@ export default function Dashboard() {
 					<styled.h1 textStyle="3xl" fontWeight="bold" lineHeight="none">
 						Dashboard
 					</styled.h1>
-					<Suspense fallback={null}>
-						<Greeting />
-					</Suspense>
+					<styled.p
+						mt={1}
+						color="fg.muted"
+						fontSize="sm"
+						display="flex"
+						alignItems="center"
+					>
+						<styled.span mr={1}>Welcome back,</styled.span>
+						<styled.strong fontWeight="semibold">{user.username}</styled.strong>
+						<styled.span>!</styled.span>
+					</styled.p>
 				</Box>
 				<Spacer />
 				<Select
@@ -69,33 +87,6 @@ export default function Dashboard() {
 				</Select>
 			</Flex>
 		</Box>
-	);
-}
-
-async function Greeting() {
-	const id = cookies().get('user')?.value;
-
-	assert(id);
-
-	const user = await prisma.user.findUniqueOrThrow({
-		where: {id},
-		select: {
-			username: true,
-		},
-	});
-
-	return (
-		<styled.p
-			mt={1}
-			color="fg.muted"
-			fontSize="sm"
-			display="flex"
-			alignItems="center"
-		>
-			<styled.span mr={1}>Welcome back,</styled.span>
-			<styled.strong fontWeight="semibold">{user.username}</styled.strong>
-			<styled.span>!</styled.span>
-		</styled.p>
 	);
 }
 

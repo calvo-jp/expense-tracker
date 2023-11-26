@@ -44,7 +44,12 @@ export async function Navbar() {
 async function ProfileMenu() {
 	const id = cookies().get('user')?.value;
 	assert(id);
-	const user = await prisma.user.findUniqueOrThrow({where: {id}});
+	const user = await prisma.user.findUniqueOrThrow({
+		where: {id},
+		select: {
+			username: true,
+		},
+	});
 
 	return (
 		<Menu
