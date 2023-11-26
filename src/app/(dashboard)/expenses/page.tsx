@@ -58,6 +58,9 @@ export default async function Expenses() {
 				},
 			},
 		},
+		orderBy: {
+			createdAt: 'desc',
+		},
 	});
 
 	const numberFormatter = new Intl.NumberFormat('en-US', {
@@ -150,7 +153,7 @@ export default async function Expenses() {
 											<MenuContent w="12rem" shadow="none" borderWidth="1px">
 												<MenuItemGroup id={`expenses-menu--${expense.id}`}>
 													<EditExpense />
-													<DeleteExpense />
+													<DeleteExpense data={expense} />
 												</MenuItemGroup>
 											</MenuContent>
 										</MenuPositioner>

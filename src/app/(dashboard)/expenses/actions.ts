@@ -2,6 +2,7 @@
 
 import {prisma} from '@/config/prisma';
 import {formdataToJson} from '@/utils/formdata-to-json';
+import {stringToPrismaEnum} from '@/utils/string-to-prisma-enum';
 import {ExpenseCategory} from '@prisma/client';
 import {revalidatePath} from 'next/cache';
 import {cookies} from 'next/headers';
@@ -10,11 +11,9 @@ import {z} from 'zod';
 
 const CreateExpenseSchema = z.object({
 	category: z.preprocess((value) => {
-		if (typeof value === 'string') {
-			return value.replace(/\s/g, '');
-		} else {
-			return value;
-		}
+		return typeof value === 'string'
+			? stringToPrismaEnum(ExpenseCategory, value)
+			: value;
 	}, z.nativeEnum(ExpenseCategory)),
 	description: z.string().trim().max(150).optional(),
 	location: z.string().trim().max(150).optional(),
@@ -22,7 +21,7 @@ const CreateExpenseSchema = z.object({
 	transactionDate: z.string().pipe(z.coerce.date()),
 });
 
-export async function createExpense(_: unknown, formdata: FormData) {
+export async function createExpense(formdata: FormData) {
 	const input = formdataToJson(formdata);
 	const parsed = CreateExpenseSchema.safeParse(input);
 	const userId = cookies().get('user')?.value;
@@ -45,4 +44,7 @@ export async function createExpense(_: unknown, formdata: FormData) {
 
 export async function updateExpense(_: unknown, formdata: FormData) {}
 
-export async function deleteExpense(_: unknown, formdata: FormData) {}
+export async function deleteExpense(id: string) {
+	await prisma.expense.delete({where: {id}});
+	revalidatePath('/expenses');
+}
