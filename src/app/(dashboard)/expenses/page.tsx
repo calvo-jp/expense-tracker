@@ -28,6 +28,7 @@ import {
 import {prisma} from '@/config/prisma';
 import {Box, Flex, HStack, Spacer, styled} from '@/styled-system/jsx';
 import {currencyFormatter} from '@/utils/formatter';
+import {PaginationSchema} from '@/utils/schema';
 import {format, formatDistanceToNow} from 'date-fns';
 import {FileEditIcon, PlusIcon, SettingsIcon} from 'lucide-react';
 import {Metadata} from 'next';
@@ -42,7 +43,11 @@ export const metadata: Metadata = {
 	title: 'Expenses',
 };
 
-export default async function Expenses() {
+export default async function Expenses({
+	searchParams,
+}: {
+	searchParams: {[key: string]: string | string[]};
+}) {
 	const id = cookies().get('user')?.value;
 
 	const user = await prisma.user.findUnique({
@@ -51,6 +56,8 @@ export default async function Expenses() {
 			currency: true,
 		},
 	});
+
+	const pagination = PaginationSchema.parse(searchParams);
 
 	const expenses = await prisma.expense.findMany({
 		where: {user: {id}},
@@ -64,6 +71,8 @@ export default async function Expenses() {
 		orderBy: {
 			createdAt: 'desc',
 		},
+		take: pagination.size,
+		skip: pagination.size * (pagination.page - 1),
 	});
 
 	const count = await prisma.expense.count();
