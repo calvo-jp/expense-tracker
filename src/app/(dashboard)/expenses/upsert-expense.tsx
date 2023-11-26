@@ -75,9 +75,9 @@ import {
 	ChevronUpIcon,
 	ChevronsUpDownIcon,
 } from 'lucide-react';
-import {ReactNode, useTransition} from 'react';
+import {ReactNode, useEffect, useTransition} from 'react';
 import {useForm} from 'react-hook-form';
-import {createExpense} from './actions';
+import {createExpense, updateExpense} from './actions';
 import {TUpsertExpenseSchema, UpsertExpenseSchema} from './schema';
 
 type UpsertExpenseProps = (
@@ -99,6 +99,17 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 		resolver: zodResolver(UpsertExpenseSchema),
 	});
 
+	useEffect(() => {
+		if (props.type === 'update') {
+			form.setValue('amount', props.data.amount);
+			form.setValue('category', props.data.category);
+			form.setValue('description', props.data.description);
+			form.setValue('transactionDate', props.data.transactionDate);
+
+			props.data.location && form.setValue('location', props.data.location);
+		}
+	}, [form, props]);
+
 	return (
 		<Dialog
 			lazyMount
@@ -117,7 +128,10 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 								<styled.form
 									onSubmit={form.handleSubmit((data) => {
 										return startTransition(async () => {
-											const error = await createExpense(data);
+											const error =
+												props.type === 'update'
+													? await updateExpense(props.data.id, data)
+													: await createExpense(data);
 
 											if (error) {
 												toast.error({
@@ -132,7 +146,10 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 											form.reset();
 											toast.success({
 												title: 'Success',
-												description: 'New record has been added',
+												description:
+													props.type === 'update'
+														? 'Record has been updated'
+														: 'New record has been added',
 											});
 										});
 									})}
