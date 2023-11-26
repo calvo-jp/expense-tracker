@@ -14,6 +14,12 @@ export const CreateExpenseSchema = z.object({
 
 export type TCreateExpenseSchema = z.infer<typeof CreateExpenseSchema>;
 
+export const UpdateExpenseSchema = CreateExpenseSchema.extend({
+	id: z.string(),
+});
+
+export type TUpdateExpenseSchema = z.infer<typeof UpdateExpenseSchema>;
+
 export const DeleteExpenseSchema = z.object({
 	id: z.string(),
 });
