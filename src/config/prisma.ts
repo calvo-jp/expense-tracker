@@ -1,7 +1,11 @@
 import {PrismaClient} from '@prisma/client';
 
-const globalThis_ = globalThis as unknown as {prisma: PrismaClient};
+const g = globalThis as unknown as {prisma: PrismaClient};
 
-export const prisma = globalThis_.prisma ?? new PrismaClient();
+export const prisma = g.prisma ?? new PrismaClient();
 
-if (process.env.NODE_ENV !== 'production') globalThis_.prisma = prisma;
+if (process.env.NODE_ENV === 'production') {
+	/* skip */
+} else {
+	g.prisma = prisma;
+}
