@@ -55,7 +55,7 @@ export function ChangePassword() {
 						<DialogPositioner>
 							<DialogContent asChild>
 								<styled.form
-									w="28rem"
+									w="25rem"
 									p={8}
 									onSubmit={form.handleSubmit((data, ctx) => {
 										return startTransition(async () => {
@@ -86,6 +86,8 @@ export function ChangePassword() {
 											</Label>
 											<Input
 												id="change-password.old-password"
+												type="password"
+												placeholder="Old Password"
 												{...form.register('oldPassword')}
 											/>
 											<ErrorMessage>
@@ -98,6 +100,8 @@ export function ChangePassword() {
 											</Label>
 											<Input
 												id="change-password.new-password"
+												type="password"
+												placeholder="New Password"
 												{...form.register('newPassword')}
 											/>
 											<ErrorMessage>
@@ -110,6 +114,8 @@ export function ChangePassword() {
 											</Label>
 											<Input
 												id="change-password.confirm-password"
+												type="password"
+												placeholder="Confirm Password"
 												{...form.register('confirmPassword')}
 											/>
 											<ErrorMessage>
