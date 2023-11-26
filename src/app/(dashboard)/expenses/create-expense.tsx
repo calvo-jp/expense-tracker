@@ -44,6 +44,7 @@ import {
 	DialogPositioner,
 	DialogTrigger,
 } from '@/components/dialog';
+import {ErrorMessage} from '@/components/error-message';
 import {Icon} from '@/components/icon';
 import {IconButton} from '@/components/icon-button';
 import {Input} from '@/components/input';
@@ -60,8 +61,11 @@ import {Textarea} from '@/components/textarea';
 import {toast} from '@/components/toaster';
 import {Flex, HStack, VStack, styled} from '@/styled-system/jsx';
 import {pascalToSentenceCase} from '@/utils/pascal-to-sentence-case';
+import {stringToPrismaEnum} from '@/utils/string-to-prisma-enum';
 import {Portal} from '@ark-ui/react';
+import {zodResolver} from '@hookform/resolvers/zod';
 import {ExpenseCategory} from '@prisma/client';
+import {format} from 'date-fns';
 import {
 	CalendarIcon,
 	CheckIcon,
@@ -73,10 +77,16 @@ import {
 	PlusIcon,
 } from 'lucide-react';
 import {useTransition} from 'react';
+import {useForm} from 'react-hook-form';
 import {createExpense} from './actions';
+import {CreateExpenseSchema, TCreateExpenseSchema} from './schema';
 
 export default function CreateExpense() {
 	const [pending, startTransition] = useTransition();
+
+	const form = useForm<TCreateExpenseSchema>({
+		resolver: zodResolver(CreateExpenseSchema),
+	});
 
 	return (
 		<Dialog
@@ -101,26 +111,44 @@ export default function CreateExpense() {
 						<DialogPositioner overflowY="auto">
 							<DialogContent w="28rem" p={8}>
 								<styled.form
-									onSubmit={async (e) => {
-										e.preventDefault();
+									onSubmit={form.handleSubmit((data) => {
+										return startTransition(async () => {
+											const error = await createExpense(data);
 
-										startTransition(async () => {
-											const error = await createExpense(
-												new FormData(e.currentTarget),
-											);
-
-											if (!error) {
-												api.close();
-												toast.success({
-													title: 'Success',
-													description: 'New record has been added',
+											if (error) {
+												toast.error({
+													title: 'Error',
+													description: error,
 												});
+
+												return;
 											}
+
+											api.close();
+											form.reset();
+											toast.success({
+												title: 'Success',
+												description: 'New record has been added',
+											});
 										});
-									}}
+									})}
 								>
 									<VStack gap={3} alignItems="stretch">
-										<Combobox items={categories}>
+										<Combobox
+											items={categories}
+											lazyMount
+											value={[form.watch('category')]}
+											onValueChange={(details) => {
+												form.setValue(
+													'category',
+													stringToPrismaEnum(
+														ExpenseCategory,
+														details.value.at(0),
+													) ?? ExpenseCategory.Others,
+													{shouldValidate: true},
+												);
+											}}
+										>
 											{() => (
 												<>
 													<ComboboxLabel>Category</ComboboxLabel>
@@ -140,6 +168,11 @@ export default function CreateExpense() {
 															</IconButton>
 														</ComboboxTrigger>
 													</ComboboxControl>
+
+													<ErrorMessage>
+														{form.formState.errors.category?.message}
+													</ErrorMessage>
+
 													<ComboboxPositioner>
 														<ComboboxContent>
 															<ComboboxItemGroup id="framework">
@@ -172,8 +205,11 @@ export default function CreateExpense() {
 												rows={3}
 												resize="none"
 												placeholder="Enter description"
-												name="description"
+												{...form.register('description')}
 											/>
+											<ErrorMessage>
+												{form.formState.errors.description?.message}
+											</ErrorMessage>
 										</Flex>
 
 										<Flex direction="column" gap={1.5}>
@@ -183,9 +219,12 @@ export default function CreateExpense() {
 											<Input
 												id="expenses.create-new.location"
 												size="lg"
-												name="location"
 												placeholder="Enter location"
+												{...form.register('location')}
 											/>
+											<ErrorMessage>
+												{form.formState.errors.location?.message}
+											</ErrorMessage>
 										</Flex>
 
 										<DatePicker
@@ -194,6 +233,23 @@ export default function CreateExpense() {
 											selectionMode="single"
 											positioning={{
 												placement: 'bottom-end',
+											}}
+											value={
+												form.watch('transactionDate')
+													? [
+															format(
+																form.watch('transactionDate'),
+																'yyyy-MM-dd',
+															),
+													  ]
+													: undefined
+											}
+											onValueChange={(details) => {
+												form.setValue(
+													'transactionDate',
+													details.value.at(0)?.toDate('utc') ?? new Date(),
+													{shouldValidate: true},
+												);
 											}}
 										>
 											<DatePickerLabel>Transaction date</DatePickerLabel>
@@ -215,6 +271,11 @@ export default function CreateExpense() {
 													</IconButton>
 												</DatePickerTrigger>
 											</DatePickerControl>
+
+											<ErrorMessage>
+												{form.formState.errors.transactionDate?.message}
+											</ErrorMessage>
+
 											<DatePickerPositioner>
 												<DatePickerContent>
 													<DatePickerView view="day">
@@ -382,7 +443,15 @@ export default function CreateExpense() {
 											</DatePickerPositioner>
 										</DatePicker>
 
-										<NumberInput size="lg">
+										<NumberInput
+											size="lg"
+											value={form.watch('amount', 0).toString()}
+											onValueChange={(details) => {
+												form.setValue('amount', details.valueAsNumber, {
+													shouldValidate: true,
+												});
+											}}
+										>
 											<NumberInputLabel>Amount</NumberInputLabel>
 											<NumberInputControl>
 												<NumberInputInput
@@ -400,6 +469,10 @@ export default function CreateExpense() {
 													</Icon>
 												</NumberInputDecrementTrigger>
 											</NumberInputControl>
+
+											<ErrorMessage>
+												{form.formState.errors.amount?.message}
+											</ErrorMessage>
 										</NumberInput>
 									</VStack>
 

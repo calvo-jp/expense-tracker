@@ -21,7 +21,7 @@ model User {
 model Expense {
   id              String          @id @default(auto()) @map("_id") @db.ObjectId
   category        ExpenseCategory
-  description     String?
+  description     String
   transactionDate DateTime
   location        String?
   amount          Float

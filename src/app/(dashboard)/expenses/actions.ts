@@ -1,40 +1,21 @@
 'use server';
 
 import {prisma} from '@/config/prisma';
-import {formdataToJson} from '@/utils/formdata-to-json';
-import {stringToPrismaEnum} from '@/utils/string-to-prisma-enum';
-import {ExpenseCategory} from '@prisma/client';
 import {revalidatePath} from 'next/cache';
 import {cookies} from 'next/headers';
-import assert from 'node:assert';
-import {z} from 'zod';
+import {CreateExpenseSchema, DeleteExpenseSchema} from './schema';
 
-const CreateExpenseSchema = z.object({
-	category: z.preprocess((value) => {
-		return typeof value === 'string'
-			? stringToPrismaEnum(ExpenseCategory, value)
-			: value;
-	}, z.nativeEnum(ExpenseCategory)),
-	description: z.string().trim().max(150).optional(),
-	location: z.string().trim().max(150).optional(),
-	amount: z.preprocess(Number, z.number().min(0)),
-	transactionDate: z.string().pipe(z.coerce.date()),
-});
-
-export async function createExpense(formdata: FormData) {
-	const input = formdataToJson(formdata);
+export async function createExpense(input: unknown) {
 	const parsed = CreateExpenseSchema.safeParse(input);
 	const userId = cookies().get('user')?.value;
 
 	if (!parsed.success) return parsed.error.errors[0].message;
+	if (!userId) return 'Auth required';
+
+	const data = {userId, ...parsed.data};
 
 	try {
-		assert(userId);
-
-		const data = Object.assign({userId}, parsed.data);
-
 		await prisma.expense.create({data});
-
 		revalidatePath('/expenses');
 		return null;
 	} catch {
@@ -42,9 +23,20 @@ export async function createExpense(formdata: FormData) {
 	}
 }
 
-export async function updateExpense(_: unknown, formdata: FormData) {}
+export async function deleteExpense(input: unknown) {
+	const parsed = DeleteExpenseSchema.safeParse(input);
+	const userId = cookies().get('user')?.value;
 
-export async function deleteExpense(id: string) {
-	await prisma.expense.delete({where: {id}});
-	revalidatePath('/expenses');
+	if (!parsed.success) return parsed.error.errors[0].message;
+	if (!userId) return 'Auth required';
+
+	const {id} = parsed.data;
+
+	try {
+		await prisma.expense.delete({where: {id, AND: {userId}}});
+		revalidatePath('/expenses');
+		return null;
+	} catch {
+		return 'Something went wrong';
+	}
 }
