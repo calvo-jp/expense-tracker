@@ -4,7 +4,10 @@ interface PrismaStandardEnum {
 
 /**
  *
- * Convert strings to valid prisma enum
+ * Convert strings to valid prisma enum. This exists due to prisma's enum limitation
+ *
+ * @see
+ * https://github.com/prisma/prisma/issues/12405
  *
  * @example
  * stringToPrismaEnum(Object.values(YourEnum), "Sample value") // SampleValue
