@@ -9,7 +9,7 @@ const prettier = require("prettier");
  */
 const RESTCOUNTRIES_API_V3 = "https://restcountries.com/v3.1/all";
 
-async function generateCurrencyConstant() {
+async function generateCurrencyConstants() {
 	const response = await fetch(RESTCOUNTRIES_API_V3);
 
 	/**
@@ -51,4 +51,4 @@ async function generateCurrencyConstant() {
 	}
 }
 
-generateCurrencyConstant();
+generateCurrencyConstants();
