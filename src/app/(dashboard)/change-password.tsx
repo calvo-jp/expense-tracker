@@ -29,6 +29,11 @@ export function ChangePassword() {
 
 	const form = useForm<TChangePasswordSchema>({
 		resolver: zodResolver(ChangePasswordSchema),
+		values: {
+			oldPassword: '',
+			newPassword: '',
+			confirmPassword: '',
+		},
 	});
 
 	return (
