@@ -1,5 +1,5 @@
-/* Generated file */
-/* Last updated at 2023-11-27T08:43:26.224Z */
+// Generated file
+// Last updated at 2023-11-27T10:04:29.695Z
 
 export const currencies = [
 	{abbr: "AUD", name: "Australian dollar"},
