@@ -4,8 +4,13 @@ const fs = require("fs");
 const path = require("path");
 const prettier = require("prettier");
 
+/**
+ * @see https://restcountries.com/
+ */
+const RESTCOUNTRIES_API_V3 = "https://restcountries.com/v3.1/all";
+
 async function generateCurrencyConstant() {
-	const response = await fetch("https://restcountries.com/v3.1/all");
+	const response = await fetch(RESTCOUNTRIES_API_V3);
 
 	/**
 	 * @type {Array<Record<string, Record<string, any>>>}
