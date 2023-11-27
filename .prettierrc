@@ -1,6 +1,5 @@
 {
-  "useTabs": true,
-  "trailingComma": "all",
-  "jsxSingleQuote": true,
-  "bracketSpacing": false
+	"useTabs": true,
+	"trailingComma": "all",
+	"bracketSpacing": false
 }
