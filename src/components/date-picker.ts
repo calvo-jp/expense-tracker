@@ -19,7 +19,6 @@ export const DatePicker = withProvider(
 	),
 	"root",
 );
-
 export const DatePickerClearTrigger = withContext(
 	styled(parts.ClearTrigger),
 	"clearTrigger",

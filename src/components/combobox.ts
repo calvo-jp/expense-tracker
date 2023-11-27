@@ -22,7 +22,6 @@ export const Combobox = withProvider(
 	),
 	"root",
 );
-
 export const ComboboxClearTrigger = withContext(
 	styled(parts.ClearTrigger),
 	"clearTrigger",

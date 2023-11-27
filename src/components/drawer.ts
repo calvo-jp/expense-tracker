@@ -18,7 +18,6 @@ export const Drawer = withProvider(
 		},
 	),
 );
-
 export const DrawerBackdrop = withContext(styled(parts.Backdrop), "backdrop");
 export const DrawerCloseTrigger = withContext(
 	styled(parts.CloseTrigger),

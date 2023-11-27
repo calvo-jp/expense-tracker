@@ -19,7 +19,6 @@ export const Menu = withProvider(
 		},
 	),
 );
-
 export const MenuArrow = withContext(styled(parts.Arrow), "arrow");
 export const MenuArrowTip = withContext(styled(parts.ArrowTip), "arrowTip");
 export const MenuContent = withContext(

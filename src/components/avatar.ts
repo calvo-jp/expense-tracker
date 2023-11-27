@@ -15,7 +15,6 @@ export const Avatar = withProvider(
 	}),
 	"root",
 );
-
 export const AvatarFallback = withContext(
 	styled(parts.Fallback, {
 		base: {
@@ -26,5 +25,4 @@ export const AvatarFallback = withContext(
 	}),
 	"fallback",
 );
-
 export const AvatarImage = withContext(styled(parts.Image), "image");

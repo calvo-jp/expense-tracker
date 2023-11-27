@@ -18,7 +18,6 @@ export const Dialog = withProvider(
 		},
 	),
 );
-
 export const DialogBackdrop = withContext(styled(parts.Backdrop), "backdrop");
 export const DialogCloseTrigger = withContext(
 	styled(parts.CloseTrigger),

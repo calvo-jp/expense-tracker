@@ -19,7 +19,6 @@ export const Pagination = withProvider(
 	),
 	"root",
 );
-
 export const PaginationEllipsis = withContext(
 	styled(parts.Ellipsis),
 	"ellipsis",
