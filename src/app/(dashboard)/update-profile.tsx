@@ -46,7 +46,11 @@ export function UpdateProfile({__SSR_DATA: {user}}: UpdateProfileProps) {
 	}, [form, user.email, user.name]);
 
 	return (
-		<Dialog>
+		<Dialog
+			unmountOnExit
+			closeOnEscapeKeyDown={false}
+			closeOnInteractOutside={false}
+		>
 			{(api) => (
 				<>
 					<DialogTrigger asChild>
