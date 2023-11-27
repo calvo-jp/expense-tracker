@@ -23,7 +23,6 @@ import {
 	SelectValueText,
 } from "@/components/select";
 import {Box, Flex, Spacer} from "@/styled-system/jsx";
-import {clamp} from "@/utils/clamp";
 import {PaginationSchema} from "@/utils/types";
 import {Portal} from "@ark-ui/react";
 import {
@@ -176,4 +175,10 @@ function usePageControls({count}: UsePageControlsProps) {
 		start,
 		until,
 	};
+}
+
+function clamp(n: number, min: number, max: number) {
+	if (n < min) return min;
+	if (n > max) return max;
+	return n;
 }
