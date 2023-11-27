@@ -194,7 +194,3 @@ export async function deleteExpense(id: string) {
 		return "Something went wrong";
 	}
 }
-
-/*
- *------------------- REPORT -------------------
- */
