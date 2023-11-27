@@ -1,10 +1,11 @@
 "use client";
 
 import {Button} from "@/components/button";
+import {ErrorMessage} from "@/components/error-message";
 import {Input} from "@/components/input";
 import {Link} from "@/components/next-js/link";
 import {toast} from "@/components/toaster";
-import {Flex, styled} from "@/styled-system/jsx";
+import {Box, Flex, styled} from "@/styled-system/jsx";
 import {register} from "@/utils/mutations";
 import {RegisterSchema, TRegisterSchema} from "@/utils/types";
 import {zodResolver} from "@hookform/resolvers/zod";
@@ -29,6 +30,9 @@ export default function Register() {
 	return (
 		<>
 			<styled.form
+				display="flex"
+				flexDir="column"
+				gap={6}
 				onSubmit={form.handleSubmit((data) => {
 					return startTransition(async () => {
 						const error = await register(data);
@@ -44,27 +48,51 @@ export default function Register() {
 					});
 				})}
 			>
-				<Input size="xl" placeholder="Name" {...form.register("name")} />
-				<Input
-					size="xl"
-					type="email"
-					placeholder="Email"
-					{...form.register("email")}
-				/>
-				<Input
-					size="xl"
-					placeholder="Username"
-					{...form.register("username")}
-				/>
-				<Input
-					mt={6}
-					size="xl"
-					type="password"
-					placeholder="Password"
-					{...form.register("password")}
-				/>
+				<Box>
+					<Input
+						size="xl"
+						placeholder="Name"
+						autoFocus
+						{...form.register("name")}
+					/>
+					<ErrorMessage mt={1.5}>
+						{form.formState.errors.name?.message}
+					</ErrorMessage>
+				</Box>
+				<Box>
+					<Input
+						size="xl"
+						type="email"
+						placeholder="Email"
+						{...form.register("email")}
+					/>
+					<ErrorMessage mt={1.5}>
+						{form.formState.errors.email?.message}
+					</ErrorMessage>
+				</Box>
+				<Box>
+					<Input
+						size="xl"
+						placeholder="Username"
+						{...form.register("username")}
+					/>
+					<ErrorMessage mt={1.5}>
+						{form.formState.errors.username?.message}
+					</ErrorMessage>
+				</Box>
+				<Box>
+					<Input
+						size="xl"
+						type="password"
+						placeholder="Password"
+						{...form.register("password")}
+					/>
+					<ErrorMessage mt={1.5}>
+						{form.formState.errors.password?.message}
+					</ErrorMessage>
+				</Box>
 
-				<Button type="submit" w="full" mt={8} size="xl" disabled={pending}>
+				<Button type="submit" w="full" size="xl" disabled={pending}>
 					Submit
 				</Button>
 			</styled.form>
