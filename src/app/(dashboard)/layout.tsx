@@ -8,9 +8,7 @@ import {Sidebar} from "./sidebar";
 export const revalidate = 0;
 
 export default function Layout({children}: PropsWithChildren) {
-	if (!cookies().has("user")) {
-		redirect("/login");
-	}
+	if (!cookies().has("user")) redirect("/login");
 
 	return (
 		<Box h="100vh" minW="breakpoint-lg">

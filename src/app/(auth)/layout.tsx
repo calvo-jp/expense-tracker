@@ -7,9 +7,7 @@ import {Logo} from "../logo";
 export const revalidate = 0;
 
 export default function Layout({children}: PropsWithChildren) {
-	if (cookies().has("user")) {
-		redirect("/dashboard");
-	}
+	if (cookies().has("user")) redirect("/dashboard");
 
 	return (
 		<styled.main maxW="22rem" mx="auto" py={24}>
