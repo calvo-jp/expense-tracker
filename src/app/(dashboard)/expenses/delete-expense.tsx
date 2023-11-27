@@ -51,21 +51,28 @@ export function DeleteExpense(props: DeleteExpenseProps) {
 						<DialogBackdrop />
 						<DialogPositioner>
 							<DialogContent asChild>
-								<Box p={6}>
-									<DialogTitle>Delete Record</DialogTitle>
-									<DialogDescription>
-										This action is irreversible. Are you sure you want to
-										continue?
+								<Box p={6} maxW="26rem">
+									<DialogTitle fontSize="xl">Delete Record</DialogTitle>
+									<DialogDescription fontSize="md">
+										This action is irreversible. Are you sure you want
+										to&nbsp;continue?
 									</DialogDescription>
 
-									<Flex mt={8} gap={3} justifyContent="end">
+									<Flex mt={8} gap={3}>
 										<DialogCloseTrigger asChild>
-											<Button variant="outline" disabled={pending}>
+											<Button
+												w="full"
+												size="lg"
+												variant="outline"
+												disabled={pending}
+											>
 												Cancel
 											</Button>
 										</DialogCloseTrigger>
 
 										<Button
+											w="full"
+											size="lg"
 											disabled={pending}
 											onClick={async () => {
 												startTransition(async () => {
