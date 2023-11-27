@@ -288,13 +288,11 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 											<DatePickerLabel>Transaction date</DatePickerLabel>
 											<DatePickerControl>
 												<DatePickerInput asChild>
-													<Input
-														placeholder="Choose date"
-														name="transactionDate"
-													/>
+													<Input size="lg" placeholder="Choose date" />
 												</DatePickerInput>
 												<DatePickerTrigger asChild>
 													<IconButton
+														size="lg"
 														variant="outline"
 														aria-label="Open date picker"
 													>
