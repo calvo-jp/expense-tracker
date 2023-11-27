@@ -23,6 +23,7 @@ import {
 	SelectValueText,
 } from "@/components/select";
 import {Box, Flex, Spacer} from "@/styled-system/jsx";
+import {clamp} from "@/utils/clamp";
 import {PaginationSchema} from "@/utils/types";
 import {Portal} from "@ark-ui/react";
 import {
@@ -39,52 +40,25 @@ const sizes = [10, 25, 50].map((size) => ({
 }));
 
 interface PageControlsProps {
-	__SSR_DATA: {count: number};
+	__SSR_DATA: UsePageControlsProps;
 }
 
 export function PageControls(props: PageControlsProps) {
-	const router = useRouter();
-	const pathname = usePathname();
-	const searchParams = useSearchParams();
-
-	const pagination = PaginationSchema.parse({
-		page: searchParams.get("page") ?? 1,
-		size: searchParams.get("size") ?? 10,
-	});
-
-	const update = (value: {page: string | number; size: string | number}) => {
-		const s = new URLSearchParams(searchParams);
-
-		s.delete("page");
-		s.delete("size");
-
-		s.set("page", `${value.page}`);
-		s.set("size", `${value.size}`);
-
-		router.push(`${pathname}?${s.toString()}`);
-	};
-
-	const count = props.__SSR_DATA.count;
-	const start = clamp(1 + (pagination.page - 1) * pagination.size, 0, count);
-	const until = clamp(
-		pagination.page * pagination.size,
-		pagination.size,
-		count,
-	);
+	const context = usePageControls(props.__SSR_DATA);
 
 	return (
 		<Flex gap={4} alignItems="center">
 			<Box fontSize="sm">
-				Showing {start}-{until} of {count}
+				Showing {context.start}-{context.until} of {context.count}
 			</Box>
 			<Spacer />
 			<Pagination
-				count={count}
-				// @ts-expect-error
-				page={pagination.page}
-				pageSize={pagination.size}
+				count={context.count}
+				// @ts-expect-error "Bug"
+				page={context.value.page}
+				pageSize={context.value.size}
 				onPageChange={(o) => {
-					update({
+					context.setValue({
 						page: o.page,
 						size: o.pageSize,
 					});
@@ -126,9 +100,9 @@ export function PageControls(props: PageControlsProps) {
 			<Select
 				w={28}
 				items={sizes}
-				value={[pagination.size.toString()]}
+				value={[context.value.size.toString()]}
 				onValueChange={({value}) => {
-					update({
+					context.setValue({
 						page: 1,
 						size: value[0],
 					});
@@ -166,8 +140,40 @@ export function PageControls(props: PageControlsProps) {
 	);
 }
 
-function clamp(n: number, min: number, max: number) {
-	if (n < min) return min;
-	if (n > max) return max;
-	return n;
+interface UsePageControlsProps {
+	count: number;
+}
+
+function usePageControls({count}: UsePageControlsProps) {
+	const router = useRouter();
+	const pathname = usePathname();
+	const searchParams = useSearchParams();
+
+	const value = PaginationSchema.parse({
+		page: searchParams.get("page") ?? 1,
+		size: searchParams.get("size") ?? 10,
+	});
+
+	const setValue = (value: {page: string | number; size: string | number}) => {
+		const s = new URLSearchParams(searchParams);
+
+		s.delete("page");
+		s.delete("size");
+
+		s.set("page", `${value.page}`);
+		s.set("size", `${value.size}`);
+
+		router.push(`${pathname}?${s.toString()}`);
+	};
+
+	const start = clamp(1 + (value.page - 1) * value.size, 0, count);
+	const until = clamp(value.page * value.size, value.size, count);
+
+	return {
+		value,
+		setValue,
+		count,
+		start,
+		until,
+	};
 }
