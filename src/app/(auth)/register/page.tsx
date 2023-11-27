@@ -6,8 +6,8 @@ import {Input} from "@/components/input";
 import {Link} from "@/components/next-js/link";
 import {toast} from "@/components/toaster";
 import {Box, Flex, styled} from "@/styled-system/jsx";
-import {register} from "@/utils/mutations";
-import {RegisterSchema, TRegisterSchema} from "@/utils/types";
+import {createAccount} from "@/utils/mutations";
+import {CreateAccountSchema, TCreateAccountSchema} from "@/utils/types";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useRouter} from "next/navigation";
 import {useTransition} from "react";
@@ -17,8 +17,8 @@ export default function Register() {
 	const [pending, startTransition] = useTransition();
 
 	const router = useRouter();
-	const form = useForm<TRegisterSchema>({
-		resolver: zodResolver(RegisterSchema),
+	const form = useForm<TCreateAccountSchema>({
+		resolver: zodResolver(CreateAccountSchema),
 		defaultValues: {
 			name: "",
 			email: "",
@@ -35,7 +35,7 @@ export default function Register() {
 				gap={6}
 				onSubmit={form.handleSubmit((data) => {
 					return startTransition(async () => {
-						const error = await register(data);
+						const error = await createAccount(data);
 
 						if (error) {
 							toast.error({

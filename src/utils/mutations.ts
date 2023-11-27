@@ -8,8 +8,8 @@ import {cookies} from "next/headers";
 import {redirect} from "next/navigation";
 import {
 	ChangePasswordSchema,
+	CreateAccountSchema,
 	LoginSchema,
-	RegisterSchema,
 	UpdateProfileSchema,
 	UpsertExpenseSchema,
 } from "./types";
@@ -82,32 +82,8 @@ export async function changePassword(input: unknown) {
 	}
 }
 
-/*
- *------------------- AUTH -------------------
- */
-
-export async function login(input: unknown) {
-	const parsed = LoginSchema.safeParse(input);
-
-	if (!parsed.success) return parsed.error.errors[0].message;
-
-	const {username, password} = parsed.data;
-
-	try {
-		const user = await prisma.user.findUniqueOrThrow({where: {username}});
-		const matches = await bcrypt.compare(password, user.password);
-
-		if (!matches) throw new Error();
-
-		cookies().set("user", user.id, {expires: addDays(new Date(), 30)});
-		return null;
-	} catch {
-		return "Invalid username or password";
-	}
-}
-
-export async function register(input: unknown) {
-	const parsed = RegisterSchema.safeParse(input);
+export async function createAccount(input: unknown) {
+	const parsed = CreateAccountSchema.safeParse(input);
 
 	if (!parsed.success) return parsed.error.errors[0].message;
 
@@ -128,6 +104,30 @@ export async function register(input: unknown) {
 				id: true,
 			},
 		});
+
+		cookies().set("user", user.id, {expires: addDays(new Date(), 30)});
+		return null;
+	} catch {
+		return "Invalid username or password";
+	}
+}
+
+/*
+ *------------------- AUTH -------------------
+ */
+
+export async function login(input: unknown) {
+	const parsed = LoginSchema.safeParse(input);
+
+	if (!parsed.success) return parsed.error.errors[0].message;
+
+	const {username, password} = parsed.data;
+
+	try {
+		const user = await prisma.user.findUniqueOrThrow({where: {username}});
+		const matches = await bcrypt.compare(password, user.password);
+
+		if (!matches) throw new Error();
 
 		cookies().set("user", user.id, {expires: addDays(new Date(), 30)});
 		return null;
