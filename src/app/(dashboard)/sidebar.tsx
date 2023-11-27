@@ -3,13 +3,7 @@ import {Link} from "@/components/next-js/link";
 import {Box, styled} from "@/styled-system/jsx";
 import {logout} from "@/utils/mutations";
 import {ark} from "@ark-ui/react";
-import {
-	CoinsIcon,
-	FilePieChartIcon,
-	LineChartIcon,
-	PowerIcon,
-	SettingsIcon,
-} from "lucide-react";
+import {CoinsIcon, LineChartIcon, PowerIcon, SettingsIcon} from "lucide-react";
 
 export function Sidebar() {
 	return (
@@ -42,16 +36,6 @@ export function Sidebar() {
 									<CoinsIcon />
 								</Icon>
 								<styled.span>Expenses</styled.span>
-							</Link>
-						</SidebarButton>
-					</styled.li>
-					<styled.li>
-						<SidebarButton asChild>
-							<Link href="/reports">
-								<Icon>
-									<FilePieChartIcon />
-								</Icon>
-								<styled.span>Reports</styled.span>
 							</Link>
 						</SidebarButton>
 					</styled.li>
