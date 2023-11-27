@@ -28,7 +28,15 @@ export const DrawerPositioner = withContext(
 	styled(parts.Positioner),
 	"positioner",
 );
-export const DrawerContent = withContext(styled(parts.Content), "content");
+export const DrawerContent = withContext(
+	styled(parts.Content, {
+		base: {
+			shadow: "none",
+			borderLeftWidth: "1px",
+		},
+	}),
+	"content",
+);
 export const DrawerDescription = withContext(
 	styled(parts.Description),
 	"description",
