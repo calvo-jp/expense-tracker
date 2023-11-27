@@ -111,6 +111,7 @@ export function UpdateProfile({__SSR_DATA: {user}}: UpdateProfileProps) {
 											<Label htmlFor="update-profile.name">Name</Label>
 											<Input
 												id="update-profile.name"
+												size="lg"
 												placeholder="Name"
 												{...form.register("name")}
 											/>
@@ -122,6 +123,7 @@ export function UpdateProfile({__SSR_DATA: {user}}: UpdateProfileProps) {
 											<Label htmlFor="update-profile.email">Email</Label>
 											<Input
 												id="update-profile.email"
+												size="lg"
 												placeholder="Email"
 												{...form.register("email")}
 											/>

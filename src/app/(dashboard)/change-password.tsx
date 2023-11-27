@@ -91,6 +91,7 @@ export function ChangePassword() {
 											</Label>
 											<Input
 												id="change-password.old-password"
+												size="lg"
 												type="password"
 												placeholder="Old Password"
 												{...form.register("oldPassword")}
@@ -105,6 +106,7 @@ export function ChangePassword() {
 											</Label>
 											<Input
 												id="change-password.new-password"
+												size="lg"
 												type="password"
 												placeholder="New Password"
 												{...form.register("newPassword")}
@@ -119,6 +121,7 @@ export function ChangePassword() {
 											</Label>
 											<Input
 												id="change-password.confirm-password"
+												size="lg"
 												type="password"
 												placeholder="Confirm Password"
 												{...form.register("confirmPassword")}
