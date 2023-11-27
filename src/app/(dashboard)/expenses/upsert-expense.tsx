@@ -60,7 +60,7 @@ import {
 import {Textarea} from '@/components/textarea';
 import {toast} from '@/components/toaster';
 import {Flex, HStack, VStack, styled} from '@/styled-system/jsx';
-import {createExpense, updateExpense} from '@/utils/actions';
+import {createExpense, updateExpense} from '@/utils/mutations';
 import {pascalToSentenceCase} from '@/utils/pascal-to-sentence-case';
 import {stringToPrismaEnum} from '@/utils/string-to-prisma-enum';
 import {TUpsertExpenseSchema, UpsertExpenseSchema} from '@/utils/types';

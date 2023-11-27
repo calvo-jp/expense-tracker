@@ -1,7 +1,7 @@
 import {Icon} from '@/components/icon';
 import {Link} from '@/components/next-js/link';
 import {Box, styled} from '@/styled-system/jsx';
-import {logout} from '@/utils/actions';
+import {logout} from '@/utils/mutations';
 import {ark} from '@ark-ui/react';
 import {
 	CoinsIcon,
