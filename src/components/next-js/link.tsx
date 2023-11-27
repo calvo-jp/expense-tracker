@@ -2,7 +2,6 @@
 
 import {styled} from "@/styled-system/jsx";
 import {Assign, HTMLStyledProps} from "@/styled-system/types";
-import {dataAttr} from "@/utils/data-attr";
 import NextLink, {LinkProps} from "next/link";
 import {usePathname} from "next/navigation";
 import {forwardRef} from "react";
@@ -27,7 +26,9 @@ export const Link = forwardRef<
 		removeTrailingSlash(props.href.toString()) ===
 		removeTrailingSlash(pathname);
 
-	return <StyledLink ref={ref} data-selected={dataAttr(selected)} {...props} />;
+	return (
+		<StyledLink ref={ref} data-selected={selected || undefined} {...props} />
+	);
 });
 
 function removeTrailingSlash(subject: string) {
