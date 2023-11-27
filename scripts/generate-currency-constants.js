@@ -31,10 +31,10 @@ async function generateCurrencyConstants() {
 	const filepath = path.join(directory, "currencies.ts");
 
 	const contents = `
-	/* Generated file */
-	/* Last updated at ${new Date().toISOString()} */
+		// Generated file
+		// Last updated at ${new Date().toISOString()}
 
-	export const currencies = ${JSON.stringify(currencies)};
+		export const currencies = ${JSON.stringify(currencies)};
 	`;
 
 	const prettierrc = await prettier.resolveConfig(process.cwd());
