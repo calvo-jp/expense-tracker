@@ -28,7 +28,7 @@ import {
 import {prisma} from '@/config/prisma';
 import {Box, Flex, HStack, Spacer, styled} from '@/styled-system/jsx';
 import {currencyFormatter} from '@/utils/currency-formatter';
-import {PaginationSchema} from '@/utils/schema';
+import {PaginationSchema} from '@/utils/types';
 import assert from 'assert';
 import {format, formatDistanceToNow} from 'date-fns';
 import {FileEditIcon, PlusIcon, SettingsIcon} from 'lucide-react';

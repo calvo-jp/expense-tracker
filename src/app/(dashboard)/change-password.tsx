@@ -17,7 +17,7 @@ import {MenuItem} from '@/components/menu';
 import {toast} from '@/components/toaster';
 import {Flex, HStack, VStack, styled} from '@/styled-system/jsx';
 import {changePassword} from '@/utils/actions';
-import {ChangePasswordSchema, TChangePasswordSchema} from '@/utils/schema';
+import {ChangePasswordSchema, TChangePasswordSchema} from '@/utils/types';
 import {Portal} from '@ark-ui/react';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {LockIcon} from 'lucide-react';

@@ -23,7 +23,7 @@ import {
 	SelectValueText,
 } from '@/components/select';
 import {Box, Flex, Spacer} from '@/styled-system/jsx';
-import {PaginationSchema} from '@/utils/schema';
+import {PaginationSchema} from '@/utils/types';
 import {Portal} from '@ark-ui/react';
 import {
 	CheckIcon,

@@ -61,7 +61,7 @@ import {
 } from '@/components/number-input';
 import {Box, Flex, HStack} from '@/styled-system/jsx';
 import {pascalToSentenceCase} from '@/utils/pascal-to-sentence-case';
-import {ExpenseFilterSchema} from '@/utils/schema';
+import {ExpenseFilterSchema} from '@/utils/types';
 import {Portal} from '@ark-ui/react';
 import {ExpenseCategory} from '@prisma/client';
 import {

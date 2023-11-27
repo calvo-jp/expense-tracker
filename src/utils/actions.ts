@@ -11,7 +11,7 @@ import {
 	CredentialsSchema,
 	UpdateProfileSchema,
 	UpsertExpenseSchema,
-} from './schema';
+} from './types';
 
 /*
  *------------------- PROFILE -------------------

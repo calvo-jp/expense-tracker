@@ -6,7 +6,7 @@ import {Link} from '@/components/next-js/link';
 import {toast} from '@/components/toaster';
 import {Flex, styled} from '@/styled-system/jsx';
 import {register} from '@/utils/actions';
-import {CredentialsSchema} from '@/utils/schema';
+import {CredentialsSchema} from '@/utils/types';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useRouter} from 'next/navigation';
 import {useTransition} from 'react';

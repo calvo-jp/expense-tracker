@@ -18,7 +18,7 @@ import {toast} from '@/components/toaster';
 import {Box, Flex, HStack, VStack, styled} from '@/styled-system/jsx';
 import {updateProfile} from '@/utils/actions';
 import {getInitials} from '@/utils/get-initials';
-import {TUpdateProfileSchema, UpdateProfileSchema} from '@/utils/schema';
+import {TUpdateProfileSchema, UpdateProfileSchema} from '@/utils/types';
 import {Portal} from '@ark-ui/react';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {User} from '@prisma/client';
