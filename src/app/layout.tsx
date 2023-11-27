@@ -1,5 +1,4 @@
-import "./globals.css";
-
+import "@/assets/styles/globals.css";
 import {Toaster} from "@/components/toaster";
 import {cx} from "@/styled-system/css";
 import {styled} from "@/styled-system/jsx";
