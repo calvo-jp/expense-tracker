@@ -26,7 +26,7 @@ import {useEffect, useTransition} from 'react';
 import {useForm} from 'react-hook-form';
 
 interface UpdateProfileProps {
-	__SSR_DATA: {user: Pick<User, 'id' | 'name' | 'email' | 'username'>};
+	__SSR_DATA: {user: User};
 }
 
 export function UpdateProfile({__SSR_DATA: {user}}: UpdateProfileProps) {
@@ -43,7 +43,7 @@ export function UpdateProfile({__SSR_DATA: {user}}: UpdateProfileProps) {
 	useEffect(() => {
 		user.name && form.setValue('name', user.name);
 		user.email && form.setValue('email', user.email);
-	}, [form, user.email, user.name]);
+	}, [form, user]);
 
 	return (
 		<Dialog

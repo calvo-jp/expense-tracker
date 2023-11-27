@@ -50,15 +50,7 @@ async function ProfileMenu() {
 
 	assert(id);
 
-	const user = await prisma.user.findUniqueOrThrow({
-		where: {id},
-		select: {
-			id: true,
-			name: true,
-			email: true,
-			username: true,
-		},
-	});
+	const user = await prisma.user.findUniqueOrThrow({where: {id}});
 
 	return (
 		<Menu
