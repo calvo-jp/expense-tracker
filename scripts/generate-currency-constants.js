@@ -27,9 +27,6 @@ async function generateCurrencyConstants() {
 		)
 		.flat();
 
-	const directory = path.join(process.cwd(), "src/utils/constants");
-	const filepath = path.join(directory, "currencies.ts");
-
 	const contents = `
 
 		// Generated file
@@ -39,17 +36,20 @@ async function generateCurrencyConstants() {
 		
 	`;
 
-	const prettierrc = await prettier.resolveConfig(process.cwd());
-	const formatted = await prettier.format(contents, {
-		...prettierrc,
+	const prettierConfig = await prettier.resolveConfig(process.cwd());
+	const formattedContents = await prettier.format(contents, {
+		...prettierConfig,
 		parser: "typescript",
 	});
 
+	const destDir = path.join(process.cwd(), "src/utils/constants");
+	const destFile = path.join(destDir, "currencies.ts");
+
 	try {
-		await fs.mkdir(directory, {recursive: true});
+		await fs.mkdir(destDir, {recursive: true});
 	} catch {
 	} finally {
-		await fs.writeFile(filepath, formatted);
+		await fs.writeFile(destFile, formattedContents);
 	}
 }
 
