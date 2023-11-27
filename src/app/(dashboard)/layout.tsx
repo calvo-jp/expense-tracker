@@ -7,7 +7,7 @@ import {Sidebar} from "./sidebar";
 
 export const revalidate = 0;
 
-export default function Layout(props: PropsWithChildren) {
+export default function Layout({children}: PropsWithChildren) {
 	if (!cookies().has("user")) {
 		redirect("/login");
 	}
@@ -25,7 +25,7 @@ export default function Layout(props: PropsWithChildren) {
 					minH="calc(100vh - token(sizes.navbar.height))"
 					flexGrow={1}
 				>
-					{props.children}
+					{children}
 				</styled.main>
 			</Flex>
 		</Box>

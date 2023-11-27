@@ -5,6 +5,7 @@ import {cx} from "@/styled-system/css";
 import {styled} from "@/styled-system/jsx";
 import {Metadata} from "next";
 import {Lato, Open_Sans} from "next/font/google";
+import {PropsWithChildren} from "react";
 
 export const metadata: Metadata = {
 	title: {
@@ -27,7 +28,7 @@ const heading = Open_Sans({
 	variable: "--font-heading",
 });
 
-export default function RootLayout({children}: {children: React.ReactNode}) {
+export default function RootLayout({children}: PropsWithChildren) {
 	return (
 		<styled.html
 			lang="en"

@@ -6,7 +6,7 @@ import {Logo} from "../logo";
 
 export const revalidate = 0;
 
-export default function Layout(props: PropsWithChildren) {
+export default function Layout({children}: PropsWithChildren) {
 	if (cookies().has("user")) {
 		redirect("/dashboard");
 	}
@@ -16,7 +16,7 @@ export default function Layout(props: PropsWithChildren) {
 			<Center>
 				<Logo h={14} />
 			</Center>
-			<Box mt={16}>{props.children}</Box>
+			<Box mt={16}>{children}</Box>
 		</styled.main>
 	);
 }

@@ -5,6 +5,6 @@ export const metadata: Metadata = {
 	title: "Register",
 };
 
-export default function Layout(props: PropsWithChildren) {
-	return props.children;
+export default function Layout({children}: PropsWithChildren) {
+	return children;
 }
