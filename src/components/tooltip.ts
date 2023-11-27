@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import {styled} from '@/styled-system/jsx';
-import {tooltip} from '@/styled-system/recipes';
-import {createStyleContext} from '@/utils/create-style-context';
-import {Tooltip as parts} from '@ark-ui/react';
+import {styled} from "@/styled-system/jsx";
+import {tooltip} from "@/styled-system/recipes";
+import {createStyleContext} from "@/utils/create-style-context";
+import {Tooltip as parts} from "@ark-ui/react";
 
 const {withProvider, withContext} = createStyleContext(tooltip);
 
@@ -19,11 +19,11 @@ export const Tooltip = withProvider(
 	),
 );
 
-export const TooltipArrow = withContext(styled(parts.Arrow), 'arrow');
-export const TooltipArrowTip = withContext(styled(parts.ArrowTip), 'arrowTip');
-export const TooltipContent = withContext(styled(parts.Content), 'content');
+export const TooltipArrow = withContext(styled(parts.Arrow), "arrow");
+export const TooltipArrowTip = withContext(styled(parts.ArrowTip), "arrowTip");
+export const TooltipContent = withContext(styled(parts.Content), "content");
 export const TooltipPositioner = withContext(
 	styled(parts.Positioner),
-	'positioner',
+	"positioner",
 );
-export const TooltipTrigger = withContext(styled(parts.Trigger), 'trigger');
+export const TooltipTrigger = withContext(styled(parts.Trigger), "trigger");

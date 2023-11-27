@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import {Button} from '@/components/button';
+import {Button} from "@/components/button";
 import {
 	Combobox,
 	ComboboxContent,
@@ -13,7 +13,7 @@ import {
 	ComboboxLabel,
 	ComboboxPositioner,
 	ComboboxTrigger,
-} from '@/components/combobox';
+} from "@/components/combobox";
 import {
 	DatePicker,
 	DatePickerContent,
@@ -35,7 +35,7 @@ import {
 	DatePickerView,
 	DatePickerViewControl,
 	DatePickerViewTrigger,
-} from '@/components/date-picker';
+} from "@/components/date-picker";
 import {
 	Drawer,
 	DrawerBackdrop,
@@ -46,11 +46,11 @@ import {
 	DrawerHeader,
 	DrawerPositioner,
 	DrawerTrigger,
-} from '@/components/drawer';
-import {Icon} from '@/components/icon';
-import {IconButton} from '@/components/icon-button';
-import {Input} from '@/components/input';
-import {Label} from '@/components/label';
+} from "@/components/drawer";
+import {Icon} from "@/components/icon";
+import {IconButton} from "@/components/icon-button";
+import {Input} from "@/components/input";
+import {Label} from "@/components/label";
 import {
 	NumberInput,
 	NumberInputControl,
@@ -58,12 +58,12 @@ import {
 	NumberInputIncrementTrigger,
 	NumberInputInput,
 	NumberInputLabel,
-} from '@/components/number-input';
-import {Box, Flex, HStack} from '@/styled-system/jsx';
-import {pascalToSentenceCase} from '@/utils/pascal-to-sentence-case';
-import {ExpenseFilterSchema} from '@/utils/types';
-import {Portal} from '@ark-ui/react';
-import {ExpenseCategory} from '@prisma/client';
+} from "@/components/number-input";
+import {Box, Flex, HStack} from "@/styled-system/jsx";
+import {pascalToSentenceCase} from "@/utils/pascal-to-sentence-case";
+import {ExpenseFilterSchema} from "@/utils/types";
+import {Portal} from "@ark-ui/react";
+import {ExpenseCategory} from "@prisma/client";
 import {
 	CalendarIcon,
 	CheckIcon,
@@ -73,9 +73,9 @@ import {
 	ChevronUpIcon,
 	ChevronsUpDownIcon,
 	SearchIcon,
-} from 'lucide-react';
-import {usePathname, useRouter, useSearchParams} from 'next/navigation';
-import {useMemo} from 'react';
+} from "lucide-react";
+import {usePathname, useRouter, useSearchParams} from "next/navigation";
+import {useMemo} from "react";
 
 export function Filter() {
 	const router = useRouter();
@@ -84,12 +84,12 @@ export function Filter() {
 
 	const values = useMemo(() => {
 		const parsed = ExpenseFilterSchema.safeParse({
-			category: searchParams.getAll('category'),
-			location: searchParams.get('location'),
-			minAmount: searchParams.get('minAmount'),
-			maxAmount: searchParams.get('maxAmount'),
-			transactionDateStart: searchParams.get('transactionDateStart'),
-			transactionDateUntil: searchParams.get('transactionDateUntil'),
+			category: searchParams.getAll("category"),
+			location: searchParams.get("location"),
+			minAmount: searchParams.get("minAmount"),
+			maxAmount: searchParams.get("maxAmount"),
+			transactionDateStart: searchParams.get("transactionDateStart"),
+			transactionDateUntil: searchParams.get("transactionDateUntil"),
 		});
 
 		if (!parsed.success) return {};
@@ -179,7 +179,7 @@ export function Filter() {
 								<Input
 									mt={1}
 									id="expenses.filter.location"
-									value={values.location ?? ''}
+									value={values.location ?? ""}
 									onChange={() => {}}
 									placeholder="Enter location"
 								/>
@@ -190,7 +190,7 @@ export function Filter() {
 								startOfWeek={1}
 								selectionMode="range"
 								positioning={{
-									placement: 'bottom-end',
+									placement: "bottom-end",
 								}}
 							>
 								<DatePickerLabel>Transaction date</DatePickerLabel>
@@ -288,7 +288,7 @@ export function Filter() {
 													<DatePickerTable>
 														<DatePickerTableBody>
 															{api
-																.getMonthsGrid({columns: 4, format: 'short'})
+																.getMonthsGrid({columns: 4, format: "short"})
 																.map((months, id) => (
 																	<DatePickerTableRow key={id}>
 																		{months.map((month, id) => (
@@ -365,7 +365,7 @@ export function Filter() {
 
 							<HStack mt={4} alignItems="end" gap={4}>
 								<NumberInput
-									value={values.minAmount?.toString() ?? ''}
+									value={values.minAmount?.toString() ?? ""}
 									onChange={(details) => {}}
 								>
 									<NumberInputLabel>Amount</NumberInputLabel>
@@ -385,7 +385,7 @@ export function Filter() {
 								</NumberInput>
 
 								<NumberInput
-									value={values.maxAmount?.toString() ?? ''}
+									value={values.maxAmount?.toString() ?? ""}
 									onChange={(details) => {}}
 								>
 									<NumberInputControl>

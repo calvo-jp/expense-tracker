@@ -1,3 +1,3 @@
 export function dataAttr(guard?: boolean) {
-	return guard ? '' : undefined;
+	return guard ? "" : undefined;
 }

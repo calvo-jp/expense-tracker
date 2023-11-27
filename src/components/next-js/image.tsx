@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import {HTMLStyledProps, styled} from '@/styled-system/jsx';
-import {Assign} from '@/styled-system/types';
-import NextImage, {ImageProps} from 'next/image';
-import {forwardRef, useEffect, useState} from 'react';
+import {HTMLStyledProps, styled} from "@/styled-system/jsx";
+import {Assign} from "@/styled-system/types";
+import NextImage, {ImageProps} from "next/image";
+import {forwardRef, useEffect, useState} from "react";
 
 const StyledImage = styled(
 	NextImage,
@@ -11,22 +11,22 @@ const StyledImage = styled(
 	{
 		shouldForwardProp(key) {
 			return [
-				'src',
-				'alt',
-				'height',
-				'width',
-				'loader',
-				'fill',
-				'sizes',
-				'quality',
-				'priority',
-				'placeholder',
-				'style',
-				'onLoadingComplete',
-				'onLoad',
-				'onError',
-				'loading',
-				'blurDataURL',
+				"src",
+				"alt",
+				"height",
+				"width",
+				"loader",
+				"fill",
+				"sizes",
+				"quality",
+				"priority",
+				"placeholder",
+				"style",
+				"onLoadingComplete",
+				"onLoad",
+				"onError",
+				"loading",
+				"blurDataURL",
 			].includes(key);
 		},
 	},
@@ -38,7 +38,7 @@ interface FallbackProps {
 
 export const Image = forwardRef<
 	HTMLImageElement,
-	Assign<HTMLStyledProps<'img'>, ImageProps> & FallbackProps
+	Assign<HTMLStyledProps<"img">, ImageProps> & FallbackProps
 >(function Image({src, fill, onError, fallbackSrc, ...props}, ref) {
 	const [error, setError] = useState(false);
 

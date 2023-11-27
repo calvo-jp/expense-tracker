@@ -1,7 +1,7 @@
-import {styled} from '@/styled-system/jsx';
-import {combobox} from '@/styled-system/recipes';
-import {createStyleContext} from '@/utils/create-style-context';
-import {Combobox as parts} from '@ark-ui/react';
+import {styled} from "@/styled-system/jsx";
+import {combobox} from "@/styled-system/recipes";
+import {createStyleContext} from "@/utils/create-style-context";
+import {Combobox as parts} from "@ark-ui/react";
 
 const {withProvider, withContext} = createStyleContext(combobox);
 
@@ -20,41 +20,41 @@ export const Combobox = withProvider(
 			},
 		},
 	),
-	'root',
+	"root",
 );
 
 export const ComboboxClearTrigger = withContext(
 	styled(parts.ClearTrigger),
-	'clearTrigger',
+	"clearTrigger",
 );
 export const ComboboxContent = withContext(
 	styled(parts.Content, {
 		base: {
-			shadow: 'none',
-			borderWidth: '1px',
+			shadow: "none",
+			borderWidth: "1px",
 		},
 	}),
-	'content',
+	"content",
 );
-export const ComboboxControl = withContext(styled(parts.Control), 'control');
-export const ComboboxInput = withContext(styled(parts.Input), 'input');
-export const ComboboxItem = withContext(styled(parts.Item), 'item');
+export const ComboboxControl = withContext(styled(parts.Control), "control");
+export const ComboboxInput = withContext(styled(parts.Input), "input");
+export const ComboboxItem = withContext(styled(parts.Item), "item");
 export const ComboboxItemGroup = withContext(
 	styled(parts.ItemGroup),
-	'itemGroup',
+	"itemGroup",
 );
 export const ComboboxItemGroupLabel = withContext(
 	styled(parts.ItemGroupLabel),
-	'itemGroupLabel',
+	"itemGroupLabel",
 );
 export const ComboboxItemIndicator = withContext(
 	styled(parts.ItemIndicator),
-	'itemIndicator',
+	"itemIndicator",
 );
-export const ComboboxItemText = withContext(styled(parts.ItemText), 'itemText');
-export const ComboboxLabel = withContext(styled(parts.Label), 'label');
+export const ComboboxItemText = withContext(styled(parts.ItemText), "itemText");
+export const ComboboxLabel = withContext(styled(parts.Label), "label");
 export const ComboboxPositioner = withContext(
 	styled(parts.Positioner),
-	'positioner',
+	"positioner",
 );
-export const ComboboxTrigger = withContext(styled(parts.Trigger), 'trigger');
+export const ComboboxTrigger = withContext(styled(parts.Trigger), "trigger");

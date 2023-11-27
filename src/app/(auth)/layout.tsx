@@ -1,14 +1,14 @@
-import {Box, Center, styled} from '@/styled-system/jsx';
-import {cookies} from 'next/headers';
-import {redirect} from 'next/navigation';
-import {PropsWithChildren} from 'react';
-import {Logo} from '../logo';
+import {Box, Center, styled} from "@/styled-system/jsx";
+import {cookies} from "next/headers";
+import {redirect} from "next/navigation";
+import {PropsWithChildren} from "react";
+import {Logo} from "../logo";
 
 export const revalidate = 0;
 
 export default function Layout(props: PropsWithChildren) {
-	if (cookies().has('user')) {
-		redirect('/dashboard');
+	if (cookies().has("user")) {
+		redirect("/dashboard");
 	}
 
 	return (

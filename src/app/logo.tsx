@@ -1,7 +1,7 @@
-import {HTMLStyledProps, styled} from '@/styled-system/jsx';
-import {forwardRef} from 'react';
+import {HTMLStyledProps, styled} from "@/styled-system/jsx";
+import {forwardRef} from "react";
 
-export const Logo = forwardRef<SVGSVGElement, HTMLStyledProps<'svg'>>(
+export const Logo = forwardRef<SVGSVGElement, HTMLStyledProps<"svg">>(
 	function Logo(props, ref) {
 		return (
 			<styled.svg

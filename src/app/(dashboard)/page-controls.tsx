@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import {Button} from '@/components/button';
-import {Icon} from '@/components/icon';
-import {IconButton} from '@/components/icon-button';
+import {Button} from "@/components/button";
+import {Icon} from "@/components/icon";
+import {IconButton} from "@/components/icon-button";
 import {
 	Pagination,
 	PaginationEllipsis,
 	PaginationItem,
 	PaginationNextTrigger,
 	PaginationPrevTrigger,
-} from '@/components/pagination';
+} from "@/components/pagination";
 import {
 	Select,
 	SelectContent,
@@ -21,17 +21,17 @@ import {
 	SelectPositioner,
 	SelectTrigger,
 	SelectValueText,
-} from '@/components/select';
-import {Box, Flex, Spacer} from '@/styled-system/jsx';
-import {PaginationSchema} from '@/utils/types';
-import {Portal} from '@ark-ui/react';
+} from "@/components/select";
+import {Box, Flex, Spacer} from "@/styled-system/jsx";
+import {PaginationSchema} from "@/utils/types";
+import {Portal} from "@ark-ui/react";
 import {
 	CheckIcon,
 	ChevronLeftIcon,
 	ChevronRightIcon,
 	ChevronsUpDownIcon,
-} from 'lucide-react';
-import {usePathname, useRouter, useSearchParams} from 'next/navigation';
+} from "lucide-react";
+import {usePathname, useRouter, useSearchParams} from "next/navigation";
 
 const sizes = [10, 25, 50].map((size) => ({
 	value: `${size}`,
@@ -48,18 +48,18 @@ export function PageControls(props: PageControlsProps) {
 	const searchParams = useSearchParams();
 
 	const pagination = PaginationSchema.parse({
-		page: searchParams.get('page') ?? 1,
-		size: searchParams.get('size') ?? 10,
+		page: searchParams.get("page") ?? 1,
+		size: searchParams.get("size") ?? 10,
 	});
 
 	const update = (value: {page: string | number; size: string | number}) => {
 		const s = new URLSearchParams(searchParams);
 
-		s.delete('page');
-		s.delete('size');
+		s.delete("page");
+		s.delete("size");
 
-		s.set('page', `${value.page}`);
-		s.set('size', `${value.size}`);
+		s.set("page", `${value.page}`);
+		s.set("size", `${value.size}`);
 
 		router.push(`${pathname}?${s.toString()}`);
 	};
@@ -101,7 +101,7 @@ export function PageControls(props: PageControlsProps) {
 						</PaginationPrevTrigger>
 
 						{pages.map((page, index) => {
-							return page.type === 'page' ? (
+							return page.type === "page" ? (
 								<PaginationItem key={index} asChild {...page}>
 									<Button variant="outline">{page.value}</Button>
 								</PaginationItem>

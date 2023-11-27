@@ -1,4 +1,4 @@
-export function getInitials(name: string, fallback = '') {
+export function getInitials(name: string, fallback = "") {
 	const r = name.trim().toUpperCase().split(/\s/g);
 	const l = r.length;
 

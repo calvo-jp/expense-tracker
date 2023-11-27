@@ -1,5 +1,5 @@
-import {Button} from '@/components/button';
-import {Icon} from '@/components/icon';
+import {Button} from "@/components/button";
+import {Icon} from "@/components/icon";
 import {
 	Menu,
 	MenuContent,
@@ -7,7 +7,7 @@ import {
 	MenuItemGroup,
 	MenuPositioner,
 	MenuTrigger,
-} from '@/components/menu';
+} from "@/components/menu";
 import {
 	Table,
 	TableBody,
@@ -16,7 +16,7 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from '@/components/table';
+} from "@/components/table";
 import {
 	Tooltip,
 	TooltipArrow,
@@ -24,25 +24,25 @@ import {
 	TooltipContent,
 	TooltipPositioner,
 	TooltipTrigger,
-} from '@/components/tooltip';
-import {prisma} from '@/config/prisma';
-import {Box, Flex, HStack, Spacer, styled} from '@/styled-system/jsx';
-import {currencyFormatter} from '@/utils/currency-formatter';
-import {PaginationSchema} from '@/utils/types';
-import assert from 'assert';
-import {format, formatDistanceToNow} from 'date-fns';
-import {FileEditIcon, PlusIcon, SettingsIcon} from 'lucide-react';
-import {Metadata} from 'next';
-import {cookies} from 'next/headers';
-import {Suspense} from 'react';
-import {PageControls} from '../page-controls';
-import {DeleteExpense} from './delete-expense';
-import {Export} from './export';
-import {Filter} from './filter';
-import {UpsertExpense} from './upsert-expense';
+} from "@/components/tooltip";
+import {prisma} from "@/config/prisma";
+import {Box, Flex, HStack, Spacer, styled} from "@/styled-system/jsx";
+import {currencyFormatter} from "@/utils/currency-formatter";
+import {PaginationSchema} from "@/utils/types";
+import assert from "assert";
+import {format, formatDistanceToNow} from "date-fns";
+import {FileEditIcon, PlusIcon, SettingsIcon} from "lucide-react";
+import {Metadata} from "next";
+import {cookies} from "next/headers";
+import {Suspense} from "react";
+import {PageControls} from "../page-controls";
+import {DeleteExpense} from "./delete-expense";
+import {Export} from "./export";
+import {Filter} from "./filter";
+import {UpsertExpense} from "./upsert-expense";
 
 export const metadata: Metadata = {
-	title: 'Expenses',
+	title: "Expenses",
 };
 
 export default async function Expenses({
@@ -50,7 +50,7 @@ export default async function Expenses({
 }: {
 	searchParams: {[key: string]: string | string[]};
 }) {
-	const id = cookies().get('user')?.value;
+	const id = cookies().get("user")?.value;
 
 	assert(id);
 
@@ -72,7 +72,7 @@ export default async function Expenses({
 			},
 		},
 		orderBy: {
-			createdAt: 'desc',
+			createdAt: "desc",
 		},
 		take: pagination.size,
 		skip: pagination.size * (pagination.page - 1),
@@ -137,7 +137,7 @@ export default async function Expenses({
 									<TableCell>
 										<Tooltip
 											positioning={{
-												placement: 'right',
+												placement: "right",
 											}}
 										>
 											<TooltipTrigger asChild>
@@ -151,14 +151,14 @@ export default async function Expenses({
 												<TooltipContent>
 													<TooltipArrow
 														css={{
-															'--arrow-size': 'token(sizes.3)',
-															'--arrow-background': 'colors.fg.default',
+															"--arrow-size": "token(sizes.3)",
+															"--arrow-background": "colors.fg.default",
 														}}
 													>
 														<TooltipArrowTip />
 													</TooltipArrow>
 
-													{format(expense.transactionDate, 'yyyy MMM dd')}
+													{format(expense.transactionDate, "yyyy MMM dd")}
 												</TooltipContent>
 											</TooltipPositioner>
 										</Tooltip>
@@ -169,7 +169,7 @@ export default async function Expenses({
 									<TableCell>
 										<Menu
 											positioning={{
-												placement: 'bottom-start',
+												placement: "bottom-start",
 											}}
 										>
 											<MenuTrigger asChild>

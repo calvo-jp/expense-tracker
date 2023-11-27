@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import {cx} from '@/styled-system/css';
-import * as React from 'react';
+import {cx} from "@/styled-system/css";
+import * as React from "react";
 
 type GenericProps = Record<string, unknown>;
 type StyleRecipe = {

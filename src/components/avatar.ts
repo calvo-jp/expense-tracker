@@ -1,30 +1,30 @@
-'use client';
+"use client";
 
-import {styled} from '@/styled-system/jsx';
-import {avatar} from '@/styled-system/recipes';
-import {createStyleContext} from '@/utils/create-style-context';
-import {Avatar as parts} from '@ark-ui/react';
+import {styled} from "@/styled-system/jsx";
+import {avatar} from "@/styled-system/recipes";
+import {createStyleContext} from "@/utils/create-style-context";
+import {Avatar as parts} from "@ark-ui/react";
 
 const {withProvider, withContext} = createStyleContext(avatar);
 
 export const Avatar = withProvider(
 	styled(parts.Root, {
 		base: {
-			bg: 'bg.subtle',
+			bg: "bg.subtle",
 		},
 	}),
-	'root',
+	"root",
 );
 
 export const AvatarFallback = withContext(
 	styled(parts.Fallback, {
 		base: {
-			bg: 'transparent',
-			border: 'none',
-			lineHeight: 'none',
+			bg: "transparent",
+			border: "none",
+			lineHeight: "none",
 		},
 	}),
-	'fallback',
+	"fallback",
 );
 
-export const AvatarImage = withContext(styled(parts.Image), 'image');
+export const AvatarImage = withContext(styled(parts.Image), "image");

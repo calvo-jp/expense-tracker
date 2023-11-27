@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import {Button} from '@/components/button';
+import {Button} from "@/components/button";
 import {
 	Dialog,
 	DialogBackdrop,
@@ -10,16 +10,16 @@ import {
 	DialogPositioner,
 	DialogTitle,
 	DialogTrigger,
-} from '@/components/dialog';
-import {Icon} from '@/components/icon';
-import {MenuItem} from '@/components/menu';
-import {toast} from '@/components/toaster';
-import {Box, Flex, HStack, styled} from '@/styled-system/jsx';
-import {deleteExpense} from '@/utils/mutations';
-import {Portal} from '@ark-ui/react';
-import {Expense} from '@prisma/client';
-import {FileX2Icon} from 'lucide-react';
-import {useTransition} from 'react';
+} from "@/components/dialog";
+import {Icon} from "@/components/icon";
+import {MenuItem} from "@/components/menu";
+import {toast} from "@/components/toaster";
+import {Box, Flex, HStack, styled} from "@/styled-system/jsx";
+import {deleteExpense} from "@/utils/mutations";
+import {Portal} from "@ark-ui/react";
+import {Expense} from "@prisma/client";
+import {FileX2Icon} from "lucide-react";
+import {useTransition} from "react";
 
 interface DeleteExpenseProps {
 	data: Expense;
@@ -73,8 +73,8 @@ export function DeleteExpense(props: DeleteExpenseProps) {
 
 													api.close();
 													toast.success({
-														title: 'Success',
-														description: 'Record has been deleted',
+														title: "Success",
+														description: "Record has been deleted",
 													});
 												});
 											}}

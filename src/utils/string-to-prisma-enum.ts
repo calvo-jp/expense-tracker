@@ -17,7 +17,7 @@ export function stringToPrismaEnum<T extends PrismaStandardEnum>(
 	enum_: T,
 	value: unknown,
 ) {
-	if (typeof value !== 'string') return;
+	if (typeof value !== "string") return;
 
 	const l = Object.values(enum_);
 	const e = l.find((i) => normalize(i) === normalize(value));
@@ -25,4 +25,4 @@ export function stringToPrismaEnum<T extends PrismaStandardEnum>(
 	return e as keyof T | undefined;
 }
 
-const normalize = (s: string) => s.toLowerCase().replace(/\s/g, '');
+const normalize = (s: string) => s.toLowerCase().replace(/\s/g, "");

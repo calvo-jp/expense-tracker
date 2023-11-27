@@ -1,15 +1,15 @@
-import {Box, Flex, styled} from '@/styled-system/jsx';
-import {cookies} from 'next/headers';
-import {redirect} from 'next/navigation';
-import {PropsWithChildren} from 'react';
-import {Navbar} from './navbar';
-import {Sidebar} from './sidebar';
+import {Box, Flex, styled} from "@/styled-system/jsx";
+import {cookies} from "next/headers";
+import {redirect} from "next/navigation";
+import {PropsWithChildren} from "react";
+import {Navbar} from "./navbar";
+import {Sidebar} from "./sidebar";
 
 export const revalidate = 0;
 
 export default function Layout(props: PropsWithChildren) {
-	if (!cookies().has('user')) {
-		redirect('/login');
+	if (!cookies().has("user")) {
+		redirect("/login");
 	}
 
 	return (

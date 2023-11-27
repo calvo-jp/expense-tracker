@@ -1,8 +1,8 @@
-import {Box, styled} from '@/styled-system/jsx';
-import {Metadata} from 'next';
+import {Box, styled} from "@/styled-system/jsx";
+import {Metadata} from "next";
 
 export const metadata: Metadata = {
-	title: 'Settings',
+	title: "Settings",
 };
 
 export default function Settings() {

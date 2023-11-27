@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import {Icon} from '@/components/icon';
-import {MenuItem} from '@/components/menu';
-import {HStack, styled} from '@/styled-system/jsx';
-import {logout} from '@/utils/mutations';
-import {PowerIcon} from 'lucide-react';
-import {startTransition} from 'react';
+import {Icon} from "@/components/icon";
+import {MenuItem} from "@/components/menu";
+import {HStack, styled} from "@/styled-system/jsx";
+import {logout} from "@/utils/mutations";
+import {PowerIcon} from "lucide-react";
+import {startTransition} from "react";
 
 export function Signout() {
 	return (

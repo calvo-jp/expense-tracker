@@ -6,23 +6,23 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from '@/components/table';
-import {prisma} from '@/config/prisma';
-import {Box, Flex, Spacer, styled} from '@/styled-system/jsx';
-import {currencyFormatter} from '@/utils/currency-formatter';
-import {PaginationSchema} from '@/utils/types';
-import {DateRange} from '@prisma/client';
-import assert from 'assert';
-import {format, isSameMonth, isSameYear} from 'date-fns';
-import {Metadata} from 'next';
-import {cookies} from 'next/headers';
-import {Suspense} from 'react';
-import {PageControls} from '../page-controls';
-import {Export} from './export';
-import {Filter} from './filter';
+} from "@/components/table";
+import {prisma} from "@/config/prisma";
+import {Box, Flex, Spacer, styled} from "@/styled-system/jsx";
+import {currencyFormatter} from "@/utils/currency-formatter";
+import {PaginationSchema} from "@/utils/types";
+import {DateRange} from "@prisma/client";
+import assert from "assert";
+import {format, isSameMonth, isSameYear} from "date-fns";
+import {Metadata} from "next";
+import {cookies} from "next/headers";
+import {Suspense} from "react";
+import {PageControls} from "../page-controls";
+import {Export} from "./export";
+import {Filter} from "./filter";
 
 export const metadata: Metadata = {
-	title: 'Reports',
+	title: "Reports",
 };
 
 export default async function Reports({
@@ -30,7 +30,7 @@ export default async function Reports({
 }: {
 	searchParams: {[key: string]: string | string[]};
 }) {
-	const id = cookies().get('user')?.value;
+	const id = cookies().get("user")?.value;
 
 	assert(id);
 
@@ -45,7 +45,7 @@ export default async function Reports({
 	const reports = await prisma.report.findMany({
 		where: {user: {id}},
 		orderBy: {
-			createdAt: 'desc',
+			createdAt: "desc",
 		},
 		take: pagination.size,
 		skip: pagination.size * (pagination.page - 1),
@@ -118,13 +118,13 @@ async function BottomControls() {
 }
 
 function formatInclusionDate({start, until}: DateRange): string {
-	const sy = format(start, 'yyyy');
-	const sm = format(start, 'MMM');
-	const sd = format(start, 'd');
+	const sy = format(start, "yyyy");
+	const sm = format(start, "MMM");
+	const sd = format(start, "d");
 
-	const uy = format(until, 'yyyy');
-	const um = format(until, 'MMM');
-	const ud = format(until, 'd');
+	const uy = format(until, "yyyy");
+	const um = format(until, "MMM");
+	const ud = format(until, "d");
 
 	if (!isSameYear(start, until)) {
 		return `${sm} ${sd}, ${sy} - ${um} ${ud}, ${uy}`; /* Jan 1, 2022 - Jan 1,2023 */

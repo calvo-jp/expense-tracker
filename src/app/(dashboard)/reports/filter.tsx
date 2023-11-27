@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import {Button} from '@/components/button';
+import {Button} from "@/components/button";
 import {
 	DatePicker,
 	DatePickerContent,
@@ -22,7 +22,7 @@ import {
 	DatePickerView,
 	DatePickerViewControl,
 	DatePickerViewTrigger,
-} from '@/components/date-picker';
+} from "@/components/date-picker";
 import {
 	Drawer,
 	DrawerBackdrop,
@@ -33,10 +33,10 @@ import {
 	DrawerHeader,
 	DrawerPositioner,
 	DrawerTrigger,
-} from '@/components/drawer';
-import {Icon} from '@/components/icon';
-import {IconButton} from '@/components/icon-button';
-import {Input} from '@/components/input';
+} from "@/components/drawer";
+import {Icon} from "@/components/icon";
+import {IconButton} from "@/components/icon-button";
+import {Input} from "@/components/input";
 import {
 	NumberInput,
 	NumberInputControl,
@@ -44,7 +44,7 @@ import {
 	NumberInputIncrementTrigger,
 	NumberInputInput,
 	NumberInputLabel,
-} from '@/components/number-input';
+} from "@/components/number-input";
 import {
 	Select,
 	SelectContent,
@@ -57,10 +57,10 @@ import {
 	SelectPositioner,
 	SelectTrigger,
 	SelectValueText,
-} from '@/components/select';
-import {Flex, HStack} from '@/styled-system/jsx';
-import {Portal} from '@ark-ui/react';
-import {Frequency} from '@prisma/client';
+} from "@/components/select";
+import {Flex, HStack} from "@/styled-system/jsx";
+import {Portal} from "@ark-ui/react";
+import {Frequency} from "@prisma/client";
 import {
 	CalendarIcon,
 	CheckIcon,
@@ -70,7 +70,7 @@ import {
 	ChevronUpIcon,
 	ChevronsUpDownIcon,
 	SearchIcon,
-} from 'lucide-react';
+} from "lucide-react";
 
 export function Filter() {
 	return (
@@ -103,7 +103,7 @@ export function Filter() {
 								startOfWeek={1}
 								selectionMode="range"
 								positioning={{
-									placement: 'bottom-end',
+									placement: "bottom-end",
 								}}
 							>
 								<DatePickerLabel>Inclusion date</DatePickerLabel>
@@ -201,7 +201,7 @@ export function Filter() {
 													<DatePickerTable>
 														<DatePickerTableBody>
 															{api
-																.getMonthsGrid({columns: 4, format: 'short'})
+																.getMonthsGrid({columns: 4, format: "short"})
 																.map((months, id) => (
 																	<DatePickerTableRow key={id}>
 																		{months.map((month, id) => (

@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import {Button} from '@/components/button';
+import {Button} from "@/components/button";
 import {
 	Dialog,
 	DialogBackdrop,
@@ -8,21 +8,21 @@ import {
 	DialogContent,
 	DialogPositioner,
 	DialogTrigger,
-} from '@/components/dialog';
-import {ErrorMessage} from '@/components/error-message';
-import {Icon} from '@/components/icon';
-import {Input} from '@/components/input';
-import {Label} from '@/components/label';
-import {MenuItem} from '@/components/menu';
-import {toast} from '@/components/toaster';
-import {Flex, HStack, VStack, styled} from '@/styled-system/jsx';
-import {changePassword} from '@/utils/mutations';
-import {ChangePasswordSchema, TChangePasswordSchema} from '@/utils/types';
-import {Portal} from '@ark-ui/react';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {LockIcon} from 'lucide-react';
-import {useTransition} from 'react';
-import {useForm} from 'react-hook-form';
+} from "@/components/dialog";
+import {ErrorMessage} from "@/components/error-message";
+import {Icon} from "@/components/icon";
+import {Input} from "@/components/input";
+import {Label} from "@/components/label";
+import {MenuItem} from "@/components/menu";
+import {toast} from "@/components/toaster";
+import {Flex, HStack, VStack, styled} from "@/styled-system/jsx";
+import {changePassword} from "@/utils/mutations";
+import {ChangePasswordSchema, TChangePasswordSchema} from "@/utils/types";
+import {Portal} from "@ark-ui/react";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {LockIcon} from "lucide-react";
+import {useTransition} from "react";
+import {useForm} from "react-hook-form";
 
 export function ChangePassword() {
 	const [pending, startTransition] = useTransition();
@@ -30,9 +30,9 @@ export function ChangePassword() {
 	const form = useForm<TChangePasswordSchema>({
 		resolver: zodResolver(ChangePasswordSchema),
 		values: {
-			oldPassword: '',
-			newPassword: '',
-			confirmPassword: '',
+			oldPassword: "",
+			newPassword: "",
+			confirmPassword: "",
 		},
 	});
 
@@ -68,7 +68,7 @@ export function ChangePassword() {
 
 											if (error) {
 												toast.error({
-													title: 'Error',
+													title: "Error",
 													description: error,
 												});
 
@@ -78,8 +78,8 @@ export function ChangePassword() {
 											api.close();
 											form.reset();
 											toast.error({
-												title: 'Success',
-												description: 'Password has been updated',
+												title: "Success",
+												description: "Password has been updated",
 											});
 										});
 									})}
@@ -93,7 +93,7 @@ export function ChangePassword() {
 												id="change-password.old-password"
 												type="password"
 												placeholder="Old Password"
-												{...form.register('oldPassword')}
+												{...form.register("oldPassword")}
 											/>
 											<ErrorMessage>
 												{form.formState.errors.oldPassword?.message}
@@ -107,7 +107,7 @@ export function ChangePassword() {
 												id="change-password.new-password"
 												type="password"
 												placeholder="New Password"
-												{...form.register('newPassword')}
+												{...form.register("newPassword")}
 											/>
 											<ErrorMessage>
 												{form.formState.errors.newPassword?.message}
@@ -121,7 +121,7 @@ export function ChangePassword() {
 												id="change-password.confirm-password"
 												type="password"
 												placeholder="Confirm Password"
-												{...form.register('confirmPassword')}
+												{...form.register("confirmPassword")}
 											/>
 											<ErrorMessage>
 												{form.formState.errors.confirmPassword?.message}

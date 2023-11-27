@@ -7,12 +7,12 @@ import {
 	DrawerHeader,
 	DrawerPositioner,
 	DrawerTrigger,
-} from '@/components/drawer';
-import {Icon} from '@/components/icon';
-import {IconButton} from '@/components/icon-button';
-import {Flex} from '@/styled-system/jsx';
-import {Portal} from '@ark-ui/react';
-import {BellIcon, ChevronRightIcon} from 'lucide-react';
+} from "@/components/drawer";
+import {Icon} from "@/components/icon";
+import {IconButton} from "@/components/icon-button";
+import {Flex} from "@/styled-system/jsx";
+import {Portal} from "@ark-ui/react";
+import {BellIcon, ChevronRightIcon} from "lucide-react";
 
 export function Notifications() {
 	return (

@@ -1,15 +1,15 @@
-import {Icon} from '@/components/icon';
-import {Link} from '@/components/next-js/link';
-import {Box, styled} from '@/styled-system/jsx';
-import {logout} from '@/utils/mutations';
-import {ark} from '@ark-ui/react';
+import {Icon} from "@/components/icon";
+import {Link} from "@/components/next-js/link";
+import {Box, styled} from "@/styled-system/jsx";
+import {logout} from "@/utils/mutations";
+import {ark} from "@ark-ui/react";
 import {
 	CoinsIcon,
 	FilePieChartIcon,
 	LineChartIcon,
 	PowerIcon,
 	SettingsIcon,
-} from 'lucide-react';
+} from "lucide-react";
 
 export function Sidebar() {
 	return (
@@ -87,26 +87,26 @@ const SidebarButton = styled(
 	ark.button,
 	{
 		base: {
-			w: 'full',
+			w: "full",
 			px: 4,
 			py: 2.5,
-			color: 'fg.muted',
-			cursor: 'pointer',
-			rounded: 'sm',
-			display: 'flex',
-			alignItems: 'center',
+			color: "fg.muted",
+			cursor: "pointer",
+			rounded: "sm",
+			display: "flex",
+			alignItems: "center",
 			gap: 3,
 			_hover: {
-				color: 'fg.default',
+				color: "fg.default",
 			},
 			_selected: {
-				color: 'fg.default',
+				color: "fg.default",
 			},
 		},
 	},
 	{
 		defaultProps: {
-			type: 'button',
+			type: "button",
 		},
 	},
 );

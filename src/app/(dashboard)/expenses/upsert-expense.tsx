@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import {Button} from '@/components/button';
+import {Button} from "@/components/button";
 import {
 	Combobox,
 	ComboboxContent,
@@ -13,7 +13,7 @@ import {
 	ComboboxLabel,
 	ComboboxPositioner,
 	ComboboxTrigger,
-} from '@/components/combobox';
+} from "@/components/combobox";
 import {
 	DatePicker,
 	DatePickerContent,
@@ -35,7 +35,7 @@ import {
 	DatePickerView,
 	DatePickerViewControl,
 	DatePickerViewTrigger,
-} from '@/components/date-picker';
+} from "@/components/date-picker";
 import {
 	Dialog,
 	DialogBackdrop,
@@ -43,12 +43,12 @@ import {
 	DialogContent,
 	DialogPositioner,
 	DialogTrigger,
-} from '@/components/dialog';
-import {ErrorMessage} from '@/components/error-message';
-import {Icon} from '@/components/icon';
-import {IconButton} from '@/components/icon-button';
-import {Input} from '@/components/input';
-import {Label} from '@/components/label';
+} from "@/components/dialog";
+import {ErrorMessage} from "@/components/error-message";
+import {Icon} from "@/components/icon";
+import {IconButton} from "@/components/icon-button";
+import {Input} from "@/components/input";
+import {Label} from "@/components/label";
 import {
 	NumberInput,
 	NumberInputControl,
@@ -56,18 +56,18 @@ import {
 	NumberInputIncrementTrigger,
 	NumberInputInput,
 	NumberInputLabel,
-} from '@/components/number-input';
-import {Textarea} from '@/components/textarea';
-import {toast} from '@/components/toaster';
-import {Flex, HStack, VStack, styled} from '@/styled-system/jsx';
-import {createExpense, updateExpense} from '@/utils/mutations';
-import {pascalToSentenceCase} from '@/utils/pascal-to-sentence-case';
-import {stringToPrismaEnum} from '@/utils/string-to-prisma-enum';
-import {TUpsertExpenseSchema, UpsertExpenseSchema} from '@/utils/types';
-import {Portal} from '@ark-ui/react';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {Expense, ExpenseCategory} from '@prisma/client';
-import {format} from 'date-fns';
+} from "@/components/number-input";
+import {Textarea} from "@/components/textarea";
+import {toast} from "@/components/toaster";
+import {Flex, HStack, VStack, styled} from "@/styled-system/jsx";
+import {createExpense, updateExpense} from "@/utils/mutations";
+import {pascalToSentenceCase} from "@/utils/pascal-to-sentence-case";
+import {stringToPrismaEnum} from "@/utils/string-to-prisma-enum";
+import {TUpsertExpenseSchema, UpsertExpenseSchema} from "@/utils/types";
+import {Portal} from "@ark-ui/react";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {Expense, ExpenseCategory} from "@prisma/client";
+import {format} from "date-fns";
 import {
 	CalendarIcon,
 	CheckIcon,
@@ -76,16 +76,16 @@ import {
 	ChevronRightIcon,
 	ChevronUpIcon,
 	ChevronsUpDownIcon,
-} from 'lucide-react';
-import {ReactNode, useEffect, useTransition} from 'react';
-import {useForm} from 'react-hook-form';
+} from "lucide-react";
+import {ReactNode, useEffect, useTransition} from "react";
+import {useForm} from "react-hook-form";
 
 type UpsertExpenseProps = (
 	| {
-			type: 'create';
+			type: "create";
 	  }
 	| {
-			type: 'update';
+			type: "update";
 			data: Expense;
 	  }
 ) & {
@@ -100,13 +100,13 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 	});
 
 	useEffect(() => {
-		if (props.type === 'update') {
-			form.setValue('amount', props.data.amount);
-			form.setValue('category', props.data.category);
-			form.setValue('description', props.data.description);
-			form.setValue('transactionDate', props.data.transactionDate);
+		if (props.type === "update") {
+			form.setValue("amount", props.data.amount);
+			form.setValue("category", props.data.category);
+			form.setValue("description", props.data.description);
+			form.setValue("transactionDate", props.data.transactionDate);
 
-			props.data.location && form.setValue('location', props.data.location);
+			props.data.location && form.setValue("location", props.data.location);
 		}
 	}, [form, props]);
 
@@ -128,13 +128,13 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 									onSubmit={form.handleSubmit((data) => {
 										return startTransition(async () => {
 											const error =
-												props.type === 'update'
+												props.type === "update"
 													? await updateExpense(props.data.id, data)
 													: await createExpense(data);
 
 											if (error) {
 												toast.error({
-													title: 'Error',
+													title: "Error",
 													description: error,
 												});
 
@@ -144,11 +144,11 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 											api.close();
 											form.reset();
 											toast.success({
-												title: 'Success',
+												title: "Success",
 												description:
-													props.type === 'update'
-														? 'Record has been updated'
-														: 'New record has been added',
+													props.type === "update"
+														? "Record has been updated"
+														: "New record has been added",
 											});
 										});
 									})}
@@ -156,10 +156,10 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 									<VStack gap={3} alignItems="stretch">
 										<Combobox
 											items={categories}
-											value={[form.watch('category')]}
+											value={[form.watch("category")]}
 											onValueChange={(details) => {
 												form.setValue(
-													'category',
+													"category",
 													stringToPrismaEnum(
 														ExpenseCategory,
 														details.value.at(0),
@@ -232,7 +232,7 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 												rows={3}
 												resize="none"
 												placeholder="Enter description"
-												{...form.register('description')}
+												{...form.register("description")}
 											/>
 											<ErrorMessage>
 												{form.formState.errors.description?.message}
@@ -247,7 +247,7 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 												id="expenses.create-new.location"
 												size="lg"
 												placeholder="Enter location"
-												{...form.register('location')}
+												{...form.register("location")}
 											/>
 											<ErrorMessage>
 												{form.formState.errors.location?.message}
@@ -258,22 +258,22 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 											startOfWeek={1}
 											selectionMode="single"
 											positioning={{
-												placement: 'bottom-end',
+												placement: "bottom-end",
 											}}
 											value={
-												form.watch('transactionDate')
+												form.watch("transactionDate")
 													? [
 															format(
-																form.watch('transactionDate'),
-																'yyyy-MM-dd',
+																form.watch("transactionDate"),
+																"yyyy-MM-dd",
 															),
 													  ]
 													: undefined
 											}
 											onValueChange={(details) => {
 												form.setValue(
-													'transactionDate',
-													details.value.at(0)?.toDate('utc') ?? new Date(),
+													"transactionDate",
+													details.value.at(0)?.toDate("utc") ?? new Date(),
 													{shouldValidate: true},
 												);
 											}}
@@ -389,7 +389,7 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 																		{api
 																			.getMonthsGrid({
 																				columns: 4,
-																				format: 'short',
+																				format: "short",
 																			})
 																			.map((months, id) => (
 																				<DatePickerTableRow key={id}>
@@ -471,9 +471,9 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 
 										<NumberInput
 											size="lg"
-											value={form.watch('amount', 0).toString()}
+											value={form.watch("amount", 0).toString()}
 											onValueChange={(details) => {
-												form.setValue('amount', details.valueAsNumber, {
+												form.setValue("amount", details.valueAsNumber, {
 													shouldValidate: true,
 												});
 											}}

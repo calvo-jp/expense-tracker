@@ -1,4 +1,4 @@
-import {Avatar, AvatarFallback} from '@/components/avatar';
+import {Avatar, AvatarFallback} from "@/components/avatar";
 import {
 	Menu,
 	MenuContent,
@@ -6,18 +6,18 @@ import {
 	MenuPositioner,
 	MenuSeparator,
 	MenuTrigger,
-} from '@/components/menu';
-import {prisma} from '@/config/prisma';
-import {Box, Flex, Spacer, styled} from '@/styled-system/jsx';
-import {getInitials} from '@/utils/get-initials';
-import {Portal} from '@ark-ui/react';
-import assert from 'assert';
-import {cookies} from 'next/headers';
-import {Logo} from '../logo';
-import {ChangePassword} from './change-password';
-import {Notifications} from './notifications';
-import {Signout} from './sign-out';
-import {UpdateProfile} from './update-profile';
+} from "@/components/menu";
+import {prisma} from "@/config/prisma";
+import {Box, Flex, Spacer, styled} from "@/styled-system/jsx";
+import {getInitials} from "@/utils/get-initials";
+import {Portal} from "@ark-ui/react";
+import assert from "assert";
+import {cookies} from "next/headers";
+import {Logo} from "../logo";
+import {ChangePassword} from "./change-password";
+import {Notifications} from "./notifications";
+import {Signout} from "./sign-out";
+import {UpdateProfile} from "./update-profile";
 
 export async function Navbar() {
 	return (
@@ -46,7 +46,7 @@ export async function Navbar() {
 }
 
 async function ProfileMenu() {
-	const id = cookies().get('user')?.value;
+	const id = cookies().get("user")?.value;
 
 	assert(id);
 
@@ -55,7 +55,7 @@ async function ProfileMenu() {
 	return (
 		<Menu
 			positioning={{
-				placement: 'bottom-end',
+				placement: "bottom-end",
 			}}
 		>
 			<MenuTrigger asChild>
