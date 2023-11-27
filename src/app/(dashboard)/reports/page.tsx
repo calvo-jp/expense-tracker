@@ -9,7 +9,7 @@ import {
 } from '@/components/table';
 import {prisma} from '@/config/prisma';
 import {Box, Flex, Spacer, styled} from '@/styled-system/jsx';
-import {currencyFormatter} from '@/utils/formatter';
+import {currencyFormatter} from '@/utils/currency-formatter';
 import {PaginationSchema} from '@/utils/schema';
 import {DateRange} from '@prisma/client';
 import assert from 'assert';

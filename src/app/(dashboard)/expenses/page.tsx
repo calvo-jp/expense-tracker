@@ -27,7 +27,7 @@ import {
 } from '@/components/tooltip';
 import {prisma} from '@/config/prisma';
 import {Box, Flex, HStack, Spacer, styled} from '@/styled-system/jsx';
-import {currencyFormatter} from '@/utils/formatter';
+import {currencyFormatter} from '@/utils/currency-formatter';
 import {PaginationSchema} from '@/utils/schema';
 import assert from 'assert';
 import {format, formatDistanceToNow} from 'date-fns';
