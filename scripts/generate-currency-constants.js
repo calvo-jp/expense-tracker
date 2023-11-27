@@ -1,6 +1,6 @@
 // @ts-check
 
-const fs = require("fs");
+const fs = require("fs/promises");
 const path = require("path");
 const prettier = require("prettier");
 
@@ -37,16 +37,17 @@ async function generateCurrencyConstant() {
 	export const currencies = ${JSON.stringify(currencies)};
 	`;
 
+	const prettierrc = await prettier.resolveConfig(process.cwd());
 	const formatted = await prettier.format(contents, {
-		...(await prettier.resolveConfig(process.cwd())),
+		...prettierrc,
 		parser: "typescript",
 	});
 
 	try {
-		fs.mkdirSync(directory, {recursive: true});
+		await fs.mkdir(directory, {recursive: true});
 	} catch {
 	} finally {
-		fs.writeFileSync(filepath, formatted);
+		await fs.writeFile(filepath, formatted);
 	}
 }
 
