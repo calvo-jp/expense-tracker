@@ -9,19 +9,60 @@ import {redirect} from 'next/navigation';
 import {
 	ChangePasswordSchema,
 	CredentialsSchema,
+	UpdateProfileSchema,
 	UpsertExpenseSchema,
 } from './schema';
+
+/*
+ *------------------- PROFILE -------------------
+ */
+
+export async function updateProfile(input: unknown) {
+	const id = cookies().get('user')?.value;
+
+	if (!id) return 'Auth required';
+
+	const parsed = UpdateProfileSchema.safeParse(input);
+
+	if (!parsed.success) return parsed.error.errors[0].message;
+
+	const {name, email} = parsed.data;
+
+	/* duplicate email */
+	if (
+		email &&
+		(await prisma.user.count({where: {email, AND: {NOT: {id}}}})) > 0
+	) {
+		return 'Email already in use';
+	}
+
+	try {
+		await prisma.user.update({
+			where: {id},
+			data: {
+				name,
+				email,
+			},
+		});
+
+		revalidatePath('/(dashboard)', 'layout');
+		return null;
+	} catch {
+		return 'Something went wrong';
+	}
+}
 
 export async function changePassword(input: unknown) {
 	const id = cookies().get('user')?.value;
 
 	if (!id) return 'Auth required';
 
+	const parsed = ChangePasswordSchema.safeParse(input);
+
+	if (!parsed.success) return parsed.error.errors[0].message;
+
 	try {
 		const user = await prisma.user.findUniqueOrThrow({where: {id}});
-		const parsed = ChangePasswordSchema.safeParse(input);
-
-		if (!parsed.success) return parsed.error.errors[0].message;
 
 		const matches = await bcrypt.compare(
 			parsed.data.oldPassword,

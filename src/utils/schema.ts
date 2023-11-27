@@ -16,6 +16,21 @@ export const CredentialsSchema = z.object({
 		.max(150, 'Password too long'),
 });
 
+export type TUpdateProfileSchema = z.infer<typeof UpdateProfileSchema>;
+export const UpdateProfileSchema = z.object({
+	name: z
+		.string()
+		.optional()
+		.nullable()
+		.transform((v) => (!v ? undefined : v)),
+	email: z
+		.string()
+		.email()
+		.optional()
+		.nullable()
+		.transform((v) => (!v ? undefined : v)),
+});
+
 export type TChangePasswordSchema = z.infer<typeof ChangePasswordSchema>;
 export const ChangePasswordSchema = z
 	.object({

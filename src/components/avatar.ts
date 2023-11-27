@@ -7,6 +7,24 @@ import {Avatar as parts} from '@ark-ui/react';
 
 const {withProvider, withContext} = createStyleContext(avatar);
 
-export const Avatar = withProvider(styled(parts.Root), 'root');
-export const AvatarFallback = withContext(styled(parts.Fallback), 'fallback');
+export const Avatar = withProvider(
+	styled(parts.Root, {
+		base: {
+			bg: 'bg.subtle',
+		},
+	}),
+	'root',
+);
+
+export const AvatarFallback = withContext(
+	styled(parts.Fallback, {
+		base: {
+			bg: 'transparent',
+			border: 'none',
+			lineHeight: 'none',
+		},
+	}),
+	'fallback',
+);
+
 export const AvatarImage = withContext(styled(parts.Image), 'image');

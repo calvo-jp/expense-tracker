@@ -20,10 +20,11 @@ export function Sidebar() {
 				bg="bg.canvas"
 				top="token(sizes.navbar.height)"
 				pos="fixed"
+				overflowY="auto"
 				flexShrink={0}
 				borderRightWidth="1px"
 			>
-				<styled.ul py={6} px={4}>
+				<styled.ul py={6} px={4} flexGrow={1}>
 					<styled.li>
 						<SidebarButton asChild>
 							<Link href="/dashboard">

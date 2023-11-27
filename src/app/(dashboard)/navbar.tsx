@@ -4,10 +4,12 @@ import {
 	MenuContent,
 	MenuItemGroup,
 	MenuPositioner,
+	MenuSeparator,
 	MenuTrigger,
 } from '@/components/menu';
 import {prisma} from '@/config/prisma';
 import {Box, Flex, Spacer, styled} from '@/styled-system/jsx';
+import {getInitials} from '@/utils/get-initials';
 import {Portal} from '@ark-ui/react';
 import assert from 'assert';
 import {cookies} from 'next/headers';
@@ -15,6 +17,7 @@ import {Logo} from '../logo';
 import {ChangePassword} from './change-password';
 import {Notifications} from './notifications';
 import {Signout} from './sign-out';
+import {UpdateProfile} from './update-profile';
 
 export async function Navbar() {
 	return (
@@ -44,10 +47,15 @@ export async function Navbar() {
 
 async function ProfileMenu() {
 	const id = cookies().get('user')?.value;
+
 	assert(id);
+
 	const user = await prisma.user.findUniqueOrThrow({
 		where: {id},
 		select: {
+			id: true,
+			name: true,
+			email: true,
 			username: true,
 		},
 	});
@@ -62,7 +70,7 @@ async function ProfileMenu() {
 				<styled.button cursor="pointer">
 					<Avatar>
 						<AvatarFallback>
-							{user.username.charAt(0).toUpperCase()}
+							{getInitials(user.name ?? user.username)}
 						</AvatarFallback>
 					</Avatar>
 				</styled.button>
@@ -72,6 +80,8 @@ async function ProfileMenu() {
 				<MenuPositioner>
 					<MenuContent w="14rem">
 						<MenuItemGroup id="navbar.profile-settings">
+							<UpdateProfile __SSR_DATA={{user}} />
+							<MenuSeparator />
 							<ChangePassword />
 							<Signout />
 						</MenuItemGroup>

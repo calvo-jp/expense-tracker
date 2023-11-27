@@ -1,5 +1,6 @@
 'use client';
 
+import {Avatar, AvatarFallback} from '@/components/avatar';
 import {Button} from '@/components/button';
 import {
 	Dialog,
@@ -10,42 +11,65 @@ import {
 	DialogTrigger,
 } from '@/components/dialog';
 import {ErrorMessage} from '@/components/error-message';
-import {Icon} from '@/components/icon';
 import {Input} from '@/components/input';
 import {Label} from '@/components/label';
 import {MenuItem} from '@/components/menu';
 import {toast} from '@/components/toaster';
-import {Flex, HStack, VStack, styled} from '@/styled-system/jsx';
-import {changePassword} from '@/utils/actions';
-import {ChangePasswordSchema, TChangePasswordSchema} from '@/utils/schema';
+import {Box, Flex, HStack, VStack, styled} from '@/styled-system/jsx';
+import {updateProfile} from '@/utils/actions';
+import {getInitials} from '@/utils/get-initials';
+import {TUpdateProfileSchema, UpdateProfileSchema} from '@/utils/schema';
 import {Portal} from '@ark-ui/react';
 import {zodResolver} from '@hookform/resolvers/zod';
-import {LockIcon} from 'lucide-react';
-import {useTransition} from 'react';
+import {User} from '@prisma/client';
+import {useEffect, useTransition} from 'react';
 import {useForm} from 'react-hook-form';
 
-export function ChangePassword() {
+interface UpdateProfileProps {
+	__SSR_DATA: {user: Pick<User, 'id' | 'name' | 'email' | 'username'>};
+}
+
+export function UpdateProfile({__SSR_DATA: {user}}: UpdateProfileProps) {
 	const [pending, startTransition] = useTransition();
 
-	const form = useForm<TChangePasswordSchema>({
-		resolver: zodResolver(ChangePasswordSchema),
+	const form = useForm<TUpdateProfileSchema>({
+		resolver: zodResolver(UpdateProfileSchema),
+		values: {
+			name: '',
+			email: '',
+		},
 	});
 
+	useEffect(() => {
+		user.name && form.setValue('name', user.name);
+		user.email && form.setValue('email', user.email);
+	}, [form, user.email, user.name]);
+
 	return (
-		<Dialog
-			unmountOnExit
-			closeOnEscapeKeyDown={false}
-			closeOnInteractOutside={false}
-		>
+		<Dialog>
 			{(api) => (
 				<>
 					<DialogTrigger asChild>
-						<MenuItem id="navbar.profile-settings.change-password">
+						<MenuItem
+							id="navbar.profile-settings.update-profile"
+							h="auto"
+							py={2}
+						>
 							<HStack>
-								<Icon>
-									<LockIcon />
-								</Icon>
-								<styled.span>Change Password</styled.span>
+								<Avatar>
+									<AvatarFallback>
+										{getInitials(user.name ?? user.username)}
+									</AvatarFallback>
+								</Avatar>
+
+								<Box lineHeight="none">
+									<styled.div fontSize="md" fontWeight="bold">
+										{user.name ?? 'unnamed'}
+									</styled.div>
+									<styled.div mt={0.5} color="fg.muted">
+										@{user.username}
+									</styled.div>
+								</Box>
 							</HStack>
 						</MenuItem>
 					</DialogTrigger>
@@ -53,13 +77,13 @@ export function ChangePassword() {
 					<Portal>
 						<DialogBackdrop />
 						<DialogPositioner>
-							<DialogContent asChild>
+							<DialogContent>
 								<styled.form
 									w="25rem"
 									p={8}
 									onSubmit={form.handleSubmit((data) => {
 										return startTransition(async () => {
-											const error = await changePassword(data);
+											const error = await updateProfile(data);
 
 											if (error) {
 												toast.error({
@@ -71,55 +95,34 @@ export function ChangePassword() {
 											}
 
 											api.close();
-											form.reset();
 											toast.error({
 												title: 'Success',
-												description: 'Password has been updated',
+												description: 'Profile has been updated',
 											});
 										});
 									})}
 								>
 									<VStack alignItems="stretch" gap={3}>
 										<Flex flexDir="column" gap={1.5}>
-											<Label htmlFor="change-password.old-password">
-												Old Password
-											</Label>
+											<Label htmlFor="update-profile.name">Name</Label>
 											<Input
-												id="change-password.old-password"
-												type="password"
-												placeholder="Old Password"
-												{...form.register('oldPassword')}
+												id="update-profile.name"
+												placeholder="Name"
+												{...form.register('name')}
 											/>
 											<ErrorMessage>
-												{form.formState.errors.oldPassword?.message}
+												{form.formState.errors.name?.message}
 											</ErrorMessage>
 										</Flex>
 										<Flex flexDir="column" gap={1.5}>
-											<Label htmlFor="change-password.new-password">
-												New Password
-											</Label>
+											<Label htmlFor="update-profile.email">Email</Label>
 											<Input
-												id="change-password.new-password"
-												type="password"
-												placeholder="New Password"
-												{...form.register('newPassword')}
+												id="update-profile.email"
+												placeholder="Email"
+												{...form.register('email')}
 											/>
 											<ErrorMessage>
-												{form.formState.errors.newPassword?.message}
-											</ErrorMessage>
-										</Flex>
-										<Flex flexDir="column" gap={1.5}>
-											<Label htmlFor="change-password.confirm-password">
-												Confirm Password
-											</Label>
-											<Input
-												id="change-password.confirm-password"
-												type="password"
-												placeholder="Confirm Password"
-												{...form.register('confirmPassword')}
-											/>
-											<ErrorMessage>
-												{form.formState.errors.confirmPassword?.message}
+												{form.formState.errors.email?.message}
 											</ErrorMessage>
 										</Flex>
 									</VStack>
