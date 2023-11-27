@@ -1,23 +1,27 @@
-'use client';
+"use client";
 
-import {Button} from '@/components/button';
-import {Input} from '@/components/input';
-import {Link} from '@/components/next-js/link';
-import {toast} from '@/components/toaster';
-import {Flex, styled} from '@/styled-system/jsx';
-import {login} from '@/utils/mutations';
-import {CredentialsSchema} from '@/utils/types';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {useRouter} from 'next/navigation';
-import {useTransition} from 'react';
-import {useForm} from 'react-hook-form';
+import {Button} from "@/components/button";
+import {Input} from "@/components/input";
+import {Link} from "@/components/next-js/link";
+import {toast} from "@/components/toaster";
+import {Flex, styled} from "@/styled-system/jsx";
+import {login} from "@/utils/mutations";
+import {LoginSchema, TLoginSchema} from "@/utils/types";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {useRouter} from "next/navigation";
+import {useTransition} from "react";
+import {useForm} from "react-hook-form";
 
 export default function Login() {
 	const [pending, startTransition] = useTransition();
 
 	const router = useRouter();
-	const form = useForm({
-		resolver: zodResolver(CredentialsSchema),
+	const form = useForm<TLoginSchema>({
+		resolver: zodResolver(LoginSchema),
+		values: {
+			username: "",
+			password: "",
+		},
 	});
 
 	return (
@@ -29,11 +33,11 @@ export default function Login() {
 
 						if (error) {
 							toast.error({
-								title: 'Error',
+								title: "Error",
 								description: error,
 							});
 						} else {
-							router.push('/dashboard');
+							router.push("/dashboard");
 						}
 					});
 				})}
@@ -41,14 +45,14 @@ export default function Login() {
 				<Input
 					size="xl"
 					placeholder="Username"
-					{...form.register('username')}
+					{...form.register("username")}
 				/>
 				<Input
 					mt={6}
 					size="xl"
 					type="password"
 					placeholder="Password"
-					{...form.register('password')}
+					{...form.register("password")}
 				/>
 
 				<Button type="submit" w="full" mt={8} size="xl" disabled={pending}>
@@ -61,8 +65,8 @@ export default function Login() {
 				<Link
 					href="/register"
 					_hover={{
-						textDecoration: 'underline',
-						textUnderlineOffset: '2px',
+						textDecoration: "underline",
+						textUnderlineOffset: "2px",
 					}}
 				>
 					Register

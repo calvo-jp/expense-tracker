@@ -1,19 +1,25 @@
-import {stringToPrismaEnum} from '@/utils/string-to-prisma-enum';
-import {ExpenseCategory} from '@prisma/client';
-import {z} from 'zod';
+import {stringToPrismaEnum} from "@/utils/string-to-prisma-enum";
+import {ExpenseCategory} from "@prisma/client";
+import {z} from "zod";
 
-export type TCredentialsSchema = z.infer<typeof CredentialsSchema>;
-export const CredentialsSchema = z.object({
+export type TLoginSchema = z.infer<typeof LoginSchema>;
+export const LoginSchema = z.object({
 	username: z
 		.string()
-		.min(5, 'Username too short')
-		.max(25, 'Username too long')
-		.regex(/^[a-z][a-z0-9]{4,}$/i, 'Invalid username')
+		.min(5, "Username too short")
+		.max(25, "Username too long")
+		.regex(/^[a-z][a-z0-9]{4,}$/i, "Invalid username")
 		.trim(),
 	password: z
 		.string()
-		.min(8, 'Password too short')
-		.max(150, 'Password too long'),
+		.min(8, "Password too short")
+		.max(150, "Password too long"),
+});
+
+export type TRegisterSchema = z.infer<typeof RegisterSchema>;
+export const RegisterSchema = LoginSchema.extend({
+	name: z.string().min(4, "Name too short").max(50, "Name too long"),
+	email: z.string().email(),
 });
 
 export type TUpdateProfileSchema = z.infer<typeof UpdateProfileSchema>;
@@ -36,19 +42,19 @@ export const ChangePasswordSchema = z
 	.object({
 		oldPassword: z
 			.string()
-			.min(8, 'Old password too short')
-			.max(150, 'Old password too long'),
+			.min(8, "Old password too short")
+			.max(150, "Old password too long"),
 		newPassword: z
 			.string()
-			.min(8, 'Password too short')
-			.max(150, 'Password too long'),
+			.min(8, "Password too short")
+			.max(150, "Password too long"),
 		confirmPassword: z.string(),
 	})
 	.superRefine(({newPassword, confirmPassword}, ctx) => {
 		if (newPassword !== confirmPassword) {
 			ctx.addIssue({
-				code: 'custom',
-				path: ['confirmPassword'],
+				code: "custom",
+				path: ["confirmPassword"],
 				message: "Passwords don't match",
 			});
 		}
