@@ -34,7 +34,7 @@ export function UpdateProfile({__SSR_DATA: {user}}: UpdateProfileProps) {
 
 	const form = useForm<TUpdateProfileSchema>({
 		resolver: zodResolver(UpdateProfileSchema),
-		values: {
+		defaultValues: {
 			name: "",
 			email: "",
 		},

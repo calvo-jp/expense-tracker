@@ -19,7 +19,7 @@ export default function Login() {
 	const router = useRouter();
 	const form = useForm<TLoginSchema>({
 		resolver: zodResolver(LoginSchema),
-		values: {
+		defaultValues: {
 			username: "",
 			password: "",
 		},

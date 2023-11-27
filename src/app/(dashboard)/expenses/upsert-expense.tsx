@@ -97,6 +97,13 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 
 	const form = useForm<TUpsertExpenseSchema>({
 		resolver: zodResolver(UpsertExpenseSchema),
+		defaultValues: {
+			amount: 100,
+			category: ExpenseCategory.Others,
+			location: "",
+			description: "",
+			transactionDate: new Date(),
+		},
 	});
 
 	useEffect(() => {

@@ -19,7 +19,7 @@ export default function Register() {
 	const router = useRouter();
 	const form = useForm<TRegisterSchema>({
 		resolver: zodResolver(RegisterSchema),
-		values: {
+		defaultValues: {
 			name: "",
 			email: "",
 			username: "",
