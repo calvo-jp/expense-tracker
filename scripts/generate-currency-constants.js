@@ -25,7 +25,11 @@ async function generateCurrencyConstants() {
 				name,
 			})),
 		)
-		.flat();
+		.flat()
+		.filter((v, i, l) => {
+			return l.findIndex((o) => o.abbr === v.abbr) === i;
+		})
+		.sort((i, j) => i.abbr.localeCompare(j.abbr));
 
 	const contents = `
 
