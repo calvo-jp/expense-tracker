@@ -18,8 +18,15 @@ export const Tooltip = withProvider(
 		},
 	),
 );
-
-export const TooltipArrow = withContext(styled(parts.Arrow), "arrow");
+export const TooltipArrow = withContext(
+	styled(parts.Arrow, {
+		base: {
+			"--arrow-size": "token(sizes.3)",
+			"--arrow-background": "colors.fg.default",
+		},
+	}),
+	"arrow",
+);
 export const TooltipArrowTip = withContext(styled(parts.ArrowTip), "arrowTip");
 export const TooltipContent = withContext(styled(parts.Content), "content");
 export const TooltipPositioner = withContext(

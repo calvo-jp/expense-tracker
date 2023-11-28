@@ -109,15 +109,57 @@ export default async function Expenses({
 					WebkitOverflowScrolling="touch"
 					borderWidth="1px"
 				>
-					<Table variant="outline" border="none">
+					<Table
+						pos="relative"
+						variant="outline"
+						border="none"
+						borderCollapse="separate"
+						borderSpacing={0}
+						css={{
+							"& thead": {
+								bg: "none",
+							},
+							"& tfoot": {
+								border: "none",
+								"& td": {
+									borderBottom: "none",
+								},
+							},
+							"& tr": {
+								border: "none",
+							},
+							"& th": {
+								bg: "bg.subtle",
+								border: "none",
+								borderLeft: "1px solid token(colors.border.subtle)",
+								borderBottom: "1px solid token(colors.border.subtle)",
+								_first: {
+									borderLeft: "none",
+								},
+							},
+							"& td": {
+								bg: "bg.default",
+								border: "none",
+								borderLeft: "1px solid token(colors.border.subtle)",
+								borderBottom: "1px solid token(colors.border.subtle)",
+								_first: {
+									borderLeft: "none",
+								},
+							},
+						}}
+					>
 						<TableHeader>
 							<TableRow>
 								<TableHead>Category</TableHead>
 								<TableHead>Description</TableHead>
+								<TableHead>Amount</TableHead>
 								<TableHead>Location</TableHead>
 								<TableHead>Transaction date</TableHead>
-								<TableHead>Amount</TableHead>
-								<TableHead>Actions</TableHead>
+								<TableHead>Date Created</TableHead>
+								<TableHead>Date Updated</TableHead>
+								<TableHead w="0" pos="sticky" right={0}>
+									Actions
+								</TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>
@@ -128,6 +170,9 @@ export default async function Expenses({
 										<styled.div maxW="8rem" truncate>
 											{expense.description}
 										</styled.div>
+									</TableCell>
+									<TableCell fontVariantNumeric="tabular-nums">
+										{currencyFormatter.format(expense.amount, user?.currency)}
 									</TableCell>
 									<TableCell>
 										<styled.div maxW="5rem" truncate>
@@ -149,24 +194,61 @@ export default async function Expenses({
 											</TooltipTrigger>
 											<TooltipPositioner>
 												<TooltipContent>
-													<TooltipArrow
-														css={{
-															"--arrow-size": "token(sizes.3)",
-															"--arrow-background": "colors.fg.default",
-														}}
-													>
+													<TooltipArrow>
 														<TooltipArrowTip />
 													</TooltipArrow>
-
 													{format(expense.transactionDate, "yyyy MMM dd")}
 												</TooltipContent>
 											</TooltipPositioner>
 										</Tooltip>
 									</TableCell>
-									<TableCell fontVariantNumeric="tabular-nums">
-										{currencyFormatter.format(expense.amount, user?.currency)}
+									<TableCell>
+										<Tooltip
+											positioning={{
+												placement: "right",
+											}}
+										>
+											<TooltipTrigger asChild>
+												<styled.span>
+													{formatDistanceToNow(expense.createdAt, {
+														addSuffix: true,
+													})}
+												</styled.span>
+											</TooltipTrigger>
+											<TooltipPositioner>
+												<TooltipContent>
+													<TooltipArrow>
+														<TooltipArrowTip />
+													</TooltipArrow>
+													{format(expense.createdAt, "yyyy MMM dd hh:mm a")}
+												</TooltipContent>
+											</TooltipPositioner>
+										</Tooltip>
 									</TableCell>
 									<TableCell>
+										<Tooltip
+											positioning={{
+												placement: "right",
+											}}
+										>
+											<TooltipTrigger asChild>
+												<styled.span>
+													{formatDistanceToNow(expense.updatedAt, {
+														addSuffix: true,
+													})}
+												</styled.span>
+											</TooltipTrigger>
+											<TooltipPositioner>
+												<TooltipContent>
+													<TooltipArrow>
+														<TooltipArrowTip />
+													</TooltipArrow>
+													{format(expense.updatedAt, "yyyy MMM dd hh:mm a")}
+												</TooltipContent>
+											</TooltipPositioner>
+										</Tooltip>
+									</TableCell>
+									<TableCell textAlign="center" pos="sticky" right={0}>
 										<Menu
 											positioning={{
 												placement: "bottom-start",
@@ -206,7 +288,8 @@ export default async function Expenses({
 						</TableBody>
 						<TableFooter>
 							<TableRow>
-								<TableCell colSpan={4}>Total</TableCell>
+								<TableCell>Total</TableCell>
+								<TableCell />
 								<TableCell fontVariantNumeric="tabular-nums">
 									{currencyFormatter.format(
 										expenses.reduce((total, {amount}) => total + amount, 0),
@@ -214,6 +297,10 @@ export default async function Expenses({
 									)}
 								</TableCell>
 								<TableCell />
+								<TableCell />
+								<TableCell />
+								<TableCell />
+								<TableCell pos="sticky" right={0} />
 							</TableRow>
 						</TableFooter>
 					</Table>
