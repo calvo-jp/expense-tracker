@@ -31,7 +31,6 @@ import {currencyFormatter} from "@/utils/currency-formatter";
 import {ExpenseFilterSchema, PaginationSchema} from "@/utils/types";
 import {Portal} from "@ark-ui/react";
 import {Prisma} from "@prisma/client";
-import assert from "assert";
 import {format, formatDistanceToNow} from "date-fns";
 import {FileEditIcon, PlusIcon, SettingsIcon} from "lucide-react";
 import {Metadata} from "next";
@@ -53,9 +52,7 @@ interface ExpensesProps {
 export default async function Expenses({searchParams}: ExpensesProps) {
 	const id = cookies().get("user")?.value;
 
-	assert(id);
-
-	const user = await prisma.user.findUnique({
+	const user = await prisma.user.findUniqueOrThrow({
 		where: {id},
 		select: {
 			currency: true,
@@ -230,7 +227,7 @@ export default async function Expenses({searchParams}: ExpensesProps) {
 										</styled.div>
 									</TableCell>
 									<TableCell fontVariantNumeric="tabular-nums">
-										{currencyFormatter.format(expense.amount, user?.currency)}
+										{currencyFormatter.format(expense.amount, user.currency)}
 									</TableCell>
 									<TableCell>
 										<styled.div maxW="5rem" truncate>
@@ -363,7 +360,7 @@ export default async function Expenses({searchParams}: ExpensesProps) {
 								<TableCell fontVariantNumeric="tabular-nums">
 									{currencyFormatter.format(
 										expenses.reduce((total, {amount}) => total + amount, 0),
-										user?.currency,
+										user.currency,
 									)}
 								</TableCell>
 								<TableCell />

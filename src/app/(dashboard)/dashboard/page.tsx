@@ -1,6 +1,5 @@
 import {prisma} from "@/config/prisma";
 import {Box, Flex, Spacer, styled} from "@/styled-system/jsx";
-import assert from "assert";
 import {Metadata} from "next";
 import {cookies} from "next/headers";
 
@@ -10,8 +9,6 @@ export const metadata: Metadata = {
 
 export default async function Dashboard() {
 	const id = cookies().get("user")?.value;
-
-	assert(id);
 
 	const user = await prisma.user.findUniqueOrThrow({
 		where: {id},
