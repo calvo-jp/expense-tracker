@@ -4,7 +4,7 @@ import assert from "assert";
 import {cookies} from "next/headers";
 import * as XLSX from "xlsx";
 
-export async function GET() {
+export async function GET(_: Request) {
 	const id = cookies().get("user")?.value;
 
 	assert(id);
