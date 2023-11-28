@@ -5,8 +5,6 @@ import {PropsWithChildren} from "react";
 import {Navbar} from "./navbar";
 import {Sidebar} from "./sidebar";
 
-export const revalidate = 0;
-
 export default function Layout({children}: PropsWithChildren) {
 	if (!cookies().has("user")) redirect("/login");
 

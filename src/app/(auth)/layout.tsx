@@ -4,8 +4,6 @@ import {redirect} from "next/navigation";
 import {PropsWithChildren} from "react";
 import {Logo} from "../logo";
 
-export const revalidate = 0;
-
 export default function Layout({children}: PropsWithChildren) {
 	if (cookies().has("user")) redirect("/dashboard");
 
