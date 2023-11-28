@@ -53,7 +53,7 @@ export function Export() {
 					<Portal>
 						<DialogBackdrop />
 						<DialogPositioner>
-							<DialogContent w="28rem" p={8}>
+							<DialogContent w="24rem" p={8}>
 								<styled.form
 									onSubmit={form.handleSubmit(({filename}) => {
 										return startTransition(async () => {

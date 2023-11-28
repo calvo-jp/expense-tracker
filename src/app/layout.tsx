@@ -32,7 +32,7 @@ export default function RootLayout({children}: PropsWithChildren) {
 		<styled.html
 			lang="en"
 			scrollBehavior="smooth"
-			className={cx(body.variable, heading.variable, "dark")}
+			className={cx(body.variable, heading.variable)}
 			colorScheme="dark"
 		>
 			<styled.body fontFamily="body">

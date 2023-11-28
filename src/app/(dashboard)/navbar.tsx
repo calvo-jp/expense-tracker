@@ -71,7 +71,7 @@ async function ProfileMenu() {
 
 			<Portal>
 				<MenuPositioner>
-					<MenuContent w="14rem">
+					<MenuContent w="14rem" zIndex="modal">
 						<MenuItemGroup id="navbar.profile-settings">
 							<UpdateProfile __SSR_DATA={{user}} />
 							<MenuSeparator />
