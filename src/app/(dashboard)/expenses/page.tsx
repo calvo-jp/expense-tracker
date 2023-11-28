@@ -114,7 +114,7 @@ export default async function Expenses({
 					_scrollbarThumb={{
 						bg: "bg.default",
 						bgClip: "padding-box",
-						border: "5px solid transparent",
+						border: "5px solid token(colors.transparent)",
 						rounded: "full",
 					}}
 					_scrollbarTrack={{
