@@ -302,7 +302,7 @@ export default async function Expenses({
 						</TableBody>
 						<TableFooter>
 							<TableRow>
-								<TableCell>Total</TableCell>
+								<TableCell />
 								<TableCell />
 								<TableCell fontVariantNumeric="tabular-nums">
 									{currencyFormatter.format(
