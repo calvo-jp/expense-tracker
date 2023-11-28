@@ -17,6 +17,7 @@ export function Sidebar() {
 				overflowY="auto"
 				flexShrink={0}
 				borderRightWidth="1px"
+				zIndex="sticky"
 			>
 				<styled.ul py={6} px={4} flexGrow={1}>
 					<styled.li>

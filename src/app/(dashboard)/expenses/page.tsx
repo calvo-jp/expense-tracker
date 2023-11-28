@@ -108,6 +108,18 @@ export default async function Expenses({
 					whiteSpace="nowrap"
 					WebkitOverflowScrolling="touch"
 					borderWidth="1px"
+					_scrollbar={{
+						bg: "bg.subtle",
+					}}
+					_scrollbarThumb={{
+						bg: "bg.default",
+						bgClip: "padding-box",
+						border: "5px solid transparent",
+						rounded: "full",
+					}}
+					_scrollbarTrack={{
+						bg: "transparent",
+					}}
 				>
 					<Table
 						pos="relative"

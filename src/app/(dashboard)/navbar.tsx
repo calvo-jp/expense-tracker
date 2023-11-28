@@ -28,6 +28,7 @@ export async function Navbar() {
 				px={8}
 				bg="bg.canvas"
 				pos="fixed"
+				zIndex="sticky"
 				display="flex"
 				alignItems="center"
 				borderBottomWidth="1px"
