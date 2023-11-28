@@ -98,6 +98,7 @@ export function PageControls(props: PageControlsProps) {
 
 			<Select
 				w={28}
+				flexShrink={0}
 				items={sizes}
 				value={[context.value.size.toString()]}
 				onValueChange={({value}) => {
