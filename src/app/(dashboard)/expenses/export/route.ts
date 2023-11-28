@@ -9,7 +9,9 @@ import * as XLSX from "xlsx";
 export async function GET(request: Request) {
 	const id = cookies().get("user")?.value;
 	const url = new URL(request.url);
-	const name = slugify(url.searchParams.get("filename") ?? "expenses");
+	const name = slugify(url.searchParams.get("filename") ?? "expenses", {
+		lower: true,
+	});
 
 	assert(id);
 

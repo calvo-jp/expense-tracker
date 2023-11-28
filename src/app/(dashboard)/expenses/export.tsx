@@ -118,7 +118,7 @@ async function download(filename: string): Promise<string | null> {
 		const link = document.createElement("a");
 
 		link.href = url;
-		link.download = slugify(filename);
+		link.download = slugify(filename, {lower: true});
 		link.click();
 
 		URL.revokeObjectURL(url);
