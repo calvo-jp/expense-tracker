@@ -18,17 +18,14 @@ async function generateCurrencyConstants() {
 	const countries = await response.json();
 
 	const currencies = countries
-		.map((i) => i.currencies ?? {})
-		.map((j) =>
-			Object.entries(j).map(([abbr, {name}]) => ({
+		.map((i) =>
+			Object.entries(i.currencies ?? {}).map(([abbr, {name}]) => ({
 				abbr,
 				name,
 			})),
 		)
 		.flat()
-		.filter((v, i, l) => {
-			return l.findIndex((o) => o.abbr === v.abbr) === i;
-		})
+		.filter((v, i, l) => l.findIndex((o) => o.abbr === v.abbr) === i)
 		.sort((i, j) => i.abbr.localeCompare(j.abbr));
 
 	const contents = `

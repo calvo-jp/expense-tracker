@@ -1,5 +1,5 @@
 // Generated file
-// Last updated at 2023-11-28T10:11:15.364Z
+// Last updated at 2023-11-28T11:10:26.680Z
 
 export const currencies = [
 	{abbr: "AED", name: "United Arab Emirates dirham"},
