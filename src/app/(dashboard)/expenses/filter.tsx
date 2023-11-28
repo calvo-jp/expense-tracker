@@ -106,6 +106,9 @@ export function Filter() {
 	const applyFilter = () => {
 		const s = new URLSearchParams(searchParams);
 
+		/* reset page */
+		s.set("page", "1");
+
 		s.delete("category");
 		s.delete("location");
 		s.delete("minAmount");
