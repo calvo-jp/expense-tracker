@@ -3,12 +3,13 @@ import {pascalToSentenceCase} from "@/utils/pascal-to-sentence-case";
 import assert from "assert";
 import JSZip from "jszip";
 import {cookies} from "next/headers";
+import slugify from "slugify";
 import * as XLSX from "xlsx";
 
 export async function GET(request: Request) {
 	const id = cookies().get("user")?.value;
 	const url = new URL(request.url);
-	const name = url.searchParams.get("filename") ?? "expenses";
+	const name = slugify(url.searchParams.get("filename") ?? "expenses");
 
 	assert(id);
 
@@ -46,8 +47,8 @@ export async function GET(request: Request) {
 	const buffer = await zip.generateAsync({type: "blob"});
 	const headers = new Headers();
 
-	headers.append("Content-Disposition", `attachment; filename="${name}.zip"`);
 	headers.append("Content-Type", "application/zip");
+	headers.append("Content-Disposition", `attachment; filename="${name}.zip"`);
 
 	return new Response(buffer, {headers});
 }
