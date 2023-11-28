@@ -29,6 +29,7 @@ import {prisma} from "@/config/prisma";
 import {Box, Flex, HStack, Spacer, styled} from "@/styled-system/jsx";
 import {currencyFormatter} from "@/utils/currency-formatter";
 import {PaginationSchema} from "@/utils/types";
+import {Portal} from "@ark-ui/react";
 import assert from "assert";
 import {format, formatDistanceToNow} from "date-fns";
 import {FileEditIcon, PlusIcon, SettingsIcon} from "lucide-react";
@@ -204,14 +205,16 @@ export default async function Expenses({
 													})}
 												</styled.span>
 											</TooltipTrigger>
-											<TooltipPositioner>
-												<TooltipContent>
-													<TooltipArrow>
-														<TooltipArrowTip />
-													</TooltipArrow>
-													{format(expense.transactionDate, "yyyy MMM dd")}
-												</TooltipContent>
-											</TooltipPositioner>
+											<Portal>
+												<TooltipPositioner>
+													<TooltipContent>
+														<TooltipArrow>
+															<TooltipArrowTip />
+														</TooltipArrow>
+														{format(expense.transactionDate, "yyyy MMM dd")}
+													</TooltipContent>
+												</TooltipPositioner>
+											</Portal>
 										</Tooltip>
 									</TableCell>
 									<TableCell>
@@ -227,14 +230,16 @@ export default async function Expenses({
 													})}
 												</styled.span>
 											</TooltipTrigger>
-											<TooltipPositioner>
-												<TooltipContent>
-													<TooltipArrow>
-														<TooltipArrowTip />
-													</TooltipArrow>
-													{format(expense.createdAt, "yyyy MMM dd hh:mm a")}
-												</TooltipContent>
-											</TooltipPositioner>
+											<Portal>
+												<TooltipPositioner>
+													<TooltipContent>
+														<TooltipArrow>
+															<TooltipArrowTip />
+														</TooltipArrow>
+														{format(expense.createdAt, "yyyy MMM dd hh:mm a")}
+													</TooltipContent>
+												</TooltipPositioner>
+											</Portal>
 										</Tooltip>
 									</TableCell>
 									<TableCell>
@@ -250,14 +255,16 @@ export default async function Expenses({
 													})}
 												</styled.span>
 											</TooltipTrigger>
-											<TooltipPositioner>
-												<TooltipContent>
-													<TooltipArrow>
-														<TooltipArrowTip />
-													</TooltipArrow>
-													{format(expense.updatedAt, "yyyy MMM dd hh:mm a")}
-												</TooltipContent>
-											</TooltipPositioner>
+											<Portal>
+												<TooltipPositioner>
+													<TooltipContent>
+														<TooltipArrow>
+															<TooltipArrowTip />
+														</TooltipArrow>
+														{format(expense.updatedAt, "yyyy MMM dd hh:mm a")}
+													</TooltipContent>
+												</TooltipPositioner>
+											</Portal>
 										</Tooltip>
 									</TableCell>
 									<TableCell textAlign="center" pos="sticky" right={0}>
@@ -273,26 +280,32 @@ export default async function Expenses({
 													</Icon>
 												</styled.button>
 											</MenuTrigger>
-											<MenuPositioner>
-												<MenuContent w="12rem" shadow="none" borderWidth="1px">
-													<MenuItemGroup id={`expenses-menu--${expense.id}`}>
-														<UpsertExpense type="update" data={expense}>
-															<MenuItem
-																id={`expenses.items.${expense.id}.menu.edit`}
-															>
-																<HStack>
-																	<Icon>
-																		<FileEditIcon />
-																	</Icon>
-																	<styled.span>Edit</styled.span>
-																</HStack>
-															</MenuItem>
-														</UpsertExpense>
+											<Portal>
+												<MenuPositioner>
+													<MenuContent
+														w="12rem"
+														shadow="none"
+														borderWidth="1px"
+													>
+														<MenuItemGroup id={`expenses-menu--${expense.id}`}>
+															<UpsertExpense type="update" data={expense}>
+																<MenuItem
+																	id={`expenses.items.${expense.id}.menu.edit`}
+																>
+																	<HStack>
+																		<Icon>
+																			<FileEditIcon />
+																		</Icon>
+																		<styled.span>Edit</styled.span>
+																	</HStack>
+																</MenuItem>
+															</UpsertExpense>
 
-														<DeleteExpense data={expense} />
-													</MenuItemGroup>
-												</MenuContent>
-											</MenuPositioner>
+															<DeleteExpense data={expense} />
+														</MenuItemGroup>
+													</MenuContent>
+												</MenuPositioner>
+											</Portal>
 										</Menu>
 									</TableCell>
 								</TableRow>
