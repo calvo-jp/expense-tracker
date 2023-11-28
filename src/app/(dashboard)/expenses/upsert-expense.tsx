@@ -180,11 +180,7 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 													<ComboboxLabel>Category</ComboboxLabel>
 													<ComboboxControl>
 														<ComboboxInput asChild>
-															<Input
-																size="lg"
-																name="category"
-																placeholder="Choose category"
-															/>
+															<Input size="lg" placeholder="Choose category" />
 														</ComboboxInput>
 														<ComboboxTrigger asChild>
 															<IconButton variant="link" aria-label="open">
@@ -201,7 +197,7 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 
 													<ComboboxPositioner>
 														<ComboboxContent>
-															<ComboboxItemGroup id="framework">
+															<ComboboxItemGroup id="expenses.upsert.category.items">
 																{categories
 																	.filter(({label}) =>
 																		label
@@ -230,11 +226,11 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 										</Combobox>
 
 										<Flex direction="column" gap={1.5}>
-											<Label htmlFor="expenses.create-new.description">
+											<Label htmlFor="expenses.upsert.description">
 												Description
 											</Label>
 											<Textarea
-												id="expenses.create-new.description"
+												id="expenses.upsert.description"
 												size="lg"
 												rows={3}
 												resize="none"
@@ -247,11 +243,9 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 										</Flex>
 
 										<Flex direction="column" gap={1.5}>
-											<Label htmlFor="expenses.create-new.location">
-												Location
-											</Label>
+											<Label htmlFor="expenses.upsert.location">Location</Label>
 											<Input
-												id="expenses.create-new.location"
+												id="expenses.upsert.location"
 												size="lg"
 												placeholder="Enter location"
 												{...form.register("location")}
@@ -485,10 +479,7 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 										>
 											<NumberInputLabel>Amount</NumberInputLabel>
 											<NumberInputControl>
-												<NumberInputInput
-													placeholder="Enter amount"
-													name="amount"
-												/>
+												<NumberInputInput placeholder="Enter amount" />
 												<NumberInputIncrementTrigger>
 													<Icon size="sm">
 														<ChevronUpIcon />

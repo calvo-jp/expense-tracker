@@ -3,6 +3,19 @@
 import {Avatar, AvatarFallback} from "@/components/avatar";
 import {Button} from "@/components/button";
 import {
+	Combobox,
+	ComboboxContent,
+	ComboboxControl,
+	ComboboxInput,
+	ComboboxItem,
+	ComboboxItemGroup,
+	ComboboxItemIndicator,
+	ComboboxItemText,
+	ComboboxLabel,
+	ComboboxPositioner,
+	ComboboxTrigger,
+} from "@/components/combobox";
+import {
 	Dialog,
 	DialogBackdrop,
 	DialogCloseTrigger,
@@ -12,22 +25,10 @@ import {
 } from "@/components/dialog";
 import {ErrorMessage} from "@/components/error-message";
 import {Icon} from "@/components/icon";
+import {IconButton} from "@/components/icon-button";
 import {Input} from "@/components/input";
 import {Label} from "@/components/label";
 import {MenuItem} from "@/components/menu";
-import {
-	Select,
-	SelectContent,
-	SelectControl,
-	SelectItem,
-	SelectItemGroup,
-	SelectItemIndicator,
-	SelectItemText,
-	SelectLabel,
-	SelectPositioner,
-	SelectTrigger,
-	SelectValueText,
-} from "@/components/select";
 import {toast} from "@/components/toaster";
 import {Box, Flex, HStack, VStack, styled} from "@/styled-system/jsx";
 import {constants} from "@/utils/constants";
@@ -150,57 +151,88 @@ export function UpdateProfile({__SSR_DATA: {user}}: UpdateProfileProps) {
 											</ErrorMessage>
 										</Flex>
 										<Flex flexDir="column" gap={1.5}>
-											<Select
-												size="lg"
-												items={CURRENCIES}
+											<Combobox
+												items={currencies}
 												value={[form.watch("currency")]}
 												onValueChange={(details) => {
-													form.setValue("currency", details.value[0]);
+													form.setValue("currency", details.value[0], {
+														shouldValidate: true,
+													});
 												}}
 											>
-												<SelectLabel>Currency</SelectLabel>
-												<SelectControl>
-													<SelectTrigger>
-														<SelectValueText />
-														<Icon>
-															<ChevronsUpDownIcon />
-														</Icon>
-													</SelectTrigger>
-												</SelectControl>
-												<SelectPositioner>
-													<SelectContent h="12rem" overflowY="auto">
-														<SelectItemGroup id="settings.currency">
-															{CURRENCIES.map((option) => (
-																<SelectItem
-																	item={option}
-																	key={option.value}
-																	h="auto"
-																	py={1.5}
-																>
-																	<SelectItemText>
-																		<Box lineHeight="none">
-																			{option.details.abbr}
-																		</Box>
-																		<Box
-																			mt={1}
-																			color="fg.muted"
-																			fontSize="xs"
-																			lineHeight="none"
-																		>
-																			{option.details.name}
-																		</Box>
-																	</SelectItemText>
-																	<SelectItemIndicator>
-																		<Icon>
-																			<CheckIcon />
-																		</Icon>
-																	</SelectItemIndicator>
-																</SelectItem>
-															))}
-														</SelectItemGroup>
-													</SelectContent>
-												</SelectPositioner>
-											</Select>
+												{(api) => (
+													<>
+														<ComboboxLabel>Currency</ComboboxLabel>
+														<ComboboxControl>
+															<ComboboxInput asChild>
+																<Input
+																	size="lg"
+																	placeholder="Choose currency"
+																/>
+															</ComboboxInput>
+															<ComboboxTrigger asChild>
+																<IconButton variant="link" aria-label="open">
+																	<Icon>
+																		<ChevronsUpDownIcon />
+																	</Icon>
+																</IconButton>
+															</ComboboxTrigger>
+														</ComboboxControl>
+
+														<ErrorMessage>
+															{form.formState.errors.currency?.message}
+														</ErrorMessage>
+
+														<ComboboxPositioner>
+															<ComboboxContent maxH="12rem" overflowY="auto">
+																<ComboboxItemGroup id="update-profile.currency.items">
+																	{currencies
+																		.filter(
+																			({details}) =>
+																				details.name
+																					.toLowerCase()
+																					.startsWith(
+																						api.inputValue.toLowerCase().trim(),
+																					) ||
+																				details.abbr
+																					.toLowerCase()
+																					.startsWith(
+																						api.inputValue.toLowerCase().trim(),
+																					),
+																		)
+																		.map((item) => (
+																			<ComboboxItem
+																				key={item.value}
+																				item={item}
+																				h="auto"
+																			>
+																				<ComboboxItemText py={1.5}>
+																					<Box lineHeight="none">
+																						{item.details.abbr}
+																					</Box>
+																					<Box
+																						mt={1}
+																						color="fg.muted"
+																						fontSize="sm"
+																						lineHeight="none"
+																					>
+																						{item.details.name}
+																					</Box>
+																				</ComboboxItemText>
+																				<ComboboxItemIndicator>
+																					<Icon>
+																						<CheckIcon />
+																					</Icon>
+																				</ComboboxItemIndicator>
+																			</ComboboxItem>
+																		))}
+																</ComboboxItemGroup>
+															</ComboboxContent>
+														</ComboboxPositioner>
+													</>
+												)}
+											</Combobox>
+
 											<ErrorMessage>
 												{form.formState.errors.email?.message}
 											</ErrorMessage>
@@ -232,7 +264,7 @@ export function UpdateProfile({__SSR_DATA: {user}}: UpdateProfileProps) {
 	);
 }
 
-const CURRENCIES = constants.currencies.map((currency) => ({
+const currencies = constants.currencies.map((currency) => ({
 	value: currency.abbr,
 	details: currency,
 }));
