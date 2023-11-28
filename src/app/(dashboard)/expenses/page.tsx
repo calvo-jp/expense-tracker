@@ -129,28 +129,10 @@ export default async function Expenses({
 						borderCollapse="separate"
 						borderSpacing={0}
 						css={{
-							"& thead": {
+							"& thead, & tfoot, & tr": {
 								bg: "none",
 							},
-							"& tfoot": {
-								border: "none",
-								"& td": {
-									borderBottom: "none",
-								},
-							},
-							"& tr": {
-								border: "none",
-							},
-							"& th": {
-								bg: "bg.subtle",
-								border: "none",
-								borderLeft: "1px solid token(colors.border.subtle)",
-								borderBottom: "1px solid token(colors.border.subtle)",
-								_first: {
-									borderLeft: "none",
-								},
-							},
-							"& td": {
+							"& th, & td": {
 								bg: "bg.default",
 								border: "none",
 								borderLeft: "1px solid token(colors.border.subtle)",
@@ -158,6 +140,13 @@ export default async function Expenses({
 								_first: {
 									borderLeft: "none",
 								},
+							},
+							"& th": {
+								fontSize: "xs",
+								fontFamily: "heading",
+							},
+							"& tfoot td": {
+								borderBottom: "none",
 							},
 						}}
 					>
@@ -167,7 +156,7 @@ export default async function Expenses({
 								<TableHead>Description</TableHead>
 								<TableHead>Amount</TableHead>
 								<TableHead>Location</TableHead>
-								<TableHead>Transaction date</TableHead>
+								<TableHead>Transaction Date</TableHead>
 								<TableHead>Date Created</TableHead>
 								<TableHead>Date Updated</TableHead>
 								<TableHead w="0" pos="sticky" right={0}>
