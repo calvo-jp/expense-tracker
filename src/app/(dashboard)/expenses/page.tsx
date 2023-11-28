@@ -28,14 +28,14 @@ import {
 import {prisma} from "@/config/prisma";
 import {Box, Flex, HStack, Spacer, styled} from "@/styled-system/jsx";
 import {currencyFormatter} from "@/utils/currency-formatter";
-import {PaginationSchema} from "@/utils/types";
+import {ExpenseFilterSchema, PaginationSchema} from "@/utils/types";
 import {Portal} from "@ark-ui/react";
+import {Prisma} from "@prisma/client";
 import assert from "assert";
 import {format, formatDistanceToNow} from "date-fns";
 import {FileEditIcon, PlusIcon, SettingsIcon} from "lucide-react";
 import {Metadata} from "next";
 import {cookies} from "next/headers";
-import {Suspense} from "react";
 import {PageControls} from "../page-controls";
 import {DeleteExpense} from "./delete-expense";
 import {Export} from "./export";
@@ -46,11 +46,11 @@ export const metadata: Metadata = {
 	title: "Expenses",
 };
 
-export default async function Expenses({
-	searchParams,
-}: {
+interface ExpensesProps {
 	searchParams: {[key: string]: string | string[]};
-}) {
+}
+
+export default async function Expenses({searchParams}: ExpensesProps) {
 	const id = cookies().get("user")?.value;
 
 	assert(id);
@@ -62,9 +62,65 @@ export default async function Expenses({
 		},
 	});
 
+	const filter = ExpenseFilterSchema.parse(searchParams);
 	const pagination = PaginationSchema.parse(searchParams);
+
+	/*
+	 *--------- QUERY FILTER ---------
+	 */
+
+	const where: Prisma.ExpenseWhereInput = {
+		user: {id},
+
+		...([
+			//
+			filter.minAmount,
+			filter.maxAmount,
+		].some(Boolean) && {
+			amount: {
+				...(filter.minAmount && {
+					gte: filter.minAmount,
+				}),
+
+				...(filter.maxAmount && {
+					lte: filter.maxAmount,
+				}),
+			},
+		}),
+
+		...(filter.category?.length && {
+			category: {
+				in: filter.category,
+			},
+		}),
+
+		...(filter.location && {
+			location: {
+				contains: filter.location,
+			},
+		}),
+
+		...([
+			//
+			filter.transactionDateStart,
+			filter.transactionDateUntil,
+		].some(Boolean) && {
+			transactionDate: {
+				...(filter.transactionDateStart && {
+					gte: filter.transactionDateStart,
+				}),
+
+				...(filter.transactionDateUntil && {
+					lte: filter.transactionDateUntil,
+				}),
+			},
+		}),
+	};
+
 	const expenses = await prisma.expense.findMany({
-		where: {user: {id}},
+		where,
+		skip: pagination.size * (pagination.page - 1),
+		take: pagination.size,
 		include: {
 			user: {
 				select: {
@@ -75,9 +131,9 @@ export default async function Expenses({
 		orderBy: {
 			createdAt: "desc",
 		},
-		take: pagination.size,
-		skip: pagination.size * (pagination.page - 1),
 	});
+
+	const count = await prisma.expense.count({where});
 
 	return (
 		<Box>
@@ -321,19 +377,9 @@ export default async function Expenses({
 				</Box>
 			</Box>
 
-			<Suspense fallback={null}>
-				<BottomControls />
-			</Suspense>
-		</Box>
-	);
-}
-
-async function BottomControls() {
-	const count = await prisma.expense.count();
-
-	return (
-		<Box mt={8}>
-			<PageControls __SSR_DATA={{count}} />
+			<Box mt={8}>
+				<PageControls __SSR_DATA={{count}} />
+			</Box>
 		</Box>
 	);
 }

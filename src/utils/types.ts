@@ -1,6 +1,6 @@
-import { stringToPrismaEnum } from "@/utils/string-to-prisma-enum";
-import { ExpenseCategory } from "@prisma/client";
-import { z } from "zod";
+import {stringToPrismaEnum} from "@/utils/string-to-prisma-enum";
+import {ExpenseCategory} from "@prisma/client";
+import {z} from "zod";
 
 export type TLoginSchema = z.infer<typeof LoginSchema>;
 export const LoginSchema = z.object({
@@ -83,43 +83,45 @@ export const UpsertExpenseSchema = z.object({
 });
 
 export type TExpenseFilterSchema = z.infer<typeof ExpenseFilterSchema>;
-export const ExpenseFilterSchema = z.object({
-	category: z
-		.union([
-			z.nativeEnum(ExpenseCategory),
-			z.array(z.nativeEnum(ExpenseCategory)),
-		])
-		.optional()
-		.nullable()
-		.catch(() => undefined)
-		.transform((v) => (!v ? v : Array.isArray(v) ? v : [v])),
-	location: z
-		.string()
-		.optional()
-		.nullable()
-		.catch(() => undefined),
-	minAmount: z
-		.string()
-		.pipe(z.coerce.number())
-		.optional()
-		.nullable()
-		.catch(() => undefined),
-	maxAmount: z
-		.string()
-		.pipe(z.coerce.number())
-		.optional()
-		.nullable()
-		.catch(() => undefined),
-	transactionDateStart: z
-		.string()
-		.pipe(z.coerce.date())
-		.optional()
-		.nullable()
-		.catch(() => undefined),
-	transactionDateUntil: z
-		.string()
-		.pipe(z.coerce.date())
-		.optional()
-		.nullable()
-		.catch(() => undefined),
-});
+export const ExpenseFilterSchema = z
+	.object({
+		category: z
+			.union([
+				z.nativeEnum(ExpenseCategory),
+				z.array(z.nativeEnum(ExpenseCategory)),
+			])
+			.optional()
+			.nullable()
+			.catch(() => undefined)
+			.transform((v) => (!v ? v : Array.isArray(v) ? v : [v])),
+		location: z
+			.string()
+			.optional()
+			.nullable()
+			.catch(() => undefined),
+		minAmount: z
+			.string()
+			.pipe(z.coerce.number())
+			.optional()
+			.nullable()
+			.catch(() => undefined),
+		maxAmount: z
+			.string()
+			.pipe(z.coerce.number())
+			.optional()
+			.nullable()
+			.catch(() => undefined),
+		transactionDateStart: z
+			.string()
+			.pipe(z.coerce.date())
+			.optional()
+			.nullable()
+			.catch(() => undefined),
+		transactionDateUntil: z
+			.string()
+			.pipe(z.coerce.date())
+			.optional()
+			.nullable()
+			.catch(() => undefined),
+	})
+	.catch(() => ({}));

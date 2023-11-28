@@ -61,9 +61,10 @@ import {
 } from "@/components/number-input";
 import {Box, Flex, HStack} from "@/styled-system/jsx";
 import {pascalToSentenceCase} from "@/utils/pascal-to-sentence-case";
-import {ExpenseFilterSchema} from "@/utils/types";
+import {ExpenseFilterSchema, TExpenseFilterSchema} from "@/utils/types";
 import {Portal} from "@ark-ui/react";
 import {ExpenseCategory} from "@prisma/client";
+import {format} from "date-fns";
 import {
 	CalendarIcon,
 	CheckIcon,
@@ -75,347 +76,453 @@ import {
 	SearchIcon,
 } from "lucide-react";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
-import {useMemo} from "react";
+import {useReducer} from "react";
 
 export function Filter() {
 	const router = useRouter();
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 
-	const values = useMemo(() => {
-		const parsed = ExpenseFilterSchema.safeParse({
+	const [value, setValue] = useReducer(
+		(
+			prev: Partial<TExpenseFilterSchema>,
+			next: Partial<TExpenseFilterSchema>,
+		) => {
+			return {
+				...prev,
+				...next,
+			};
+		},
+		ExpenseFilterSchema.parse({
 			category: searchParams.getAll("category"),
 			location: searchParams.get("location"),
 			minAmount: searchParams.get("minAmount"),
 			maxAmount: searchParams.get("maxAmount"),
 			transactionDateStart: searchParams.get("transactionDateStart"),
 			transactionDateUntil: searchParams.get("transactionDateUntil"),
-		});
+		}),
+	);
 
-		if (!parsed.success) return {};
+	const applyFilter = () => {
+		const s = new URLSearchParams(searchParams);
 
-		return parsed.data;
-	}, [searchParams]);
+		s.delete("category");
+		s.delete("location");
+		s.delete("minAmount");
+		s.delete("maxAmount");
+		s.delete("maxAmount");
+		s.delete("transactionDateStart");
+		s.delete("transactionDateUntil");
+
+		if (value.category) {
+			for (const item of value.category) {
+				s.append("category", item);
+			}
+		}
+
+		if (value.location) {
+			s.set("location", value.location);
+		}
+
+		if (value.maxAmount) {
+			s.set("maxAmount", value.maxAmount.toString());
+		}
+
+		if (value.minAmount) {
+			s.set("minAmount", value.minAmount.toString());
+		}
+
+		if (value.transactionDateStart) {
+			s.set(
+				"transactionDateStart",
+				format(value.transactionDateStart, "yyyy-MM-dd"),
+			);
+		}
+
+		if (value.transactionDateUntil) {
+			s.set(
+				"transactionDateUntil",
+				format(value.transactionDateUntil, "yyyy-MM-dd"),
+			);
+		}
+
+		router.push(`${pathname}?${s.toString()}`);
+	};
 
 	return (
-		<Drawer>
-			<DrawerTrigger asChild>
-				<IconButton variant="outline">
-					<Icon>
-						<SearchIcon />
-					</Icon>
-				</IconButton>
-			</DrawerTrigger>
-			<Portal>
-				<DrawerBackdrop />
-				<DrawerPositioner w="token(sizes.xs)">
-					<DrawerContent>
-						<DrawerHeader p={0}>
-							<Flex h="navbar.height" pr={4} pl={6} alignItems="center">
-								<DrawerCloseTrigger asChild>
-									<IconButton variant="outline">
-										<Icon>
-											<ChevronRightIcon />
-										</Icon>
-									</IconButton>
-								</DrawerCloseTrigger>
-							</Flex>
-						</DrawerHeader>
+		<Drawer unmountOnExit>
+			{(api) => (
+				<>
+					<DrawerTrigger asChild>
+						<IconButton variant="outline">
+							<Icon>
+								<SearchIcon />
+							</Icon>
+						</IconButton>
+					</DrawerTrigger>
+					<Portal>
+						<DrawerBackdrop />
+						<DrawerPositioner w="token(sizes.xs)">
+							<DrawerContent>
+								<DrawerHeader p={0}>
+									<Flex h="navbar.height" pr={4} pl={6} alignItems="center">
+										<DrawerCloseTrigger asChild>
+											<IconButton variant="outline">
+												<Icon>
+													<ChevronRightIcon />
+												</Icon>
+											</IconButton>
+										</DrawerCloseTrigger>
+									</Flex>
+								</DrawerHeader>
 
-						<DrawerBody>
-							<Combobox
-								items={categories}
-								value={values.category ?? []}
-								onValueChange={(details) => {}}
-							>
-								{(api) => (
-									<>
-										<ComboboxLabel>Category</ComboboxLabel>
-										<ComboboxControl>
-											<ComboboxInput placeholder="Choose category" asChild>
-												<Input />
-											</ComboboxInput>
-											<ComboboxTrigger asChild>
-												<IconButton variant="link" aria-label="open">
+								<DrawerBody>
+									<Combobox
+										items={categories}
+										value={value.category ?? []}
+										onValueChange={(d) => {
+											setValue({category: d.value as ExpenseCategory[]});
+										}}
+									>
+										{(api) => (
+											<>
+												<ComboboxLabel>Category</ComboboxLabel>
+												<ComboboxControl>
+													<ComboboxInput placeholder="Choose category" asChild>
+														<Input />
+													</ComboboxInput>
+													<ComboboxTrigger asChild>
+														<IconButton variant="link" aria-label="open">
+															<Icon>
+																<ChevronsUpDownIcon />
+															</Icon>
+														</IconButton>
+													</ComboboxTrigger>
+												</ComboboxControl>
+												<ComboboxPositioner>
+													<ComboboxContent>
+														<ComboboxItemGroup id="expenses.filter.category.items">
+															{categories
+																.slice()
+																.filter(({label}) => {
+																	return label
+																		.toLowerCase()
+																		.startsWith(
+																			api.inputValue.toLowerCase().trim(),
+																		);
+																})
+																.map((item) => (
+																	<ComboboxItem key={item.value} item={item}>
+																		<ComboboxItemText>
+																			{item.label}
+																		</ComboboxItemText>
+																		<ComboboxItemIndicator>
+																			<Icon>
+																				<CheckIcon />
+																			</Icon>
+																		</ComboboxItemIndicator>
+																	</ComboboxItem>
+																))}
+														</ComboboxItemGroup>
+													</ComboboxContent>
+												</ComboboxPositioner>
+											</>
+										)}
+									</Combobox>
+
+									<Box mt={4}>
+										<Label htmlFor="expenses.filter.location">Location</Label>
+										<Input
+											mt={1}
+											id="expenses.filter.location"
+											value={value.location ?? ""}
+											onChange={(e) => {
+												setValue({location: e.target.value});
+											}}
+											placeholder="Enter location"
+										/>
+									</Box>
+
+									<DatePicker
+										mt={4}
+										startOfWeek={1}
+										selectionMode="range"
+										positioning={{
+											placement: "bottom-end",
+										}}
+										value={
+											[
+												value.transactionDateStart
+													? format(value.transactionDateStart, "yyyy-MM-dd")
+													: null,
+												value.transactionDateUntil
+													? format(value.transactionDateUntil, "yyyy-MM-dd")
+													: null,
+											].filter(Boolean) as string[]
+										}
+										onValueChange={(d) => {
+											if (d.value.length === 2) {
+												setValue({
+													transactionDateStart: d.value[0].toDate("utc"),
+													transactionDateUntil: d.value[1].toDate("utc"),
+												});
+											}
+
+											if (d.value.length === 1) {
+												setValue({
+													transactionDateStart: d.value[0].toDate("utc"),
+												});
+											}
+										}}
+									>
+										<DatePickerLabel>Transaction date</DatePickerLabel>
+										<DatePickerControl>
+											<DatePickerInput asChild>
+												<Input placeholder="Choose date" />
+											</DatePickerInput>
+											<DatePickerTrigger asChild>
+												<IconButton
+													variant="outline"
+													aria-label="Open date picker"
+												>
 													<Icon>
-														<ChevronsUpDownIcon />
+														<CalendarIcon />
 													</Icon>
 												</IconButton>
-											</ComboboxTrigger>
-										</ComboboxControl>
-										<ComboboxPositioner>
-											<ComboboxContent>
-												<ComboboxItemGroup id="expenses.filter.category.items">
-													{categories
-														.slice()
-														.filter(({label}) => {
-															return label
-																.toLowerCase()
-																.startsWith(
-																	api.inputValue.toLowerCase().trim(),
-																);
-														})
-														.map((item) => (
-															<ComboboxItem key={item.value} item={item}>
-																<ComboboxItemText>
-																	{item.label}
-																</ComboboxItemText>
-																<ComboboxItemIndicator>
-																	<Icon>
-																		<CheckIcon />
-																	</Icon>
-																</ComboboxItemIndicator>
-															</ComboboxItem>
-														))}
-												</ComboboxItemGroup>
-											</ComboboxContent>
-										</ComboboxPositioner>
-									</>
-								)}
-							</Combobox>
-
-							<Box mt={4}>
-								<Label htmlFor="expenses.filter.location">Location</Label>
-								<Input
-									mt={1}
-									id="expenses.filter.location"
-									value={values.location ?? ""}
-									onChange={() => {}}
-									placeholder="Enter location"
-								/>
-							</Box>
-
-							<DatePicker
-								mt={4}
-								startOfWeek={1}
-								selectionMode="range"
-								positioning={{
-									placement: "bottom-end",
-								}}
-							>
-								<DatePickerLabel>Transaction date</DatePickerLabel>
-								<DatePickerControl>
-									<DatePickerInput asChild>
-										<Input placeholder="Choose date" />
-									</DatePickerInput>
-									<DatePickerTrigger asChild>
-										<IconButton variant="outline" aria-label="Open date picker">
-											<Icon>
-												<CalendarIcon />
-											</Icon>
-										</IconButton>
-									</DatePickerTrigger>
-								</DatePickerControl>
-								<DatePickerPositioner>
-									<DatePickerContent>
-										<DatePickerView view="day">
-											{(api) => (
-												<>
-													<DatePickerViewControl>
-														<DatePickerPrevTrigger asChild>
-															<IconButton variant="ghost" size="sm">
-																<Icon>
-																	<ChevronLeftIcon />
-																</Icon>
-															</IconButton>
-														</DatePickerPrevTrigger>
-														<DatePickerViewTrigger asChild>
-															<Button variant="ghost" size="sm">
-																<DatePickerRangeText />
-															</Button>
-														</DatePickerViewTrigger>
-														<DatePickerNextTrigger asChild>
-															<IconButton variant="ghost" size="sm">
-																<Icon>
-																	<ChevronRightIcon />
-																</Icon>
-															</IconButton>
-														</DatePickerNextTrigger>
-													</DatePickerViewControl>
-													<DatePickerTable>
-														<DatePickerTableHead>
-															<DatePickerTableRow>
-																{api.weekDays.map((weekDay, id) => (
-																	<DatePickerTableHeader key={id}>
-																		{weekDay.narrow}
-																	</DatePickerTableHeader>
-																))}
-															</DatePickerTableRow>
-														</DatePickerTableHead>
-														<DatePickerTableBody>
-															{api.weeks.map((week, id) => (
-																<DatePickerTableRow key={id}>
-																	{week.map((day, id) => (
-																		<DatePickerTableCell key={id} value={day}>
-																			<DatePickerTableCellTrigger asChild>
-																				<IconButton variant="ghost">
-																					{day.day}
-																				</IconButton>
-																			</DatePickerTableCellTrigger>
-																		</DatePickerTableCell>
+											</DatePickerTrigger>
+										</DatePickerControl>
+										<DatePickerPositioner>
+											<DatePickerContent>
+												<DatePickerView view="day">
+													{(api) => (
+														<>
+															<DatePickerViewControl>
+																<DatePickerPrevTrigger asChild>
+																	<IconButton variant="ghost" size="sm">
+																		<Icon>
+																			<ChevronLeftIcon />
+																		</Icon>
+																	</IconButton>
+																</DatePickerPrevTrigger>
+																<DatePickerViewTrigger asChild>
+																	<Button variant="ghost" size="sm">
+																		<DatePickerRangeText />
+																	</Button>
+																</DatePickerViewTrigger>
+																<DatePickerNextTrigger asChild>
+																	<IconButton variant="ghost" size="sm">
+																		<Icon>
+																			<ChevronRightIcon />
+																		</Icon>
+																	</IconButton>
+																</DatePickerNextTrigger>
+															</DatePickerViewControl>
+															<DatePickerTable>
+																<DatePickerTableHead>
+																	<DatePickerTableRow>
+																		{api.weekDays.map((weekDay, id) => (
+																			<DatePickerTableHeader key={id}>
+																				{weekDay.narrow}
+																			</DatePickerTableHeader>
+																		))}
+																	</DatePickerTableRow>
+																</DatePickerTableHead>
+																<DatePickerTableBody>
+																	{api.weeks.map((week, id) => (
+																		<DatePickerTableRow key={id}>
+																			{week.map((day, id) => (
+																				<DatePickerTableCell
+																					key={id}
+																					value={day}
+																				>
+																					<DatePickerTableCellTrigger asChild>
+																						<IconButton variant="ghost">
+																							{day.day}
+																						</IconButton>
+																					</DatePickerTableCellTrigger>
+																				</DatePickerTableCell>
+																			))}
+																		</DatePickerTableRow>
 																	))}
-																</DatePickerTableRow>
-															))}
-														</DatePickerTableBody>
-													</DatePickerTable>
-												</>
-											)}
-										</DatePickerView>
-										<DatePickerView view="month">
-											{(api) => (
-												<>
-													<DatePickerViewControl>
-														<DatePickerPrevTrigger asChild>
-															<IconButton variant="ghost" size="sm">
-																<Icon>
-																	<ChevronLeftIcon />
-																</Icon>
-															</IconButton>
-														</DatePickerPrevTrigger>
-														<DatePickerViewTrigger asChild>
-															<Button variant="ghost" size="sm">
-																<DatePickerRangeText />
-															</Button>
-														</DatePickerViewTrigger>
-														<DatePickerNextTrigger asChild>
-															<IconButton variant="ghost" size="sm">
-																<Icon>
-																	<ChevronRightIcon />
-																</Icon>
-															</IconButton>
-														</DatePickerNextTrigger>
-													</DatePickerViewControl>
-													<DatePickerTable>
-														<DatePickerTableBody>
-															{api
-																.getMonthsGrid({columns: 4, format: "short"})
-																.map((months, id) => (
-																	<DatePickerTableRow key={id}>
-																		{months.map((month, id) => (
-																			<DatePickerTableCell
-																				key={id}
-																				value={month.value}
-																			>
-																				<DatePickerTableCellTrigger asChild>
-																					<Button variant="ghost">
-																						{month.label}
-																					</Button>
-																				</DatePickerTableCellTrigger>
-																			</DatePickerTableCell>
+																</DatePickerTableBody>
+															</DatePickerTable>
+														</>
+													)}
+												</DatePickerView>
+												<DatePickerView view="month">
+													{(api) => (
+														<>
+															<DatePickerViewControl>
+																<DatePickerPrevTrigger asChild>
+																	<IconButton variant="ghost" size="sm">
+																		<Icon>
+																			<ChevronLeftIcon />
+																		</Icon>
+																	</IconButton>
+																</DatePickerPrevTrigger>
+																<DatePickerViewTrigger asChild>
+																	<Button variant="ghost" size="sm">
+																		<DatePickerRangeText />
+																	</Button>
+																</DatePickerViewTrigger>
+																<DatePickerNextTrigger asChild>
+																	<IconButton variant="ghost" size="sm">
+																		<Icon>
+																			<ChevronRightIcon />
+																		</Icon>
+																	</IconButton>
+																</DatePickerNextTrigger>
+															</DatePickerViewControl>
+															<DatePickerTable>
+																<DatePickerTableBody>
+																	{api
+																		.getMonthsGrid({
+																			columns: 4,
+																			format: "short",
+																		})
+																		.map((months, id) => (
+																			<DatePickerTableRow key={id}>
+																				{months.map((month, id) => (
+																					<DatePickerTableCell
+																						key={id}
+																						value={month.value}
+																					>
+																						<DatePickerTableCellTrigger asChild>
+																							<Button variant="ghost">
+																								{month.label}
+																							</Button>
+																						</DatePickerTableCellTrigger>
+																					</DatePickerTableCell>
+																				))}
+																			</DatePickerTableRow>
 																		))}
-																	</DatePickerTableRow>
-																))}
-														</DatePickerTableBody>
-													</DatePickerTable>
-												</>
-											)}
-										</DatePickerView>
-										<DatePickerView view="year">
-											{(api) => (
-												<>
-													<DatePickerViewControl>
-														<DatePickerPrevTrigger asChild>
-															<IconButton variant="ghost" size="sm">
-																<Icon>
-																	<ChevronLeftIcon />
-																</Icon>
-															</IconButton>
-														</DatePickerPrevTrigger>
-														<DatePickerViewTrigger asChild>
-															<Button variant="ghost" size="sm">
-																<DatePickerRangeText />
-															</Button>
-														</DatePickerViewTrigger>
-														<DatePickerNextTrigger asChild>
-															<IconButton variant="ghost" size="sm">
-																<Icon>
-																	<ChevronRightIcon />
-																</Icon>
-															</IconButton>
-														</DatePickerNextTrigger>
-													</DatePickerViewControl>
-													<DatePickerTable>
-														<DatePickerTableBody>
-															{api
-																.getYearsGrid({columns: 4})
-																.map((years, id) => (
-																	<DatePickerTableRow key={id}>
-																		{years.map((year, id) => (
-																			<DatePickerTableCell
-																				key={id}
-																				value={year.value}
-																			>
-																				<DatePickerTableCellTrigger asChild>
-																					<Button variant="ghost">
-																						{year.label}
-																					</Button>
-																				</DatePickerTableCellTrigger>
-																			</DatePickerTableCell>
+																</DatePickerTableBody>
+															</DatePickerTable>
+														</>
+													)}
+												</DatePickerView>
+												<DatePickerView view="year">
+													{(api) => (
+														<>
+															<DatePickerViewControl>
+																<DatePickerPrevTrigger asChild>
+																	<IconButton variant="ghost" size="sm">
+																		<Icon>
+																			<ChevronLeftIcon />
+																		</Icon>
+																	</IconButton>
+																</DatePickerPrevTrigger>
+																<DatePickerViewTrigger asChild>
+																	<Button variant="ghost" size="sm">
+																		<DatePickerRangeText />
+																	</Button>
+																</DatePickerViewTrigger>
+																<DatePickerNextTrigger asChild>
+																	<IconButton variant="ghost" size="sm">
+																		<Icon>
+																			<ChevronRightIcon />
+																		</Icon>
+																	</IconButton>
+																</DatePickerNextTrigger>
+															</DatePickerViewControl>
+															<DatePickerTable>
+																<DatePickerTableBody>
+																	{api
+																		.getYearsGrid({columns: 4})
+																		.map((years, id) => (
+																			<DatePickerTableRow key={id}>
+																				{years.map((year, id) => (
+																					<DatePickerTableCell
+																						key={id}
+																						value={year.value}
+																					>
+																						<DatePickerTableCellTrigger asChild>
+																							<Button variant="ghost">
+																								{year.label}
+																							</Button>
+																						</DatePickerTableCellTrigger>
+																					</DatePickerTableCell>
+																				))}
+																			</DatePickerTableRow>
 																		))}
-																	</DatePickerTableRow>
-																))}
-														</DatePickerTableBody>
-													</DatePickerTable>
-												</>
-											)}
-										</DatePickerView>
-									</DatePickerContent>
-								</DatePickerPositioner>
-							</DatePicker>
+																</DatePickerTableBody>
+															</DatePickerTable>
+														</>
+													)}
+												</DatePickerView>
+											</DatePickerContent>
+										</DatePickerPositioner>
+									</DatePicker>
 
-							<HStack mt={4} alignItems="end" gap={4}>
-								<NumberInput
-									value={values.minAmount?.toString() ?? ""}
-									onChange={(details) => {}}
-								>
-									<NumberInputLabel>Amount</NumberInputLabel>
-									<NumberInputControl>
-										<NumberInputInput placeholder="Min" />
-										<NumberInputIncrementTrigger>
-											<Icon size="sm">
-												<ChevronUpIcon />
-											</Icon>
-										</NumberInputIncrementTrigger>
-										<NumberInputDecrementTrigger>
-											<Icon size="sm">
-												<ChevronDownIcon />
-											</Icon>
-										</NumberInputDecrementTrigger>
-									</NumberInputControl>
-								</NumberInput>
+									<HStack mt={4} alignItems="end" gap={4}>
+										<NumberInput
+											min={0}
+											value={value.minAmount?.toString() ?? ""}
+											onValueChange={(d) => {
+												setValue({minAmount: d.valueAsNumber});
+											}}
+										>
+											<NumberInputLabel>Amount</NumberInputLabel>
+											<NumberInputControl>
+												<NumberInputInput placeholder="Min" />
+												<NumberInputIncrementTrigger>
+													<Icon size="sm">
+														<ChevronUpIcon />
+													</Icon>
+												</NumberInputIncrementTrigger>
+												<NumberInputDecrementTrigger>
+													<Icon size="sm">
+														<ChevronDownIcon />
+													</Icon>
+												</NumberInputDecrementTrigger>
+											</NumberInputControl>
+										</NumberInput>
 
-								<NumberInput
-									value={values.maxAmount?.toString() ?? ""}
-									onChange={(details) => {}}
-								>
-									<NumberInputControl>
-										<NumberInputInput placeholder="Max" />
-										<NumberInputIncrementTrigger>
-											<Icon size="sm">
-												<ChevronUpIcon />
-											</Icon>
-										</NumberInputIncrementTrigger>
-										<NumberInputDecrementTrigger>
-											<Icon size="sm">
-												<ChevronDownIcon />
-											</Icon>
-										</NumberInputDecrementTrigger>
-									</NumberInputControl>
-								</NumberInput>
-							</HStack>
-						</DrawerBody>
+										<NumberInput
+											min={0}
+											value={value.maxAmount?.toString() ?? ""}
+											onValueChange={(d) => {
+												setValue({maxAmount: d.valueAsNumber});
+											}}
+										>
+											<NumberInputControl>
+												<NumberInputInput placeholder="Max" />
+												<NumberInputIncrementTrigger>
+													<Icon size="sm">
+														<ChevronUpIcon />
+													</Icon>
+												</NumberInputIncrementTrigger>
+												<NumberInputDecrementTrigger>
+													<Icon size="sm">
+														<ChevronDownIcon />
+													</Icon>
+												</NumberInputDecrementTrigger>
+											</NumberInputControl>
+										</NumberInput>
+									</HStack>
+								</DrawerBody>
 
-						<DrawerFooter gap="3" justifyContent="start">
-							<DrawerCloseTrigger asChild>
-								<Button w="full" variant="outline">
-									Cancel
-								</Button>
-							</DrawerCloseTrigger>
-							<Button w="full">Save</Button>
-						</DrawerFooter>
-					</DrawerContent>
-				</DrawerPositioner>
-			</Portal>
+								<DrawerFooter gap="3" justifyContent="start">
+									<DrawerCloseTrigger asChild>
+										<Button w="full" variant="outline">
+											Cancel
+										</Button>
+									</DrawerCloseTrigger>
+									<Button
+										w="full"
+										onClick={() => {
+											applyFilter();
+											api.close();
+										}}
+									>
+										Apply
+									</Button>
+								</DrawerFooter>
+							</DrawerContent>
+						</DrawerPositioner>
+					</Portal>
+				</>
+			)}
 		</Drawer>
 	);
 }
