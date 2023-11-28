@@ -111,14 +111,14 @@ export function Export() {
 
 async function download(filename: string): Promise<string | null> {
 	try {
-		const response = await fetch("/expenses/export");
+		const response = await fetch("/expenses/export?name=" + filename);
 		const blob = await response.blob();
 
 		const url = URL.createObjectURL(blob);
 		const link = document.createElement("a");
 
 		link.href = url;
-		link.download = `${slugify(filename, {lower: true})}.xlsx`;
+		link.download = `${slugify(filename, {lower: true})}.zip`;
 		link.click();
 
 		URL.revokeObjectURL(url);

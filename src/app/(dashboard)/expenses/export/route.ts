@@ -1,11 +1,14 @@
 import {prisma} from "@/config/prisma";
 import {pascalToSentenceCase} from "@/utils/pascal-to-sentence-case";
 import assert from "assert";
+import JSZip from "jszip";
 import {cookies} from "next/headers";
 import * as XLSX from "xlsx";
 
-export async function GET(_: Request) {
+export async function GET(request: Request) {
 	const id = cookies().get("user")?.value;
+	const url = new URL(request.url);
+	const name = url.searchParams.get("filename") ?? "expenses";
 
 	assert(id);
 
@@ -33,11 +36,18 @@ export async function GET(_: Request) {
 
 	XLSX.utils.book_append_sheet(workbook, worksheet, "Expenses");
 
-	const buffer = XLSX.write(workbook, {type: "buffer", bookType: "xlsx"});
+	const zip = new JSZip();
 
+	zip.file(
+		`${name}.xlsx`,
+		XLSX.write(workbook, {type: "buffer", bookType: "xlsx"}),
+	);
+
+	const buffer = await zip.generateAsync({type: "blob"});
 	const headers = new Headers();
-	headers.append("Content-Disposition", 'attachment; filename="expenses.xlsx"');
-	headers.append("Content-Type", "application/vnd.ms-excel");
+
+	headers.append("Content-Disposition", `attachment; filename="${name}.zip"`);
+	headers.append("Content-Type", "application/zip");
 
 	return new Response(buffer, {headers});
 }
