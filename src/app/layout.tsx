@@ -5,6 +5,7 @@ import {styled} from "@/styled-system/jsx";
 import {Metadata} from "next";
 import {Lato, Open_Sans} from "next/font/google";
 import {PropsWithChildren} from "react";
+import {Providers} from "./providers";
 
 export const metadata: Metadata = {
 	title: {
@@ -36,8 +37,10 @@ export default function RootLayout({children}: PropsWithChildren) {
 			colorScheme="dark"
 		>
 			<styled.body fontFamily="body">
-				{children}
-				<Toaster />
+				<Providers>
+					{children}
+					<Toaster />
+				</Providers>
 			</styled.body>
 		</styled.html>
 	);
