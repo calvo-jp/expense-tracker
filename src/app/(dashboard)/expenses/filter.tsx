@@ -152,6 +152,18 @@ export function Filter() {
 		router.push(`${pathname}?${s.toString()}`);
 	};
 
+	const resetFilter = () => {
+		const s = new URLSearchParams();
+
+		const page = searchParams.get("page");
+		const size = searchParams.get("size");
+
+		page && s.set("page", page);
+		size && s.set("size", size);
+
+		router.push(`${pathname}?${s.toString()}`);
+	};
+
 	return (
 		<Drawer unmountOnExit>
 			{(api) => (
@@ -506,11 +518,16 @@ export function Filter() {
 								</DrawerBody>
 
 								<DrawerFooter gap="3" justifyContent="start">
-									<DrawerCloseTrigger asChild>
-										<Button w="full" variant="outline">
-											Cancel
-										</Button>
-									</DrawerCloseTrigger>
+									<Button
+										w="full"
+										variant="outline"
+										onClick={() => {
+											resetFilter();
+											api.close();
+										}}
+									>
+										Reset
+									</Button>
 									<Button
 										w="full"
 										onClick={() => {
