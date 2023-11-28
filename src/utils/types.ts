@@ -1,6 +1,6 @@
-import {stringToPrismaEnum} from "@/utils/string-to-prisma-enum";
-import {ExpenseCategory} from "@prisma/client";
-import {z} from "zod";
+import { stringToPrismaEnum } from "@/utils/string-to-prisma-enum";
+import { ExpenseCategory } from "@prisma/client";
+import { z } from "zod";
 
 export type TLoginSchema = z.infer<typeof LoginSchema>;
 export const LoginSchema = z.object({
@@ -24,17 +24,9 @@ export const CreateAccountSchema = LoginSchema.extend({
 
 export type TUpdateProfileSchema = z.infer<typeof UpdateProfileSchema>;
 export const UpdateProfileSchema = z.object({
-	name: z
-		.string()
-		.optional()
-		.nullable()
-		.transform((v) => (!v ? undefined : v)),
-	email: z
-		.string()
-		.email()
-		.optional()
-		.nullable()
-		.transform((v) => (!v ? undefined : v)),
+	name: z.string().min(4, "Name too short").max(50, "Name too long"),
+	email: z.string().email(),
+	currency: z.string(),
 });
 
 export type TChangePasswordSchema = z.infer<typeof ChangePasswordSchema>;

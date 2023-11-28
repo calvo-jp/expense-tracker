@@ -11,17 +11,33 @@ import {
 	DialogTrigger,
 } from "@/components/dialog";
 import {ErrorMessage} from "@/components/error-message";
+import {Icon} from "@/components/icon";
 import {Input} from "@/components/input";
 import {Label} from "@/components/label";
 import {MenuItem} from "@/components/menu";
+import {
+	Select,
+	SelectContent,
+	SelectControl,
+	SelectItem,
+	SelectItemGroup,
+	SelectItemIndicator,
+	SelectItemText,
+	SelectLabel,
+	SelectPositioner,
+	SelectTrigger,
+	SelectValueText,
+} from "@/components/select";
 import {toast} from "@/components/toaster";
 import {Box, Flex, HStack, VStack, styled} from "@/styled-system/jsx";
+import {constants} from "@/utils/constants";
 import {getInitials} from "@/utils/get-initials";
 import {updateProfile} from "@/utils/mutations";
 import {TUpdateProfileSchema, UpdateProfileSchema} from "@/utils/types";
 import {Portal} from "@ark-ui/react";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {User} from "@prisma/client";
+import {CheckIcon, ChevronsUpDownIcon} from "lucide-react";
 import {useEffect, useTransition} from "react";
 import {useForm} from "react-hook-form";
 
@@ -37,12 +53,14 @@ export function UpdateProfile({__SSR_DATA: {user}}: UpdateProfileProps) {
 		defaultValues: {
 			name: "",
 			email: "",
+			currency: "",
 		},
 	});
 
 	useEffect(() => {
-		user.name && form.setValue("name", user.name);
-		user.email && form.setValue("email", user.email);
+		form.setValue("name", user.name);
+		form.setValue("email", user.email);
+		form.setValue("currency", user.currency);
 	}, [form, user]);
 
 	return (
@@ -131,6 +149,62 @@ export function UpdateProfile({__SSR_DATA: {user}}: UpdateProfileProps) {
 												{form.formState.errors.email?.message}
 											</ErrorMessage>
 										</Flex>
+										<Flex flexDir="column" gap={1.5}>
+											<Select
+												size="lg"
+												items={CURRENCIES}
+												value={[form.watch("currency")]}
+												onValueChange={(details) => {
+													form.setValue("currency", details.value[0]);
+												}}
+											>
+												<SelectLabel>Currency</SelectLabel>
+												<SelectControl>
+													<SelectTrigger>
+														<SelectValueText />
+														<Icon>
+															<ChevronsUpDownIcon />
+														</Icon>
+													</SelectTrigger>
+												</SelectControl>
+												<SelectPositioner>
+													<SelectContent h="12rem" overflowY="auto">
+														<SelectItemGroup id="settings.currency">
+															{CURRENCIES.map((option) => (
+																<SelectItem
+																	item={option}
+																	key={option.value}
+																	h="auto"
+																	py={1.5}
+																>
+																	<SelectItemText>
+																		<Box lineHeight="none">
+																			{option.details.abbr}
+																		</Box>
+																		<Box
+																			mt={1}
+																			color="fg.muted"
+																			fontSize="xs"
+																			lineHeight="none"
+																		>
+																			{option.details.name}
+																		</Box>
+																	</SelectItemText>
+																	<SelectItemIndicator>
+																		<Icon>
+																			<CheckIcon />
+																		</Icon>
+																	</SelectItemIndicator>
+																</SelectItem>
+															))}
+														</SelectItemGroup>
+													</SelectContent>
+												</SelectPositioner>
+											</Select>
+											<ErrorMessage>
+												{form.formState.errors.email?.message}
+											</ErrorMessage>
+										</Flex>
 									</VStack>
 
 									<HStack mt={8} gap={4}>
@@ -157,3 +231,8 @@ export function UpdateProfile({__SSR_DATA: {user}}: UpdateProfileProps) {
 		</Dialog>
 	);
 }
+
+const CURRENCIES = constants.currencies.map((currency) => ({
+	value: currency.abbr,
+	details: currency,
+}));
