@@ -42,8 +42,6 @@ export function Export() {
 		},
 	});
 
-	console.log(searchParams);
-
 	return (
 		<Dialog>
 			{(api) => (

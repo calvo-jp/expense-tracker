@@ -44,9 +44,7 @@ export async function login(input: unknown) {
 
 		cookies().set("user", user.id, {expires: addDays(new Date(), 30)});
 		return null;
-	} catch (e) {
-		console.log(e);
-
+	} catch {
 		return "Invalid username or password";
 	}
 }
@@ -65,9 +63,7 @@ async function recordLogin(userId: string) {
 				location,
 			},
 		});
-	} catch {
-		console.info("Failed to record login details");
-	}
+	} catch {}
 }
 
 async function locate() {
