@@ -8,6 +8,7 @@ import {addDays} from "date-fns";
 import {revalidatePath} from "next/cache";
 import {cookies, headers} from "next/headers";
 import {redirect} from "next/navigation";
+import {cache} from "react";
 import {z} from "zod";
 import {
 	ChangePasswordSchema,
@@ -51,7 +52,8 @@ export async function login(input: unknown) {
 
 async function recordLogin(userId: string) {
 	try {
-		const details = await locate();
+		const ipAddress = z.string().ip().parse(headers().get("x-forwarded-for"));
+		const details = await locate(ipAddress);
 		const location = [details?.city?.names.en, details?.country?.names.en]
 			.filter(Boolean)
 			.join(", ");
@@ -66,26 +68,19 @@ async function recordLogin(userId: string) {
 	} catch {}
 }
 
-async function locate() {
+const locate = cache(async (ipAddress: string) => {
+	const client = new WebServiceClient(maxmindAccountId, maxmindLicenceKey, {
+		host: "geolite.info",
+	});
+
 	try {
-		const client = new WebServiceClient(
-			//
-			maxmindAccountId,
-			maxmindLicenceKey,
-			{
-				host: "geolite.info",
-			},
-		);
-
-		const ipAddress = z.string().ip().parse(headers().get("x-forwarded-for"));
-
 		return await client.city(ipAddress);
 	} catch (e) {
 		console.warn(e);
 
 		return null;
 	}
-}
+});
 
 export async function logout() {
 	cookies().delete("user");
