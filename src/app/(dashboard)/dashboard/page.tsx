@@ -53,17 +53,21 @@ export default async function Dashboard() {
 }
 
 async function YearSummary() {
-	const client = new WebServiceClient(
-		process.env.MAXMIND_ACCOUNT_ID!,
-		process.env.MAXMIND_LICENSE_KEY!,
-		{
-			host: "geolite.info",
-		},
-	);
+	try {
+		const client = new WebServiceClient(
+			process.env.MAXMIND_ACCOUNT_ID!,
+			process.env.MAXMIND_LICENSE_KEY!,
+			{
+				host: "geolite.info",
+			},
+		);
 
-	const {city} = await client.city(headers().get("x-forwarded-for")!);
+		const {city} = await client.city(headers().get("x-forwarded-for")!);
 
-	return <div>{city?.names.en}</div>;
+		return <div>{city?.names.en}</div>;
+	} catch (error) {
+		return <div></div>;
+	}
 }
 
 async function MonthSummary() {
