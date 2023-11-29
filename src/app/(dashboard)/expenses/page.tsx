@@ -165,7 +165,7 @@ export default async function Expenses(props: ExpensesProps) {
 				</Box>
 			</Box>
 
-			<Suspense>
+			<Suspense fallback={null}>
 				<BottomControls {...props} />
 			</Suspense>
 		</Box>
