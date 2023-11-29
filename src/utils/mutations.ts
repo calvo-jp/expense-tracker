@@ -1,11 +1,14 @@
 "use server";
 
-import {prisma} from "@/config/prisma";
+import { prisma } from "@/config/prisma";
+import { WebServiceClient } from "@maxmind/geoip2-node";
+import assert from "assert";
 import bcrypt from "bcrypt";
-import {addDays} from "date-fns";
-import {revalidatePath} from "next/cache";
-import {cookies} from "next/headers";
-import {redirect} from "next/navigation";
+import { addDays } from "date-fns";
+import { revalidatePath } from "next/cache";
+import { cookies, headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { z } from "zod";
 import {
 	ChangePasswordSchema,
 	CreateAccountSchema,
@@ -13,6 +16,70 @@ import {
 	UpdateProfileSchema,
 	UpsertExpenseSchema,
 } from "./types";
+
+assert(process.env.MAXMIND_ACCOUNT_ID);
+assert(process.env.MAXMIND_ACCOUNT_ID);
+
+const maxmindAccountId = process.env.MAXMIND_ACCOUNT_ID;
+const maxmindLicenceKey = process.env.MAXMIND_ACCOUNT_ID;
+
+/*
+ *------------------- AUTH -------------------
+ */
+
+export async function login(input: unknown) {
+	const parsed = LoginSchema.safeParse(input);
+
+	if (!parsed.success) return parsed.error.errors[0].message;
+
+	const {username, password} = parsed.data;
+
+	try {
+		const user = await prisma.user.findUniqueOrThrow({where: {username}});
+		const matches = await bcrypt.compare(password, user.password);
+
+		if (!matches) throw new Error();
+
+		const parsedIP = z
+			.string()
+			.ip()
+			.safeParse(headers().get("x-forwarded-for"));
+
+		if (parsedIP.success) {
+			const client = new WebServiceClient(maxmindAccountId, maxmindLicenceKey, {
+				host: "geolite.info",
+			});
+
+			const ipAddress = parsedIP.data;
+			const details = await client.city(ipAddress);
+			const userId = user.id;
+
+			if (details) {
+				const location = [details.city?.names.en, details.country?.names.en]
+					.filter(Boolean)
+					.join();
+
+				await prisma.loginActivity.create({
+					data: {
+						ipAddress,
+						location,
+						userId,
+					},
+				});
+			}
+		}
+
+		cookies().set("user", user.id, {expires: addDays(new Date(), 30)});
+		return null;
+	} catch {
+		return "Invalid username or password";
+	}
+}
+
+export async function logout() {
+	cookies().delete("user");
+	redirect("/");
+}
 
 /*
  *------------------- PROFILE -------------------
@@ -124,35 +191,6 @@ export async function updateCurrency(currency: string) {
 	} catch {
 		return "Something went wrong";
 	}
-}
-
-/*
- *------------------- AUTH -------------------
- */
-
-export async function login(input: unknown) {
-	const parsed = LoginSchema.safeParse(input);
-
-	if (!parsed.success) return parsed.error.errors[0].message;
-
-	const {username, password} = parsed.data;
-
-	try {
-		const user = await prisma.user.findUniqueOrThrow({where: {username}});
-		const matches = await bcrypt.compare(password, user.password);
-
-		if (!matches) throw new Error();
-
-		cookies().set("user", user.id, {expires: addDays(new Date(), 30)});
-		return null;
-	} catch {
-		return "Invalid username or password";
-	}
-}
-
-export async function logout() {
-	cookies().delete("user");
-	redirect("/");
 }
 
 /*

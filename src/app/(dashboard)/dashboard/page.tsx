@@ -1,8 +1,7 @@
 import {prisma} from "@/config/prisma";
 import {Box, Flex, Spacer, styled} from "@/styled-system/jsx";
-import {WebServiceClient} from "@maxmind/geoip2-node";
 import {Metadata} from "next";
-import {cookies, headers} from "next/headers";
+import {cookies} from "next/headers";
 import {Suspense} from "react";
 
 export const metadata: Metadata = {
@@ -53,21 +52,7 @@ export default async function Dashboard() {
 }
 
 async function YearSummary() {
-	try {
-		const client = new WebServiceClient(
-			process.env.MAXMIND_ACCOUNT_ID!,
-			process.env.MAXMIND_LICENSE_KEY!,
-			{
-				host: "geolite.info",
-			},
-		);
-
-		const {city} = await client.city(headers().get("x-forwarded-for")!);
-
-		return <div>{city?.names.en}</div>;
-	} catch (error) {
-		return <div></div>;
-	}
+	return null;
 }
 
 async function MonthSummary() {
