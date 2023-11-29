@@ -8,7 +8,6 @@ import {addDays} from "date-fns";
 import {revalidatePath} from "next/cache";
 import {cookies, headers} from "next/headers";
 import {redirect} from "next/navigation";
-import {z} from "zod";
 import {
 	ChangePasswordSchema,
 	CreateAccountSchema,
@@ -57,7 +56,7 @@ async function recordLogin(userId: string) {
 	});
 
 	try {
-		const ipAddress = z.string().ip().parse(headers().get("x-forwarded-for"));
+		const ipAddress = headers().get("x-forwarded-for")!;
 		const details = await client.city(ipAddress);
 
 		const location = [details.city?.names.en, details.country?.names.en]
