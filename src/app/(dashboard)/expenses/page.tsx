@@ -28,14 +28,21 @@ import {
 import {prisma} from "@/config/prisma";
 import {Box, Flex, HStack, Spacer, styled} from "@/styled-system/jsx";
 import {currencyFormatter} from "@/utils/currency-formatter";
-import {ExpenseFilterSchema, PaginationSchema} from "@/utils/types";
+import {
+	ExpenseFilterSchema,
+	PaginationSchema,
+	TExpenseFilterSchema,
+} from "@/utils/types";
 import {Portal} from "@ark-ui/react";
 import {Prisma} from "@prisma/client";
+import assert from "assert";
 import {format, formatDistanceToNow} from "date-fns";
 import {FileEditIcon, PlusIcon, SettingsIcon} from "lucide-react";
 import {Metadata} from "next";
 import {cookies} from "next/headers";
+import {Suspense, cache} from "react";
 import {PageControls} from "../page-controls";
+import {Spinner} from "../spinner";
 import {DeleteExpense} from "./delete-expense";
 import {Export} from "./export";
 import {Filter} from "./filter";
@@ -49,90 +56,7 @@ interface ExpensesProps {
 	searchParams: {[key: string]: string | string[]};
 }
 
-export default async function Expenses({searchParams}: ExpensesProps) {
-	const id = cookies().get("user")?.value;
-
-	const user = await prisma.user.findUniqueOrThrow({
-		where: {id},
-		select: {
-			currency: true,
-		},
-	});
-
-	const {
-		page,
-		size,
-		category,
-		location,
-		minAmount,
-		maxAmount,
-		transactionDateStart,
-		transactionDateUntil,
-	} = {
-		...ExpenseFilterSchema.parse(searchParams),
-		...PaginationSchema.parse(searchParams),
-	};
-
-	/*
-	 *--------- QUERY FILTER ---------
-	 */
-
-	const where: Prisma.ExpenseWhereInput = {
-		user: {id},
-
-		...([minAmount, maxAmount].some(Boolean) && {
-			amount: {
-				...(minAmount && {
-					gte: minAmount,
-				}),
-				...(maxAmount && {
-					lte: maxAmount,
-				}),
-			},
-		}),
-
-		...(category?.length && {
-			category: {
-				in: category,
-			},
-		}),
-
-		...(location && {
-			location: {
-				contains: location,
-			},
-		}),
-
-		...([transactionDateStart, transactionDateUntil].some(Boolean) && {
-			transactionDate: {
-				...(transactionDateStart && {
-					gte: transactionDateStart,
-				}),
-				...(transactionDateUntil && {
-					lte: transactionDateUntil,
-				}),
-			},
-		}),
-	};
-
-	const expenses = await prisma.expense.findMany({
-		where,
-		skip: size * (page - 1),
-		take: size,
-		include: {
-			user: {
-				select: {
-					currency: true,
-				},
-			},
-		},
-		orderBy: {
-			createdAt: "desc",
-		},
-	});
-
-	const count = await prisma.expense.count({where});
-
+export default async function Expenses(props: ExpensesProps) {
 	return (
 		<Box>
 			<Flex>
@@ -218,166 +142,276 @@ export default async function Expenses({searchParams}: ExpensesProps) {
 								</TableHead>
 							</TableRow>
 						</TableHeader>
-						<TableBody>
-							{expenses.map((expense) => (
-								<TableRow key={expense.id}>
-									<TableCell>{expense.category}</TableCell>
-									<TableCell>
-										<styled.div maxW="8rem" truncate>
-											{expense.description}
-										</styled.div>
-									</TableCell>
-									<TableCell fontVariantNumeric="tabular-nums">
-										{currencyFormatter.format(expense.amount, user.currency)}
-									</TableCell>
-									<TableCell>
-										<styled.div maxW="5rem" truncate>
-											{expense.location}
-										</styled.div>
-									</TableCell>
-									<TableCell>
-										<Tooltip
-											positioning={{
-												placement: "right",
-											}}
-										>
-											<TooltipTrigger asChild>
-												<styled.span>
-													{formatDistanceToNow(expense.transactionDate, {
-														addSuffix: true,
-													})}
-												</styled.span>
-											</TooltipTrigger>
-											<Portal>
-												<TooltipPositioner>
-													<TooltipContent>
-														<TooltipArrow>
-															<TooltipArrowTip />
-														</TooltipArrow>
-														{format(expense.transactionDate, "yyyy MMM dd")}
-													</TooltipContent>
-												</TooltipPositioner>
-											</Portal>
-										</Tooltip>
-									</TableCell>
-									<TableCell>
-										<Tooltip
-											positioning={{
-												placement: "right",
-											}}
-										>
-											<TooltipTrigger asChild>
-												<styled.span>
-													{formatDistanceToNow(expense.createdAt, {
-														addSuffix: true,
-													})}
-												</styled.span>
-											</TooltipTrigger>
-											<Portal>
-												<TooltipPositioner>
-													<TooltipContent>
-														<TooltipArrow>
-															<TooltipArrowTip />
-														</TooltipArrow>
-														{format(expense.createdAt, "yyyy MMM dd hh:mm a")}
-													</TooltipContent>
-												</TooltipPositioner>
-											</Portal>
-										</Tooltip>
-									</TableCell>
-									<TableCell>
-										<Tooltip
-											positioning={{
-												placement: "right",
-											}}
-										>
-											<TooltipTrigger asChild>
-												<styled.span>
-													{formatDistanceToNow(expense.updatedAt, {
-														addSuffix: true,
-													})}
-												</styled.span>
-											</TooltipTrigger>
-											<Portal>
-												<TooltipPositioner>
-													<TooltipContent>
-														<TooltipArrow>
-															<TooltipArrowTip />
-														</TooltipArrow>
-														{format(expense.updatedAt, "yyyy MMM dd hh:mm a")}
-													</TooltipContent>
-												</TooltipPositioner>
-											</Portal>
-										</Tooltip>
-									</TableCell>
-									<TableCell textAlign="center" pos="sticky" right={0}>
-										<Menu
-											positioning={{
-												placement: "bottom-start",
-											}}
-										>
-											<MenuTrigger asChild>
-												<styled.button cursor="pointer">
-													<Icon>
-														<SettingsIcon />
-													</Icon>
-												</styled.button>
-											</MenuTrigger>
-											<Portal>
-												<MenuPositioner>
-													<MenuContent
-														w="12rem"
-														shadow="none"
-														borderWidth="1px"
-													>
-														<MenuItemGroup id={`expenses-menu--${expense.id}`}>
-															<UpsertExpense type="update" data={expense}>
-																<MenuItem
-																	id={`expenses.items.${expense.id}.menu.edit`}
-																>
-																	<HStack>
-																		<Icon>
-																			<FileEditIcon />
-																		</Icon>
-																		<styled.span>Edit</styled.span>
-																	</HStack>
-																</MenuItem>
-															</UpsertExpense>
 
-															<DeleteExpense data={expense} />
-														</MenuItemGroup>
-													</MenuContent>
-												</MenuPositioner>
-											</Portal>
-										</Menu>
-									</TableCell>
-								</TableRow>
-							))}
-						</TableBody>
-						<TableFooter>
-							<TableRow>
-								<TableCell />
-								<TableCell />
-								<TableCell fontVariantNumeric="tabular-nums">
-									{currencyFormatter.format(
-										expenses.reduce((total, {amount}) => total + amount, 0),
-										user.currency,
-									)}
-								</TableCell>
-								<TableCell />
-								<TableCell />
-								<TableCell />
-								<TableCell />
-								<TableCell pos="sticky" right={0} />
-							</TableRow>
-						</TableFooter>
+						<Suspense
+							fallback={
+								<TableBody>
+									<TableRow>
+										<TableCell align="center" colSpan={8}>
+											<Spinner />
+										</TableCell>
+									</TableRow>
+								</TableBody>
+							}
+						>
+							<TableContent {...props} />
+						</Suspense>
 					</Table>
 				</Box>
 			</Box>
 
-			<Box mt={8}>
-				<PageControls __SSR_DATA={{count}} />
-			</Box>
+			<Suspense>
+				<BottomControls {...props} />
+			</Suspense>
 		</Box>
 	);
 }
+
+async function TableContent({searchParams}: ExpensesProps) {
+	const id = cookies().get("user")?.value;
+
+	assert(id);
+
+	const user = await getUser(id);
+	const params = parseParams(searchParams);
+
+	const expenses = await prisma.expense.findMany({
+		skip: params.size * (params.page - 1),
+		take: params.size,
+		where: {user: {id}, ...paramsToWhereClause(params)},
+		include: {
+			user: {
+				select: {
+					currency: true,
+				},
+			},
+		},
+		orderBy: {
+			createdAt: "desc",
+		},
+	});
+
+	return (
+		<>
+			<TableBody>
+				{expenses.map((expense) => (
+					<TableRow key={expense.id}>
+						<TableCell>{expense.category}</TableCell>
+						<TableCell>
+							<styled.div maxW="8rem" truncate>
+								{expense.description}
+							</styled.div>
+						</TableCell>
+						<TableCell fontVariantNumeric="tabular-nums">
+							{currencyFormatter.format(expense.amount, user.currency)}
+						</TableCell>
+						<TableCell>
+							<styled.div maxW="5rem" truncate>
+								{expense.location}
+							</styled.div>
+						</TableCell>
+						<TableCell>
+							<Tooltip
+								positioning={{
+									placement: "right",
+								}}
+							>
+								<TooltipTrigger asChild>
+									<styled.span>
+										{formatDistanceToNow(expense.transactionDate, {
+											addSuffix: true,
+										})}
+									</styled.span>
+								</TooltipTrigger>
+								<Portal>
+									<TooltipPositioner>
+										<TooltipContent>
+											<TooltipArrow>
+												<TooltipArrowTip />
+											</TooltipArrow>
+											{format(expense.transactionDate, "yyyy MMM dd")}
+										</TooltipContent>
+									</TooltipPositioner>
+								</Portal>
+							</Tooltip>
+						</TableCell>
+						<TableCell>
+							<Tooltip
+								positioning={{
+									placement: "right",
+								}}
+							>
+								<TooltipTrigger asChild>
+									<styled.span>
+										{formatDistanceToNow(expense.createdAt, {
+											addSuffix: true,
+										})}
+									</styled.span>
+								</TooltipTrigger>
+								<Portal>
+									<TooltipPositioner>
+										<TooltipContent>
+											<TooltipArrow>
+												<TooltipArrowTip />
+											</TooltipArrow>
+											{format(expense.createdAt, "yyyy MMM dd hh:mm a")}
+										</TooltipContent>
+									</TooltipPositioner>
+								</Portal>
+							</Tooltip>
+						</TableCell>
+						<TableCell>
+							<Tooltip
+								positioning={{
+									placement: "right",
+								}}
+							>
+								<TooltipTrigger asChild>
+									<styled.span>
+										{formatDistanceToNow(expense.updatedAt, {
+											addSuffix: true,
+										})}
+									</styled.span>
+								</TooltipTrigger>
+								<Portal>
+									<TooltipPositioner>
+										<TooltipContent>
+											<TooltipArrow>
+												<TooltipArrowTip />
+											</TooltipArrow>
+											{format(expense.updatedAt, "yyyy MMM dd hh:mm a")}
+										</TooltipContent>
+									</TooltipPositioner>
+								</Portal>
+							</Tooltip>
+						</TableCell>
+						<TableCell textAlign="center" pos="sticky" right={0}>
+							<Menu
+								positioning={{
+									placement: "bottom-start",
+								}}
+							>
+								<MenuTrigger asChild>
+									<styled.button cursor="pointer">
+										<Icon>
+											<SettingsIcon />
+										</Icon>
+									</styled.button>
+								</MenuTrigger>
+								<Portal>
+									<MenuPositioner>
+										<MenuContent w="12rem" shadow="none" borderWidth="1px">
+											<MenuItemGroup id={`expenses-menu--${expense.id}`}>
+												<UpsertExpense type="update" data={expense}>
+													<MenuItem
+														id={`expenses.items.${expense.id}.menu.edit`}
+													>
+														<HStack>
+															<Icon>
+																<FileEditIcon />
+															</Icon>
+															<styled.span>Edit</styled.span>
+														</HStack>
+													</MenuItem>
+												</UpsertExpense>
+
+												<DeleteExpense data={expense} />
+											</MenuItemGroup>
+										</MenuContent>
+									</MenuPositioner>
+								</Portal>
+							</Menu>
+						</TableCell>
+					</TableRow>
+				))}
+			</TableBody>
+			<TableFooter>
+				<TableRow>
+					<TableCell />
+					<TableCell />
+					<TableCell fontVariantNumeric="tabular-nums">
+						{currencyFormatter.format(
+							expenses.reduce((total, {amount}) => total + amount, 0),
+							user.currency,
+						)}
+					</TableCell>
+					<TableCell />
+					<TableCell />
+					<TableCell />
+					<TableCell />
+					<TableCell pos="sticky" right={0} />
+				</TableRow>
+			</TableFooter>
+		</>
+	);
+}
+
+async function BottomControls({searchParams}: ExpensesProps) {
+	const id = cookies().get("user")?.value;
+
+	assert(id);
+
+	const params = parseParams(searchParams);
+	const count = await prisma.expense.count({
+		where: {user: {id}, ...paramsToWhereClause(params)},
+	});
+
+	return (
+		<Box mt={8}>
+			<PageControls __SSR_DATA={{count}} />
+		</Box>
+	);
+}
+
+const getUser = cache(async (id: string) => {
+	return await prisma.user.findUniqueOrThrow({
+		where: {id},
+		select: {
+			currency: true,
+		},
+	});
+});
+
+const parseParams = cache((searchParams: unknown) => {
+	return {
+		...ExpenseFilterSchema.parse(searchParams),
+		...PaginationSchema.parse(searchParams),
+	};
+});
+
+/*
+ *--------- QUERY FILTER ---------
+ */
+const paramsToWhereClause = cache((args: TExpenseFilterSchema) => {
+	const {
+		category,
+		location,
+		minAmount,
+		maxAmount,
+		transactionDateStart,
+		transactionDateUntil,
+	} = args;
+
+	const whereClause: Prisma.ExpenseWhereInput = {
+		...([minAmount, maxAmount].some(Boolean) && {
+			amount: {
+				...(minAmount && {gte: minAmount}),
+				...(maxAmount && {lte: maxAmount}),
+			},
+		}),
+		...(category?.length && {
+			category: {in: category},
+		}),
+		...(location && {
+			location: {contains: location},
+		}),
+		...([transactionDateStart, transactionDateUntil].some(Boolean) && {
+			transactionDate: {
+				...(transactionDateStart && {gte: transactionDateStart}),
+				...(transactionDateUntil && {lte: transactionDateUntil}),
+			},
+		}),
+	};
+
+	return whereClause;
+});
