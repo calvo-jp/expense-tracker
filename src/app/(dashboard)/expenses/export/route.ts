@@ -75,8 +75,6 @@ export async function GET(request: Request) {
 		}),
 	};
 
-	console.log({where});
-
 	const expenses = await prisma.expense.findMany({
 		where,
 		select: {
