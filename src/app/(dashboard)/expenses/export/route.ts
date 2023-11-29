@@ -1,5 +1,7 @@
 import {prisma} from "@/config/prisma";
 import {pascalToSentenceCase} from "@/utils/pascal-to-sentence-case";
+import {ExpenseFilterSchema} from "@/utils/types";
+import {Prisma} from "@prisma/client";
 import assert from "assert";
 import JSZip from "jszip";
 import {cookies} from "next/headers";
@@ -15,8 +17,68 @@ export async function GET(request: Request) {
 
 	assert(id);
 
+	const {
+		category,
+		location,
+		minAmount,
+		maxAmount,
+		transactionDateStart,
+		transactionDateUntil,
+	} = ExpenseFilterSchema.parse({
+		category: url.searchParams.getAll("category"),
+		location: url.searchParams.get("location"),
+		minAmount: url.searchParams.get("minAmount"),
+		maxAmount: url.searchParams.get("maxAmount"),
+		transactionDateStart: url.searchParams.get("transactionDateStart"),
+		transactionDateUntil: url.searchParams.get("transactionDateUntil"),
+	});
+
+	/*
+	 *--------- QUERY FILTER ---------
+	 */
+
+	const where: Prisma.ExpenseWhereInput = {
+		user: {id},
+
+		...([minAmount, maxAmount].some(Boolean) && {
+			amount: {
+				...(minAmount && {
+					gte: minAmount,
+				}),
+				...(maxAmount && {
+					lte: maxAmount,
+				}),
+			},
+		}),
+
+		...(category?.length && {
+			category: {
+				in: category,
+			},
+		}),
+
+		...(location && {
+			location: {
+				contains: location,
+			},
+		}),
+
+		...([transactionDateStart, transactionDateUntil].some(Boolean) && {
+			transactionDate: {
+				...(transactionDateStart && {
+					gte: transactionDateStart,
+				}),
+				...(transactionDateUntil && {
+					lte: transactionDateUntil,
+				}),
+			},
+		}),
+	};
+
+	console.log({where});
+
 	const expenses = await prisma.expense.findMany({
-		where: {user: {id}},
+		where,
 		select: {
 			amount: true,
 			category: true,

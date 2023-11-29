@@ -19,6 +19,7 @@ import {Flex, HStack, styled} from "@/styled-system/jsx";
 import {Portal} from "@ark-ui/react";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {FileArchiveIcon} from "lucide-react";
+import {useSearchParams} from "next/navigation";
 import {useTransition} from "react";
 import {useForm} from "react-hook-form";
 import slugify from "slugify";
@@ -30,6 +31,8 @@ const ExportSchema = z.object({
 });
 
 export function Export() {
+	const searchParams = useSearchParams();
+
 	const [pending, startTransition] = useTransition();
 
 	const form = useForm<TExportSchema>({
@@ -38,6 +41,8 @@ export function Export() {
 			filename: "Expenses",
 		},
 	});
+
+	console.log(searchParams);
 
 	return (
 		<Dialog>
@@ -57,18 +62,33 @@ export function Export() {
 								<styled.form
 									onSubmit={form.handleSubmit(({filename}) => {
 										return startTransition(async () => {
-											const error = await download(filename);
+											const u = "/expenses/export";
+											const s = new URLSearchParams(searchParams);
 
-											if (error) {
+											s.delete("page");
+											s.delete("size");
+											s.set("filename", filename);
+
+											try {
+												const response = await fetch(`${u}?${s.toString()}`);
+
+												const blob = await response.blob();
+
+												const url = URL.createObjectURL(blob);
+												const link = document.createElement("a");
+
+												link.href = url;
+												link.download = slugify(filename, {lower: true});
+												link.click();
+
+												URL.revokeObjectURL(url);
+												api.close();
+											} catch {
 												toast.error({
 													title: "Error",
-													description: error,
+													description: "Something went wrong",
 												});
-
-												return;
 											}
-
-											api.close();
 										});
 									})}
 								>
@@ -107,23 +127,4 @@ export function Export() {
 			)}
 		</Dialog>
 	);
-}
-
-async function download(filename: string): Promise<string | null> {
-	try {
-		const response = await fetch("/expenses/export?name=" + filename);
-		const blob = await response.blob();
-
-		const url = URL.createObjectURL(blob);
-		const link = document.createElement("a");
-
-		link.href = url;
-		link.download = slugify(filename, {lower: true});
-		link.click();
-
-		URL.revokeObjectURL(url);
-		return null;
-	} catch {
-		return "Something went wrong";
-	}
 }

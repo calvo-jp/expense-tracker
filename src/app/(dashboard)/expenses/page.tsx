@@ -59,8 +59,19 @@ export default async function Expenses({searchParams}: ExpensesProps) {
 		},
 	});
 
-	const filter = ExpenseFilterSchema.parse(searchParams);
-	const pagination = PaginationSchema.parse(searchParams);
+	const {
+		page,
+		size,
+		category,
+		location,
+		minAmount,
+		maxAmount,
+		transactionDateStart,
+		transactionDateUntil,
+	} = {
+		...ExpenseFilterSchema.parse(searchParams),
+		...PaginationSchema.parse(searchParams),
+	};
 
 	/*
 	 *--------- QUERY FILTER ---------
@@ -69,46 +80,36 @@ export default async function Expenses({searchParams}: ExpensesProps) {
 	const where: Prisma.ExpenseWhereInput = {
 		user: {id},
 
-		...([
-			//
-			filter.minAmount,
-			filter.maxAmount,
-		].some(Boolean) && {
+		...([minAmount, maxAmount].some(Boolean) && {
 			amount: {
-				...(filter.minAmount && {
-					gte: filter.minAmount,
+				...(minAmount && {
+					gte: minAmount,
 				}),
-
-				...(filter.maxAmount && {
-					lte: filter.maxAmount,
+				...(maxAmount && {
+					lte: maxAmount,
 				}),
 			},
 		}),
 
-		...(filter.category?.length && {
+		...(category?.length && {
 			category: {
-				in: filter.category,
+				in: category,
 			},
 		}),
 
-		...(filter.location && {
+		...(location && {
 			location: {
-				contains: filter.location,
+				contains: location,
 			},
 		}),
 
-		...([
-			//
-			filter.transactionDateStart,
-			filter.transactionDateUntil,
-		].some(Boolean) && {
+		...([transactionDateStart, transactionDateUntil].some(Boolean) && {
 			transactionDate: {
-				...(filter.transactionDateStart && {
-					gte: filter.transactionDateStart,
+				...(transactionDateStart && {
+					gte: transactionDateStart,
 				}),
-
-				...(filter.transactionDateUntil && {
-					lte: filter.transactionDateUntil,
+				...(transactionDateUntil && {
+					lte: transactionDateUntil,
 				}),
 			},
 		}),
@@ -116,8 +117,8 @@ export default async function Expenses({searchParams}: ExpensesProps) {
 
 	const expenses = await prisma.expense.findMany({
 		where,
-		skip: pagination.size * (pagination.page - 1),
-		take: pagination.size,
+		skip: size * (page - 1),
+		take: size,
 		include: {
 			user: {
 				select: {
