@@ -1,14 +1,14 @@
 "use server";
 
-import { prisma } from "@/config/prisma";
-import { WebServiceClient } from "@maxmind/geoip2-node";
+import {prisma} from "@/config/prisma";
+import {WebServiceClient} from "@maxmind/geoip2-node";
 import assert from "assert";
 import bcrypt from "bcrypt";
-import { addDays } from "date-fns";
-import { revalidatePath } from "next/cache";
-import { cookies, headers } from "next/headers";
-import { redirect } from "next/navigation";
-import { z } from "zod";
+import {addDays} from "date-fns";
+import {revalidatePath} from "next/cache";
+import {cookies, headers} from "next/headers";
+import {redirect} from "next/navigation";
+import {z} from "zod";
 import {
 	ChangePasswordSchema,
 	CreateAccountSchema,
@@ -40,39 +40,38 @@ export async function login(input: unknown) {
 
 		if (!matches) throw new Error();
 
-		const parsedIP = z
-			.string()
-			.ip()
-			.safeParse(headers().get("x-forwarded-for"));
-
-		if (parsedIP.success) {
-			const client = new WebServiceClient(maxmindAccountId, maxmindLicenceKey, {
-				host: "geolite.info",
-			});
-
-			const ipAddress = parsedIP.data;
-			const details = await client.city(ipAddress);
-			const userId = user.id;
-
-			if (details) {
-				const location = [details.city?.names.en, details.country?.names.en]
-					.filter(Boolean)
-					.join();
-
-				await prisma.loginActivity.create({
-					data: {
-						ipAddress,
-						location,
-						userId,
-					},
-				});
-			}
-		}
+		await recordLogin(user.id);
 
 		cookies().set("user", user.id, {expires: addDays(new Date(), 30)});
 		return null;
-	} catch {
+	} catch (e) {
+		console.log(e);
+
 		return "Invalid username or password";
+	}
+}
+
+async function recordLogin(userId: string) {
+	const client = new WebServiceClient(maxmindAccountId, maxmindLicenceKey, {
+		host: "geolite.info",
+	});
+
+	try {
+		const ipAddress = z.string().ip().parse(headers().get("x-forwarded-for"));
+		const details = await client.city(ipAddress);
+
+		const location = [details.city?.names.en, details.country?.names.en]
+			.filter(Boolean)
+			.join();
+
+		await prisma.loginActivity.create({
+			data: {
+				location,
+				userId,
+			},
+		});
+	} catch (e) {
+		console.log(e);
 	}
 }
 
