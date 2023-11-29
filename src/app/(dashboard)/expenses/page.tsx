@@ -26,7 +26,7 @@ import {
 	TooltipTrigger,
 } from "@/components/tooltip";
 import {prisma} from "@/config/prisma";
-import {Box, Flex, HStack, Spacer, styled} from "@/styled-system/jsx";
+import {Box, Center, Flex, HStack, Spacer, styled} from "@/styled-system/jsx";
 import {currencyFormatter} from "@/utils/currency-formatter";
 import {
 	ExpenseFilterSchema,
@@ -147,8 +147,13 @@ export default async function Expenses(props: ExpensesProps) {
 							fallback={
 								<TableBody>
 									<TableRow>
-										<TableCell align="center" colSpan={8}>
-											<Spinner />
+										<TableCell colSpan={8}>
+											<Center>
+												<HStack>
+													<Spinner />
+													<styled.span color="fg.muted">Loading...</styled.span>
+												</HStack>
+											</Center>
 										</TableCell>
 									</TableRow>
 								</TableBody>

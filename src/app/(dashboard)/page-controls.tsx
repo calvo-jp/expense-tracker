@@ -97,7 +97,7 @@ export function PageControls(props: PageControlsProps) {
 			</Pagination>
 
 			<Select
-				w={28}
+				w="8rem"
 				flexShrink={0}
 				items={sizes}
 				value={[context.value.size.toString()]}
