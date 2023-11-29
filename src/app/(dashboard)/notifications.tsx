@@ -57,7 +57,7 @@ export async function Notifications() {
 												description={
 													<>
 														{formatDistanceToNow(activity.createdAt)} at{" "}
-														{activity.location}
+														{activity.location || "unknown place"}
 													</>
 												}
 											/>

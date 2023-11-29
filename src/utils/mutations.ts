@@ -80,7 +80,9 @@ async function locate() {
 		const ipAddress = z.string().ip().parse(headers().get("x-forwarded-for"));
 
 		return await client.city(ipAddress);
-	} catch {
+	} catch (e) {
+		console.warn(e);
+
 		return null;
 	}
 }
