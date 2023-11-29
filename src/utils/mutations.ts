@@ -56,7 +56,7 @@ async function recordLogin(userId: string) {
 		const details = await locate();
 		const location = [details?.city?.names.en, details?.country?.names.en]
 			.filter(Boolean)
-			.join();
+			.join(", ");
 
 		await prisma.loginActivity.create({
 			data: {
