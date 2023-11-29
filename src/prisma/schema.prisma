@@ -8,14 +8,14 @@ generator client {
 }
 
 model User {
-  id              String          @id @default(auto()) @map("_id") @db.ObjectId
-  name            String
-  email           String          @unique
-  username        String          @unique
-  password        String
-  currency        String          @default("USD")
-  expenses        Expense[]
-  loginActivities LoginActivity[]
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  email      String     @unique
+  username   String     @unique
+  password   String
+  currency   String     @default("USD")
+  expenses   Expense[]
+  activities Activity[]
 
   @@map("users")
 }
@@ -52,12 +52,17 @@ enum ExpenseCategory {
   Others
 }
 
-model LoginActivity {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+model Activity {
+  id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  type      ActivityType
   location  String?
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String   @db.ObjectId
-  createdAt DateTime @default(now())
+  user      User         @relation(fields: [userId], references: [id])
+  userId    String       @db.ObjectId
+  createdAt DateTime     @default(now())
 
-  @@map("loginActivities")
+  @@map("activities")
+}
+
+enum ActivityType {
+  Login
 }

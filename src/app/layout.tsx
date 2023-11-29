@@ -3,7 +3,7 @@ import {Toaster} from "@/components/toaster";
 import {cx} from "@/styled-system/css";
 import {styled} from "@/styled-system/jsx";
 import {Metadata} from "next";
-import {Lato, Open_Sans} from "next/font/google";
+import {Inter, Open_Sans} from "next/font/google";
 import {PropsWithChildren} from "react";
 
 export const metadata: Metadata = {
@@ -13,8 +13,8 @@ export const metadata: Metadata = {
 	},
 };
 
-const body = Lato({
-	weight: ["400", "700"],
+const body = Inter({
+	weight: ["400", "500", "600", "700"],
 	display: "swap",
 	subsets: ["latin"],
 	variable: "--font-body",
