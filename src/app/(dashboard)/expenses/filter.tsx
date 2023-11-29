@@ -76,12 +76,14 @@ import {
 	SearchIcon,
 } from "lucide-react";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
-import {useReducer} from "react";
+import {useReducer, useTransition} from "react";
 
 export function Filter() {
 	const router = useRouter();
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
+
+	const [pending, startTransition] = useTransition();
 
 	const [value, setValue] = useReducer(
 		(
@@ -521,18 +523,20 @@ export function Filter() {
 									<Button
 										w="full"
 										variant="outline"
+										disabled={pending}
 										onClick={() => {
-											resetFilter();
 											api.close();
+											startTransition(resetFilter);
 										}}
 									>
 										Reset
 									</Button>
 									<Button
 										w="full"
+										disabled={pending}
 										onClick={() => {
-											applyFilter();
 											api.close();
+											startTransition(applyFilter);
 										}}
 									>
 										Apply

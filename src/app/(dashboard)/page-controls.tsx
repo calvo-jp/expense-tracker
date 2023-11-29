@@ -32,6 +32,7 @@ import {
 	ChevronsUpDownIcon,
 } from "lucide-react";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
+import {useTransition} from "react";
 
 const sizes = [10, 25, 50].map((size) => ({
 	value: `${size}`,
@@ -44,6 +45,7 @@ interface PageControlsProps {
 
 export function PageControls(props: PageControlsProps) {
 	const context = usePageControls(props.__SSR_DATA);
+	const [pending, startTransition] = useTransition();
 
 	return (
 		<Flex gap={4} alignItems="center">
@@ -57,9 +59,11 @@ export function PageControls(props: PageControlsProps) {
 				page={context.value.page}
 				pageSize={context.value.size}
 				onPageChange={(o) => {
-					context.setValue({
-						page: o.page,
-						size: o.pageSize,
+					startTransition(() => {
+						context.setValue({
+							page: o.page,
+							size: o.pageSize,
+						});
 					});
 				}}
 			>
@@ -102,9 +106,11 @@ export function PageControls(props: PageControlsProps) {
 				items={sizes}
 				value={[context.value.size.toString()]}
 				onValueChange={({value}) => {
-					context.setValue({
-						page: 1,
-						size: value[0],
+					startTransition(() => {
+						context.setValue({
+							page: 1,
+							size: value[0],
+						});
 					});
 				}}
 			>
