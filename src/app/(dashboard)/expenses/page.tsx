@@ -384,9 +384,6 @@ const parseParams = cache((searchParams: unknown) => {
 	};
 });
 
-/*
- *--------- QUERY FILTER ---------
- */
 const paramsToWhereClause = cache((args: TExpenseFilterSchema) => {
 	const {
 		category,
