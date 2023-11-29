@@ -13,6 +13,7 @@ import {getInitials} from "@/utils/get-initials";
 import {Portal} from "@ark-ui/react";
 import assert from "assert";
 import {cookies} from "next/headers";
+import {Suspense} from "react";
 import {Logo} from "../logo";
 import {ChangePassword} from "./change-password";
 import {Notifications} from "./notifications";
@@ -36,7 +37,9 @@ export async function Navbar() {
 				<Logo />
 				<Spacer />
 				<Flex gap={4}>
-					<Notifications />
+					<Suspense fallback={null}>
+						<Notifications />
+					</Suspense>
 					<ProfileMenu />
 				</Flex>
 			</styled.header>
