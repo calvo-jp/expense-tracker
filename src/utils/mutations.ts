@@ -8,6 +8,7 @@ import {addDays} from "date-fns";
 import {revalidatePath} from "next/cache";
 import {cookies, headers} from "next/headers";
 import {redirect} from "next/navigation";
+import {z} from "zod";
 import {
 	ChangePasswordSchema,
 	CreateAccountSchema,
@@ -17,10 +18,10 @@ import {
 } from "./types";
 
 assert(process.env.MAXMIND_ACCOUNT_ID);
-assert(process.env.MAXMIND_ACCOUNT_ID);
+assert(process.env.MAXMIND_LICENSE_KEY);
 
 const maxmindAccountId = process.env.MAXMIND_ACCOUNT_ID;
-const maxmindLicenceKey = process.env.MAXMIND_ACCOUNT_ID;
+const maxmindLicenceKey = process.env.MAXMIND_LICENSE_KEY;
 
 /*
  *------------------- AUTH -------------------
@@ -51,15 +52,9 @@ export async function login(input: unknown) {
 }
 
 async function recordLogin(userId: string) {
-	const client = new WebServiceClient(maxmindAccountId, maxmindLicenceKey, {
-		host: "geolite.info",
-	});
-
 	try {
-		const ipAddress = headers().get("x-forwarded-for")!;
-		const details = await client.city(ipAddress);
-
-		const location = [details.city?.names.en, details.country?.names.en]
+		const details = await locate();
+		const location = [details?.city?.names.en, details?.country?.names.en]
 			.filter(Boolean)
 			.join();
 
@@ -69,8 +64,27 @@ async function recordLogin(userId: string) {
 				userId,
 			},
 		});
-	} catch (e) {
-		console.log(e);
+	} catch {
+		console.info("Failed to record login details");
+	}
+}
+
+async function locate() {
+	try {
+		const client = new WebServiceClient(
+			//
+			maxmindAccountId,
+			maxmindLicenceKey,
+			{
+				host: "geolite.info",
+			},
+		);
+
+		const ipAddress = z.string().ip().parse(headers().get("x-forwarded-for"));
+
+		return await client.city(ipAddress);
+	} catch {
+		return null;
 	}
 }
 
