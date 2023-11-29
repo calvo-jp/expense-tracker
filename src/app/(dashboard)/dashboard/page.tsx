@@ -1,24 +1,15 @@
 import {prisma} from "@/config/prisma";
 import {Box, Flex, Spacer, styled} from "@/styled-system/jsx";
+import assert from "assert";
 import {Metadata} from "next";
 import {cookies} from "next/headers";
-import {Suspense} from "react";
+import {Suspense, cache} from "react";
 
 export const metadata: Metadata = {
 	title: "Dashboard",
 };
 
 export default async function Dashboard() {
-	const id = cookies().get("user")?.value;
-
-	const user = await prisma.user.findUniqueOrThrow({
-		where: {id},
-		select: {
-			name: true,
-			username: true,
-		},
-	});
-
 	return (
 		<Box>
 			<Flex>
@@ -33,10 +24,9 @@ export default async function Dashboard() {
 						alignItems="center"
 					>
 						<styled.span mr={1}>Welcome back,</styled.span>
-						<styled.strong fontWeight="semibold">
-							{user.name ?? user.username}
-						</styled.strong>
-						<styled.span>!</styled.span>
+						<Suspense fallback={<styled.span>Loading...</styled.span>}>
+							<Username />
+						</Suspense>
 					</styled.p>
 				</Box>
 				<Spacer />
@@ -58,3 +48,27 @@ async function YearSummary() {
 async function MonthSummary() {
 	return null;
 }
+
+async function Username() {
+	const id = cookies().get("user")?.value;
+
+	assert(id);
+
+	const user = await getUser(id);
+
+	return (
+		<styled.strong fontWeight="semibold">
+			{user.name ?? user.username}!
+		</styled.strong>
+	);
+}
+
+const getUser = cache(async (id: string) => {
+	return await prisma.user.findUniqueOrThrow({
+		where: {id},
+		select: {
+			name: true,
+			username: true,
+		},
+	});
+});
