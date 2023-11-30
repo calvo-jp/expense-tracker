@@ -18,7 +18,11 @@ import {BellIcon, ChevronRightIcon, Laptop2Icon} from "lucide-react";
 import {ReactNode} from "react";
 
 export async function Notifications() {
-	const activities = await prisma.activity.findMany();
+	const activities = await prisma.activity.findMany({
+		orderBy: {
+			createdAt: "desc",
+		},
+	});
 
 	return (
 		<Drawer>

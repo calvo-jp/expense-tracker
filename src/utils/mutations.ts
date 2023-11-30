@@ -57,6 +57,8 @@ async function recordLogin(userId: string) {
 			.filter(Boolean)
 			.join(", ");
 
+		if (!location) return;
+
 		await prisma.activity.create({
 			data: {
 				type: "Login",
