@@ -45,13 +45,11 @@ export function ChangePassword() {
 			{(api) => (
 				<>
 					<DialogTrigger asChild>
-						<MenuItem id="navbar.profile-settings.change-password">
-							<HStack>
-								<Icon>
-									<LockIcon />
-								</Icon>
-								<styled.span>Change Password</styled.span>
-							</HStack>
+						<MenuItem id="navbar.profile-settings.change-password" gap={2}>
+							<Icon>
+								<LockIcon />
+							</Icon>
+							<styled.span>Change Password</styled.span>
 						</MenuItem>
 					</DialogTrigger>
 

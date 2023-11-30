@@ -2,6 +2,7 @@ import {Avatar, AvatarFallback} from "@/components/avatar";
 import {
 	Menu,
 	MenuContent,
+	MenuItem,
 	MenuItemGroup,
 	MenuPositioner,
 	MenuSeparator,
@@ -79,7 +80,9 @@ async function ProfileMenu() {
 							<UpdateProfile __SSR_DATA={{user}} />
 							<MenuSeparator />
 							<ChangePassword />
-							<Signout />
+							<MenuItem id="navbar.profile-settings.signout" gap={2} asChild>
+								<Signout />
+							</MenuItem>
 						</MenuItemGroup>
 					</MenuContent>
 				</MenuPositioner>

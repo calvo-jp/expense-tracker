@@ -7,7 +7,6 @@ import bcrypt from "bcrypt";
 import {addDays} from "date-fns";
 import {revalidatePath} from "next/cache";
 import {cookies, headers} from "next/headers";
-import {redirect} from "next/navigation";
 import {cache} from "react";
 import {z} from "zod";
 import {
@@ -84,7 +83,6 @@ const locate = cache(async (ipAddress: string) => {
 
 export async function logout() {
 	cookies().delete("user");
-	redirect("/");
 }
 
 /*

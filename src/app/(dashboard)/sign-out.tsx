@@ -1,29 +1,31 @@
 "use client";
 
 import {Icon} from "@/components/icon";
-import {MenuItem} from "@/components/menu";
-import {HStack, styled} from "@/styled-system/jsx";
+import {HTMLStyledProps, styled} from "@/styled-system/jsx";
 import {logout} from "@/utils/mutations";
 import {PowerIcon} from "lucide-react";
-import {startTransition} from "react";
+import {useRouter} from "next/navigation";
+import {forwardRef} from "react";
 
-export function Signout() {
-	return (
-		<MenuItem id="navbar.profile-settings.signout" asChild>
+export const Signout = forwardRef<HTMLButtonElement, HTMLStyledProps<"button">>(
+	function Signout(props, ref) {
+		const router = useRouter();
+
+		return (
 			<styled.button
+				ref={ref}
+				{...props}
 				onClick={() => {
-					startTransition(() => {
-						logout();
+					logout().then(() => {
+						router.push("/login");
 					});
 				}}
 			>
-				<HStack>
-					<Icon>
-						<PowerIcon />
-					</Icon>
-					<styled.span>Sign out</styled.span>
-				</HStack>
+				<Icon>
+					<PowerIcon />
+				</Icon>
+				<styled.span>Sign out</styled.span>
 			</styled.button>
-		</MenuItem>
-	);
-}
+		);
+	},
+);

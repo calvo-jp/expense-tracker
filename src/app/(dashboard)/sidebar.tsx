@@ -1,9 +1,9 @@
 import {Icon} from "@/components/icon";
 import {Link} from "@/components/next-js/link";
 import {Box, styled} from "@/styled-system/jsx";
-import {logout} from "@/utils/mutations";
 import {ark} from "@ark-ui/react";
-import {CoinsIcon, LineChartIcon, PowerIcon} from "lucide-react";
+import {CoinsIcon, LineChartIcon} from "lucide-react";
+import {Signout} from "./sign-out";
 
 export function Sidebar() {
 	return (
@@ -41,14 +41,9 @@ export function Sidebar() {
 						</SidebarButton>
 					</styled.li>
 					<styled.li>
-						<styled.form action={logout}>
-							<SidebarButton type="submit">
-								<Icon>
-									<PowerIcon />
-								</Icon>
-								<styled.span>Sign out</styled.span>
-							</SidebarButton>
-						</styled.form>
+						<SidebarButton asChild>
+							<Signout />
+						</SidebarButton>
 					</styled.li>
 				</styled.ul>
 			</styled.nav>
