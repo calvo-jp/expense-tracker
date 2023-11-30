@@ -60,6 +60,7 @@ import {
 import {Textarea} from "@/components/textarea";
 import {toast} from "@/components/toaster";
 import {Flex, HStack, VStack, styled} from "@/styled-system/jsx";
+import {getCurrentLocation} from "@/utils/get-current-location";
 import {createExpense, updateExpense} from "@/utils/mutations";
 import {pascalToSentenceCase} from "@/utils/pascal-to-sentence-case";
 import {stringToPrismaEnum} from "@/utils/string-to-prisma-enum";
@@ -105,6 +106,14 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 			transactionDate: new Date(),
 		},
 	});
+
+	useEffect(() => {
+		if (props.type === "create") {
+			getCurrentLocation().then((location) => {
+				form.setValue("location", location);
+			});
+		}
+	}, [form, props.type]);
 
 	useEffect(() => {
 		if (props.type === "update") {

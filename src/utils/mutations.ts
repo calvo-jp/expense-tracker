@@ -1,14 +1,10 @@
 "use server";
 
 import {prisma} from "@/config/prisma";
-import {WebServiceClient} from "@maxmind/geoip2-node";
-import assert from "assert";
 import bcrypt from "bcrypt";
 import {addDays} from "date-fns";
 import {revalidatePath} from "next/cache";
-import {cookies, headers} from "next/headers";
-import {cache} from "react";
-import {z} from "zod";
+import {cookies} from "next/headers";
 import {
 	ChangePasswordSchema,
 	CreateAccountSchema,
@@ -16,12 +12,6 @@ import {
 	UpdateProfileSchema,
 	UpsertExpenseSchema,
 } from "./types";
-
-assert(process.env.MAXMIND_ACCOUNT_ID);
-assert(process.env.MAXMIND_LICENSE_KEY);
-
-const maxmindAccountId = process.env.MAXMIND_ACCOUNT_ID;
-const maxmindLicenceKey = process.env.MAXMIND_LICENSE_KEY;
 
 /*
  *------------------- AUTH -------------------
@@ -40,48 +30,12 @@ export async function login(input: unknown) {
 
 		if (!matches) throw new Error();
 
-		await recordLogin(user.id);
-
 		cookies().set("user", user.id, {expires: addDays(new Date(), 30)});
 		return null;
 	} catch {
 		return "Invalid username or password";
 	}
 }
-
-async function recordLogin(userId: string) {
-	try {
-		const ipAddress = z.string().ip().parse(headers().get("x-forwarded-for"));
-		const details = await locate(ipAddress);
-		const location = [details?.city?.names.en, details?.country?.names.en]
-			.filter(Boolean)
-			.join(", ");
-
-		if (!location) return;
-
-		await prisma.activity.create({
-			data: {
-				type: "Login",
-				userId,
-				location,
-			},
-		});
-	} catch {}
-}
-
-const locate = cache(async (ipAddress: string) => {
-	const client = new WebServiceClient(maxmindAccountId, maxmindLicenceKey, {
-		host: "geolite.info",
-	});
-
-	try {
-		return await client.city(ipAddress);
-	} catch (e) {
-		console.warn(e);
-
-		return null;
-	}
-});
 
 export async function logout() {
 	cookies().delete("user");

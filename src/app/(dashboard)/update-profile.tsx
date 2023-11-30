@@ -1,6 +1,5 @@
 "use client";
 
-import {Avatar, AvatarFallback} from "@/components/avatar";
 import {Button} from "@/components/button";
 import {
 	Combobox,
@@ -32,13 +31,12 @@ import {MenuItem} from "@/components/menu";
 import {toast} from "@/components/toaster";
 import {Box, Flex, HStack, VStack, styled} from "@/styled-system/jsx";
 import {constants} from "@/utils/constants";
-import {getInitials} from "@/utils/get-initials";
 import {updateProfile} from "@/utils/mutations";
 import {TUpdateProfileSchema, UpdateProfileSchema} from "@/utils/types";
 import {Portal} from "@ark-ui/react";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {User} from "@prisma/client";
-import {CheckIcon, ChevronsUpDownIcon} from "lucide-react";
+import {CheckIcon, ChevronsUpDownIcon, SettingsIcon} from "lucide-react";
 import {useEffect, useTransition} from "react";
 import {useForm} from "react-hook-form";
 
@@ -73,27 +71,11 @@ export function UpdateProfile({__SSR_DATA: {user}}: UpdateProfileProps) {
 			{(api) => (
 				<>
 					<DialogTrigger asChild>
-						<MenuItem
-							id="navbar.profile-settings.update-profile"
-							h="auto"
-							py={2}
-						>
-							<HStack>
-								<Avatar>
-									<AvatarFallback>
-										{getInitials(user.name ?? user.username)}
-									</AvatarFallback>
-								</Avatar>
-
-								<Box lineHeight="none">
-									<styled.div fontSize="md" fontWeight="bold">
-										{user.name ?? "unnamed"}
-									</styled.div>
-									<styled.div mt={0.5} color="fg.muted">
-										@{user.username}
-									</styled.div>
-								</Box>
-							</HStack>
+						<MenuItem id="navbar.profile-settings.update-profile" gap={2}>
+							<Icon>
+								<SettingsIcon />
+							</Icon>
+							<styled.span>Account Settings</styled.span>
 						</MenuItem>
 					</DialogTrigger>
 
@@ -138,6 +120,7 @@ export function UpdateProfile({__SSR_DATA: {user}}: UpdateProfileProps) {
 												{form.formState.errors.name?.message}
 											</ErrorMessage>
 										</Flex>
+
 										<Flex flexDir="column" gap={1.5}>
 											<Label htmlFor="update-profile.email">Email</Label>
 											<Input
@@ -149,6 +132,15 @@ export function UpdateProfile({__SSR_DATA: {user}}: UpdateProfileProps) {
 											<ErrorMessage>
 												{form.formState.errors.email?.message}
 											</ErrorMessage>
+										</Flex>
+										<Flex flexDir="column" gap={1.5}>
+											<Label>Username</Label>
+											<Input
+												size="lg"
+												disabled
+												placeholder="Username"
+												defaultValue={user.username}
+											/>
 										</Flex>
 										<Flex flexDir="column" gap={1.5}>
 											<Combobox
