@@ -122,7 +122,13 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 			form.setValue("description", props.data.description);
 			form.setValue("transactionDate", props.data.transactionDate);
 
-			props.data.location && form.setValue("location", props.data.location);
+			if (props.data.location) {
+				form.setValue("location", props.data.location);
+			} else {
+				getCurrentLocation().then((location) => {
+					form.setValue("location", location);
+				});
+			}
 		}
 	}, [form, props]);
 
