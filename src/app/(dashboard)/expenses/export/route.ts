@@ -42,35 +42,23 @@ export async function GET(request: Request) {
 
 		...([minAmount, maxAmount].some(Boolean) && {
 			amount: {
-				...(minAmount && {
-					gte: minAmount,
-				}),
-				...(maxAmount && {
-					lte: maxAmount,
-				}),
+				...(minAmount && {gte: minAmount}),
+				...(maxAmount && {lte: maxAmount}),
 			},
 		}),
 
 		...(category?.length && {
-			category: {
-				in: category,
-			},
+			category: {in: category},
 		}),
 
 		...(location && {
-			location: {
-				contains: location,
-			},
+			location: {contains: location},
 		}),
 
 		...([transactionDateStart, transactionDateUntil].some(Boolean) && {
 			transactionDate: {
-				...(transactionDateStart && {
-					gte: transactionDateStart,
-				}),
-				...(transactionDateUntil && {
-					lte: transactionDateUntil,
-				}),
+				...(transactionDateStart && {gte: transactionDateStart}),
+				...(transactionDateUntil && {lte: transactionDateUntil}),
 			},
 		}),
 	};
