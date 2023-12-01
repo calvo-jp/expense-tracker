@@ -17,14 +17,6 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/table";
-import {
-	Tooltip,
-	TooltipArrow,
-	TooltipArrowTip,
-	TooltipContent,
-	TooltipPositioner,
-	TooltipTrigger,
-} from "@/components/tooltip";
 import {prisma} from "@/config/prisma";
 import {Box, Center, Flex, HStack, Spacer, styled} from "@/styled-system/jsx";
 import {currencyFormatter} from "@/utils/currency-formatter";
@@ -36,7 +28,7 @@ import {
 import {Portal} from "@ark-ui/react";
 import {Prisma} from "@prisma/client";
 import assert from "assert";
-import {format, formatDistanceToNow} from "date-fns";
+import {format} from "date-fns";
 import {FileEditIcon, PlusIcon, SettingsIcon} from "lucide-react";
 import {Metadata} from "next";
 import {cookies} from "next/headers";
@@ -115,6 +107,7 @@ export default async function Expenses(props: ExpensesProps) {
 								border: "none",
 								borderLeft: "1px solid token(colors.border.subtle)",
 								borderBottom: "1px solid token(colors.border.subtle)",
+								textAlign: "center",
 								_first: {
 									borderLeft: "none",
 								},
@@ -203,92 +196,26 @@ async function TableContent({searchParams}: ExpensesProps) {
 					<TableRow key={expense.id}>
 						<TableCell>{expense.category}</TableCell>
 						<TableCell>
-							<styled.div maxW="8rem" truncate>
+							<styled.div maxW="12rem" truncate>
 								{expense.description}
 							</styled.div>
 						</TableCell>
-						<TableCell fontVariantNumeric="tabular-nums">
+						<TableCell fontVariantNumeric="tabular-nums" textAlign="right!">
 							{currencyFormatter.format(expense.amount, user.currency)}
 						</TableCell>
 						<TableCell>
-							<styled.div maxW="5rem" truncate>
+							<styled.div maxW="8rem" truncate>
 								{expense.location}
 							</styled.div>
 						</TableCell>
 						<TableCell>
-							<Tooltip
-								positioning={{
-									placement: "right",
-								}}
-							>
-								<TooltipTrigger asChild>
-									<styled.span>
-										{formatDistanceToNow(expense.transactionDate, {
-											addSuffix: true,
-										})}
-									</styled.span>
-								</TooltipTrigger>
-								<Portal>
-									<TooltipPositioner>
-										<TooltipContent>
-											<TooltipArrow>
-												<TooltipArrowTip />
-											</TooltipArrow>
-											{format(expense.transactionDate, "yyyy MMM dd")}
-										</TooltipContent>
-									</TooltipPositioner>
-								</Portal>
-							</Tooltip>
+							{format(expense.transactionDate, "yyyy MMM dd")}
 						</TableCell>
 						<TableCell>
-							<Tooltip
-								positioning={{
-									placement: "right",
-								}}
-							>
-								<TooltipTrigger asChild>
-									<styled.span>
-										{formatDistanceToNow(expense.createdAt, {
-											addSuffix: true,
-										})}
-									</styled.span>
-								</TooltipTrigger>
-								<Portal>
-									<TooltipPositioner>
-										<TooltipContent>
-											<TooltipArrow>
-												<TooltipArrowTip />
-											</TooltipArrow>
-											{format(expense.createdAt, "yyyy MMM dd hh:mm a")}
-										</TooltipContent>
-									</TooltipPositioner>
-								</Portal>
-							</Tooltip>
+							{format(expense.createdAt, "yyyy MMM dd hh:mm a")}
 						</TableCell>
 						<TableCell>
-							<Tooltip
-								positioning={{
-									placement: "right",
-								}}
-							>
-								<TooltipTrigger asChild>
-									<styled.span>
-										{formatDistanceToNow(expense.updatedAt, {
-											addSuffix: true,
-										})}
-									</styled.span>
-								</TooltipTrigger>
-								<Portal>
-									<TooltipPositioner>
-										<TooltipContent>
-											<TooltipArrow>
-												<TooltipArrowTip />
-											</TooltipArrow>
-											{format(expense.updatedAt, "yyyy MMM dd hh:mm a")}
-										</TooltipContent>
-									</TooltipPositioner>
-								</Portal>
-							</Tooltip>
+							{format(expense.updatedAt, "yyyy MMM dd hh:mm a")}
 						</TableCell>
 						<TableCell textAlign="center" pos="sticky" right={0}>
 							<Menu
@@ -334,7 +261,7 @@ async function TableContent({searchParams}: ExpensesProps) {
 				<TableRow>
 					<TableCell />
 					<TableCell />
-					<TableCell fontVariantNumeric="tabular-nums">
+					<TableCell fontVariantNumeric="tabular-nums" textAlign="right!">
 						{currencyFormatter.format(
 							expenses.reduce((total, {amount}) => total + amount, 0),
 							user.currency,

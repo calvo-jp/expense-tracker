@@ -36,11 +36,13 @@ export const createStyleContext = <R extends StyleRecipe>(recipe: R) => {
 			const [variantProps, otherProps] = recipe.splitVariantProps(props);
 			const slotStyles = recipe(variantProps) as StyleSlotRecipe<R>;
 
-			otherProps.className = cx(slot && slotStyles[slot], otherProps.className);
-
 			return (
 				<StyleContext.Provider value={slotStyles}>
-					<Component ref={ref} {...otherProps} />
+					<Component
+						ref={ref}
+						{...otherProps}
+						className={cx(slot && slotStyles[slot], otherProps.className)}
+					/>
 				</StyleContext.Provider>
 			);
 		});
