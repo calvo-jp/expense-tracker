@@ -3,7 +3,6 @@ import {pascalToSentenceCase} from "@/utils/pascal-to-sentence-case";
 import {ExpenseFilterSchema} from "@/utils/types";
 import {Prisma} from "@prisma/client";
 import assert from "assert";
-import JSZip from "jszip";
 import {cookies} from "next/headers";
 import slugify from "slugify";
 import * as XLSX from "xlsx";
@@ -87,18 +86,14 @@ export async function GET(request: Request) {
 
 	XLSX.utils.book_append_sheet(workbook, worksheet, "Expenses");
 
-	const zip = new JSZip();
-
-	zip.file(
-		`${name}.xlsx`,
-		XLSX.write(workbook, {type: "buffer", bookType: "xlsx"}),
-	);
-
-	const buffer = await zip.generateAsync({type: "blob"});
+	const buffer = XLSX.write(workbook, {type: "buffer", bookType: "xlsx"});
 	const headers = new Headers();
 
-	headers.append("Content-Type", "application/zip");
-	headers.append("Content-Disposition", `attachment; filename="${name}.zip"`);
+	headers.append("Content-Disposition", `attachment; filename="${name}.xlsx"`);
+	headers.append(
+		"Content-Type",
+		"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+	);
 
 	return new Response(buffer, {headers});
 }

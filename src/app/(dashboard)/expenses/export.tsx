@@ -18,7 +18,7 @@ import {toast} from "@/components/toaster";
 import {Flex, HStack, styled} from "@/styled-system/jsx";
 import {Portal} from "@ark-ui/react";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {FileArchiveIcon} from "lucide-react";
+import {DownloadIcon} from "lucide-react";
 import {useSearchParams} from "next/navigation";
 import {useTransition} from "react";
 import {useForm} from "react-hook-form";
@@ -38,7 +38,7 @@ export function Export() {
 	const form = useForm<TExportSchema>({
 		resolver: zodResolver(ExportSchema),
 		defaultValues: {
-			filename: "Expenses",
+			filename: "expenses",
 		},
 	});
 
@@ -49,7 +49,7 @@ export function Export() {
 					<DialogTrigger asChild>
 						<IconButton variant="outline" disabled={pending}>
 							<Icon>
-								<FileArchiveIcon />
+								<DownloadIcon />
 							</Icon>
 						</IconButton>
 					</DialogTrigger>
@@ -76,7 +76,7 @@ export function Export() {
 												const link = document.createElement("a");
 
 												link.href = url;
-												link.download = slugify(filename, {lower: true});
+												link.download = slugify(filename);
 												link.click();
 
 												URL.revokeObjectURL(url);
