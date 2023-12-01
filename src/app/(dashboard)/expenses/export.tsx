@@ -57,7 +57,7 @@ export function Export() {
 					<DialogTrigger asChild>
 						<Tooltip
 							positioning={{
-								placement: "right",
+								placement: "bottom",
 							}}
 						>
 							<TooltipTrigger asChild>
