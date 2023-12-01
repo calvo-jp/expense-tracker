@@ -1,9 +1,11 @@
 import {prisma} from "@/config/prisma";
-import {Box, Flex, Spacer, styled} from "@/styled-system/jsx";
+import {Box, Flex, styled} from "@/styled-system/jsx";
 import assert from "assert";
 import {Metadata} from "next";
 import {cookies} from "next/headers";
 import {Suspense, cache} from "react";
+import {AnnualReport} from "./annual-report";
+import {MonthlyReport} from "./monthly-report";
 
 export const metadata: Metadata = {
 	title: "Dashboard",
@@ -29,24 +31,18 @@ export default async function Dashboard() {
 						</Suspense>
 					</styled.p>
 				</Box>
-				<Spacer />
-				<Suspense fallback={null}>
-					<YearSummary />
-				</Suspense>
-				<Suspense fallback={null}>
-					<MonthSummary />
-				</Suspense>
 			</Flex>
+
+			<Box mt={12}>
+				<Box w="full">
+					<AnnualReport />
+				</Box>
+				<Box mt={16}>
+					<MonthlyReport />
+				</Box>
+			</Box>
 		</Box>
 	);
-}
-
-async function YearSummary() {
-	return null;
-}
-
-async function MonthSummary() {
-	return null;
 }
 
 async function Username() {

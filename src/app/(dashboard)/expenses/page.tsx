@@ -19,7 +19,7 @@ import {
 } from "@/components/table";
 import {prisma} from "@/config/prisma";
 import {Box, Center, Flex, HStack, Spacer, styled} from "@/styled-system/jsx";
-import {currencyFormatter} from "@/utils/currency-formatter";
+import {numberFormatter} from "@/utils/number-formatter";
 import {
 	ExpenseFilterSchema,
 	PaginationSchema,
@@ -170,9 +170,7 @@ async function TableContent({searchParams}: ExpensesProps) {
 
 	assert(id);
 
-	const user = await getUser(id);
 	const params = parseParams(searchParams);
-
 	const expenses = await prisma.expense.findMany({
 		skip: params.size * (params.page - 1),
 		take: params.size,
@@ -200,8 +198,8 @@ async function TableContent({searchParams}: ExpensesProps) {
 								{expense.description}
 							</styled.div>
 						</TableCell>
-						<TableCell fontVariantNumeric="tabular-nums" textAlign="right!">
-							{currencyFormatter.format(expense.amount, user.currency)}
+						<TableCell fontFamily="mono" textAlign="right!">
+							{numberFormatter.format(expense.amount)}
 						</TableCell>
 						<TableCell>
 							<styled.div maxW="8rem" truncate>
@@ -261,10 +259,9 @@ async function TableContent({searchParams}: ExpensesProps) {
 				<TableRow>
 					<TableCell />
 					<TableCell />
-					<TableCell fontVariantNumeric="tabular-nums" textAlign="right!">
-						{currencyFormatter.format(
+					<TableCell fontFamily="mono" textAlign="right!">
+						{numberFormatter.format(
 							expenses.reduce((total, {amount}) => total + amount, 0),
-							user.currency,
 						)}
 					</TableCell>
 					<TableCell />
@@ -294,15 +291,6 @@ async function BottomControls({searchParams}: ExpensesProps) {
 		</Box>
 	);
 }
-
-const getUser = cache(async (id: string) => {
-	return await prisma.user.findUniqueOrThrow({
-		where: {id},
-		select: {
-			currency: true,
-		},
-	});
-});
 
 const parseParams = cache((searchParams: unknown) => {
 	return {

@@ -26,7 +26,6 @@ export type TUpdateProfileSchema = z.infer<typeof UpdateProfileSchema>;
 export const UpdateProfileSchema = z.object({
 	name: z.string().min(4, "Name too short").max(50, "Name too long"),
 	email: z.string().email(),
-	currency: z.string(),
 });
 
 export type TChangePasswordSchema = z.infer<typeof ChangePasswordSchema>;

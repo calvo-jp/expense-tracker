@@ -3,7 +3,7 @@ import {Toaster} from "@/components/toaster";
 import {cx} from "@/styled-system/css";
 import {styled} from "@/styled-system/jsx";
 import {Metadata} from "next";
-import {Inter, Open_Sans} from "next/font/google";
+import {Inter, JetBrains_Mono, Open_Sans} from "next/font/google";
 import {PropsWithChildren} from "react";
 
 export const metadata: Metadata = {
@@ -27,6 +27,13 @@ const heading = Open_Sans({
 	variable: "--font-heading",
 });
 
+const mono = JetBrains_Mono({
+	weight: "400",
+	display: "swap",
+	subsets: ["latin"],
+	variable: "--font-mono",
+});
+
 export default function RootLayout({children}: PropsWithChildren) {
 	return (
 		<styled.html
@@ -36,7 +43,7 @@ export default function RootLayout({children}: PropsWithChildren) {
 				base: "light",
 				_dark: "dark",
 			}}
-			className={cx(body.variable, heading.variable)}
+			className={cx(body.variable, heading.variable, mono.variable)}
 		>
 			<styled.body fontFamily="body">
 				{children}

@@ -7,8 +7,7 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"postinstall": "panda codegen && prisma generate",
-		"generate:currency-constants": "node ./scripts/generate-currency-constants.js"
+		"postinstall": "panda codegen && prisma generate"
 	},
 	"dependencies": {
 		"@ark-ui/react": "1.1.0",

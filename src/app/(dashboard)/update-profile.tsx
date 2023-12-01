@@ -2,19 +2,6 @@
 
 import {Button} from "@/components/button";
 import {
-	Combobox,
-	ComboboxContent,
-	ComboboxControl,
-	ComboboxInput,
-	ComboboxItem,
-	ComboboxItemGroup,
-	ComboboxItemIndicator,
-	ComboboxItemText,
-	ComboboxLabel,
-	ComboboxPositioner,
-	ComboboxTrigger,
-} from "@/components/combobox";
-import {
 	Dialog,
 	DialogBackdrop,
 	DialogCloseTrigger,
@@ -24,19 +11,17 @@ import {
 } from "@/components/dialog";
 import {ErrorMessage} from "@/components/error-message";
 import {Icon} from "@/components/icon";
-import {IconButton} from "@/components/icon-button";
 import {Input} from "@/components/input";
 import {Label} from "@/components/label";
 import {MenuItem} from "@/components/menu";
 import {toast} from "@/components/toaster";
-import {Box, Flex, HStack, VStack, styled} from "@/styled-system/jsx";
-import {constants} from "@/utils/constants";
+import {Flex, HStack, VStack, styled} from "@/styled-system/jsx";
 import {updateProfile} from "@/utils/mutations";
 import {TUpdateProfileSchema, UpdateProfileSchema} from "@/utils/types";
 import {Portal} from "@ark-ui/react";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {User} from "@prisma/client";
-import {CheckIcon, ChevronsUpDownIcon, SettingsIcon} from "lucide-react";
+import {SettingsIcon} from "lucide-react";
 import {useEffect, useTransition} from "react";
 import {useForm} from "react-hook-form";
 
@@ -52,14 +37,12 @@ export function UpdateProfile({__SSR_DATA: {user}}: UpdateProfileProps) {
 		defaultValues: {
 			name: "",
 			email: "",
-			currency: "",
 		},
 	});
 
 	useEffect(() => {
 		form.setValue("name", user.name);
 		form.setValue("email", user.email);
-		form.setValue("currency", user.currency);
 	}, [form, user]);
 
 	return (
@@ -142,93 +125,6 @@ export function UpdateProfile({__SSR_DATA: {user}}: UpdateProfileProps) {
 												defaultValue={user.username}
 											/>
 										</Flex>
-										<Flex flexDir="column" gap={1.5}>
-											<Combobox
-												items={currencies}
-												value={[form.watch("currency")]}
-												onValueChange={(details) => {
-													form.setValue("currency", details.value[0], {
-														shouldValidate: true,
-													});
-												}}
-											>
-												{(api) => (
-													<>
-														<ComboboxLabel>Currency</ComboboxLabel>
-														<ComboboxControl>
-															<ComboboxInput asChild>
-																<Input
-																	size="lg"
-																	placeholder="Choose currency"
-																/>
-															</ComboboxInput>
-															<ComboboxTrigger asChild>
-																<IconButton variant="link" aria-label="open">
-																	<Icon>
-																		<ChevronsUpDownIcon />
-																	</Icon>
-																</IconButton>
-															</ComboboxTrigger>
-														</ComboboxControl>
-
-														<ErrorMessage>
-															{form.formState.errors.currency?.message}
-														</ErrorMessage>
-
-														<ComboboxPositioner>
-															<ComboboxContent maxH="12rem" overflowY="auto">
-																<ComboboxItemGroup id="update-profile.currency.items">
-																	{currencies
-																		.filter(
-																			({details}) =>
-																				details.name
-																					.toLowerCase()
-																					.startsWith(
-																						api.inputValue.toLowerCase().trim(),
-																					) ||
-																				details.abbr
-																					.toLowerCase()
-																					.startsWith(
-																						api.inputValue.toLowerCase().trim(),
-																					),
-																		)
-																		.map((item) => (
-																			<ComboboxItem
-																				key={item.value}
-																				item={item}
-																				h="auto"
-																			>
-																				<ComboboxItemText py={1.5}>
-																					<Box lineHeight="none">
-																						{item.details.abbr}
-																					</Box>
-																					<Box
-																						mt={1}
-																						color="fg.muted"
-																						fontSize="sm"
-																						lineHeight="none"
-																					>
-																						{item.details.name}
-																					</Box>
-																				</ComboboxItemText>
-																				<ComboboxItemIndicator>
-																					<Icon>
-																						<CheckIcon />
-																					</Icon>
-																				</ComboboxItemIndicator>
-																			</ComboboxItem>
-																		))}
-																</ComboboxItemGroup>
-															</ComboboxContent>
-														</ComboboxPositioner>
-													</>
-												)}
-											</Combobox>
-
-											<ErrorMessage>
-												{form.formState.errors.email?.message}
-											</ErrorMessage>
-										</Flex>
 									</VStack>
 
 									<HStack mt={8} gap={4}>
@@ -255,8 +151,3 @@ export function UpdateProfile({__SSR_DATA: {user}}: UpdateProfileProps) {
 		</Dialog>
 	);
 }
-
-const currencies = constants.currencies.map((currency) => ({
-	value: currency.abbr,
-	details: currency,
-}));

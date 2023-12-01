@@ -15,6 +15,9 @@ export default defineConfig({
 					heading: {
 						value: "var(--font-heading)",
 					},
+					mono: {
+						value: "var(--font-mono)",
+					},
 				},
 				sizes: {
 					navbar: {
