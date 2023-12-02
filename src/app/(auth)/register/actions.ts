@@ -1,3 +1,5 @@
+"use server";
+
 import {prisma} from "@/config/prisma";
 import bcrypt from "bcrypt";
 import {addDays} from "date-fns";

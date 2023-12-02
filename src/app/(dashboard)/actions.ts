@@ -1,3 +1,5 @@
+"use server";
+
 import {prisma} from "@/config/prisma";
 import bcrypt from "bcrypt";
 import {revalidatePath} from "next/cache";

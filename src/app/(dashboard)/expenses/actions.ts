@@ -1,3 +1,5 @@
+"use server";
+
 import {prisma} from "@/config/prisma";
 import {revalidatePath} from "next/cache";
 import {cookies} from "next/headers";
