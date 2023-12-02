@@ -2,20 +2,20 @@ import {token} from "@/styled-system/tokens";
 import {ExpenseCategory} from "@prisma/client";
 
 export const BACKGROUND_COLOR_MAP = {
-	[ExpenseCategory.Clothing]: token("colors.amber.a4"),
-	[ExpenseCategory.DebtsPayment]: token("colors.purple.a4"),
-	[ExpenseCategory.Education]: token("colors.blue.a4"),
-	[ExpenseCategory.Entertainment]: token("colors.bronze.a4"),
-	[ExpenseCategory.Food]: token("colors.brown.a4"),
-	[ExpenseCategory.Healthcare]: token("colors.crimson.a4"),
-	[ExpenseCategory.Housing]: token("colors.gold.a4"),
-	[ExpenseCategory.Insurance]: token("colors.green.a4"),
-	[ExpenseCategory.Miscellaneous]: token("colors.iris.a4"),
-	[ExpenseCategory.Others]: token("colors.cyan.a4"),
-	[ExpenseCategory.PersonalCare]: token("colors.indigo.a4"),
-	[ExpenseCategory.Savings]: token("colors.jade.a4"),
-	[ExpenseCategory.Transportation]: token("colors.lime.a4"),
-	[ExpenseCategory.Utilities]: token("colors.ruby.a4"),
+	[ExpenseCategory.Clothing]: token("colors.amber.a8"),
+	[ExpenseCategory.DebtsPayment]: token("colors.purple.a8"),
+	[ExpenseCategory.Education]: token("colors.blue.a8"),
+	[ExpenseCategory.Entertainment]: token("colors.bronze.a8"),
+	[ExpenseCategory.Food]: token("colors.brown.a8"),
+	[ExpenseCategory.Healthcare]: token("colors.crimson.a8"),
+	[ExpenseCategory.Housing]: token("colors.gold.a8"),
+	[ExpenseCategory.Insurance]: token("colors.green.a8"),
+	[ExpenseCategory.Miscellaneous]: token("colors.iris.a8"),
+	[ExpenseCategory.Others]: token("colors.cyan.a8"),
+	[ExpenseCategory.PersonalCare]: token("colors.indigo.a8"),
+	[ExpenseCategory.Savings]: token("colors.jade.a8"),
+	[ExpenseCategory.Transportation]: token("colors.lime.a8"),
+	[ExpenseCategory.Utilities]: token("colors.ruby.a8"),
 };
 
 export const FOREGROUND_COLOR_MAP = {

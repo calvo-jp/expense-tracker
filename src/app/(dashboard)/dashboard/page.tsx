@@ -35,7 +35,9 @@ export default async function Dashboard() {
 
 			<Box mt={12}>
 				<Box w="full">
-					<AnnualReport />
+					<Suspense>
+						<AnnualReport />
+					</Suspense>
 				</Box>
 				<Box mt={16}>
 					<MonthlyReport />
