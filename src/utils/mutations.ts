@@ -139,20 +139,6 @@ export async function createAccount(input: unknown) {
 	}
 }
 
-export async function updateCurrency(currency: string) {
-	const id = cookies().get("user")?.value;
-
-	if (!id) return "Auth required";
-
-	try {
-		await prisma.user.update({where: {id}, data: {currency}});
-
-		return null;
-	} catch {
-		return "Something went wrong";
-	}
-}
-
 /*
  *------------------- EXPENSE -------------------
  */
