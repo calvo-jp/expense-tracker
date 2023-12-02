@@ -15,14 +15,6 @@ import {IconButton} from "@/components/icon-button";
 import {Input} from "@/components/input";
 import {Label} from "@/components/label";
 import {toast} from "@/components/toaster";
-import {
-	Tooltip,
-	TooltipArrow,
-	TooltipArrowTip,
-	TooltipContent,
-	TooltipPositioner,
-	TooltipTrigger,
-} from "@/components/tooltip";
 import {Flex, HStack, styled} from "@/styled-system/jsx";
 import {Portal} from "@ark-ui/react";
 import {zodResolver} from "@hookform/resolvers/zod";
@@ -55,29 +47,11 @@ export function Export() {
 			{(api) => (
 				<>
 					<DialogTrigger asChild>
-						<Tooltip
-							positioning={{
-								placement: "bottom",
-							}}
-						>
-							<TooltipTrigger asChild>
-								<IconButton variant="outline" disabled={pending}>
-									<Icon>
-										<DownloadIcon />
-									</Icon>
-								</IconButton>
-							</TooltipTrigger>
-							<Portal>
-								<TooltipPositioner>
-									<TooltipContent>
-										<TooltipArrow>
-											<TooltipArrowTip />
-										</TooltipArrow>
-										Export to excel
-									</TooltipContent>
-								</TooltipPositioner>
-							</Portal>
-						</Tooltip>
+						<IconButton variant="outline" disabled={pending}>
+							<Icon>
+								<DownloadIcon />
+							</Icon>
+						</IconButton>
 					</DialogTrigger>
 					<Portal>
 						<DialogBackdrop />
