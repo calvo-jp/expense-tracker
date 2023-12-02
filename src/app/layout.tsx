@@ -5,6 +5,7 @@ import {styled} from "@/styled-system/jsx";
 import {Metadata} from "next";
 import {Inter, JetBrains_Mono, Open_Sans} from "next/font/google";
 import {PropsWithChildren} from "react";
+import {Providers} from "./providers";
 
 export const metadata: Metadata = {
 	title: {
@@ -39,14 +40,10 @@ export default function RootLayout({children}: PropsWithChildren) {
 		<styled.html
 			lang="en"
 			scrollBehavior="smooth"
-			colorScheme={{
-				base: "light",
-				_dark: "dark",
-			}}
 			className={cx(body.variable, heading.variable, mono.variable)}
 		>
 			<styled.body fontFamily="body">
-				{children}
+				<Providers>{children}</Providers>
 				<Toaster />
 			</styled.body>
 		</styled.html>

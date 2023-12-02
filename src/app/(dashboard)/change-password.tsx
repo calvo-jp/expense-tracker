@@ -20,7 +20,7 @@ import {changePassword} from "@/utils/mutations";
 import {ChangePasswordSchema, TChangePasswordSchema} from "@/utils/types";
 import {Portal} from "@ark-ui/react";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {LockIcon} from "lucide-react";
+import {LockKeyholeIcon} from "lucide-react";
 import {useTransition} from "react";
 import {useForm} from "react-hook-form";
 
@@ -47,7 +47,7 @@ export function ChangePassword() {
 					<DialogTrigger asChild>
 						<MenuItem id="navbar.profile-settings.change-password" gap={2}>
 							<Icon>
-								<LockIcon />
+								<LockKeyholeIcon />
 							</Icon>
 							<styled.span>Change Password</styled.span>
 						</MenuItem>

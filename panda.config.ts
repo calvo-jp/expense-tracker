@@ -34,9 +34,6 @@ export default defineConfig({
 			},
 		},
 	},
-	conditions: {
-		dark: "@media (prefers-color-scheme: dark)",
-	},
 	outdir: "src/styled-system",
 	jsxFramework: "react",
 });

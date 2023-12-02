@@ -16,6 +16,7 @@ import {cookies} from "next/headers";
 import {Logo} from "../logo";
 import {ChangePassword} from "./change-password";
 import {Signout} from "./sign-out";
+import {ThemeSettings} from "./theme-settings";
 import {UpdateProfile} from "./update-profile";
 
 export async function Navbar() {
@@ -40,6 +41,7 @@ export async function Navbar() {
 			>
 				<Logo />
 				<Spacer />
+
 				<Menu
 					positioning={{
 						placement: "bottom-end",
@@ -61,6 +63,7 @@ export async function Navbar() {
 								<MenuItemGroup id="navbar.profile-settings">
 									<UpdateProfile __SSR_DATA={{user}} />
 									<ChangePassword />
+									<ThemeSettings />
 									<MenuItem
 										id="navbar.profile-settings.signout"
 										gap={2}

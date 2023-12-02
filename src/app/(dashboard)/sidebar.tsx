@@ -18,6 +18,8 @@ export function Sidebar() {
 				flexShrink={0}
 				borderRightWidth="1px"
 				zIndex="sticky"
+				display="flex"
+				flexDir="column"
 			>
 				<styled.ul py={6} px={4} flexGrow={1}>
 					<styled.li>
