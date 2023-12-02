@@ -16,9 +16,9 @@ import {
 } from "recharts";
 import {BACKGROUND_COLOR_MAP, FOREGROUND_COLOR_MAP} from "./utils";
 
-const randInt = (max: number, min: number) => {
+function randInt(max: number, min: number) {
 	return Math.floor(Math.random() * (max - min + 1) + min);
-};
+}
 
 const data = [
 	{
