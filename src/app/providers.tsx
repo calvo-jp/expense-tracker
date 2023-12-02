@@ -9,8 +9,6 @@ export function Providers(props: PropsWithChildren) {
 			attribute="class"
 			storageKey="expense-tracker.theme"
 			defaultTheme="system"
-			enableSystem
-			enableColorScheme
 			disableTransitionOnChange
 		>
 			{props.children}

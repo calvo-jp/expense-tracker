@@ -41,6 +41,10 @@ export default function RootLayout({children}: PropsWithChildren) {
 			lang="en"
 			scrollBehavior="smooth"
 			className={cx(body.variable, heading.variable, mono.variable)}
+			colorScheme={{
+				base: "dark",
+				_light: "light",
+			}}
 		>
 			<styled.body fontFamily="body">
 				<Providers>{children}</Providers>
