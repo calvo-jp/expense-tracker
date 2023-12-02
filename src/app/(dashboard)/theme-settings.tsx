@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/button";
+import {Button} from "@/components/button";
 import {
 	Dialog,
 	DialogBackdrop,
@@ -9,8 +9,8 @@ import {
 	DialogPositioner,
 	DialogTrigger,
 } from "@/components/dialog";
-import { Icon } from "@/components/icon";
-import { MenuItem } from "@/components/menu";
+import {Icon} from "@/components/icon";
+import {MenuItem} from "@/components/menu";
 import {
 	Select,
 	SelectContent,
@@ -24,8 +24,8 @@ import {
 	SelectTrigger,
 	SelectValueText,
 } from "@/components/select";
-import { Flex, HStack, styled } from "@/styled-system/jsx";
-import { Portal } from "@ark-ui/react";
+import {Flex, HStack, styled} from "@/styled-system/jsx";
+import {Portal} from "@ark-ui/react";
 import {
 	CheckIcon,
 	ChevronsUpDownIcon,
@@ -34,14 +34,14 @@ import {
 	PaletteIcon,
 	SunIcon,
 } from "lucide-react";
-import { useTheme } from "next-themes";
-import { useEffect, useState, useTransition } from "react";
+import {useTheme} from "next-themes";
+import {useEffect, useState, useTransition} from "react";
 
 export function ThemeSettings() {
 	const globalTheme = useTheme();
 
 	const [theme, setTheme] = useState("system");
-	const [pending,startTransition] = useTransition()
+	const [pending, startTransition] = useTransition();
 
 	useEffect(() => {
 		setTheme(globalTheme.theme ?? "system");
@@ -79,10 +79,8 @@ export function ThemeSettings() {
 											}
 										}}
 									>
-										{(context) => {
-											const v = context.selectedItems.at(0) as {
-												[key: string]: any;
-											};
+										{(api) => {
+											const v = api.selectedItems.at(0) as {[key: string]: any};
 
 											return (
 												<>
@@ -92,7 +90,7 @@ export function ThemeSettings() {
 															<SelectValueText asChild>
 																{v && (
 																	<Flex gap={2} alignItems="center">
-																		<Icon>{v.icon}</Icon>
+																		<Icon color="fg.default">{v.icon}</Icon>
 																		<styled.span>{v.label}</styled.span>
 																	</Flex>
 																)}
@@ -142,9 +140,9 @@ export function ThemeSettings() {
 											onClick={() => {
 												modalContext.close();
 
-												startTransition(()=>{
+												startTransition(() => {
 													globalTheme.setTheme(theme);
-												})
+												});
 											}}
 										>
 											Apply
