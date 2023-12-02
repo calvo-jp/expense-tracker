@@ -16,13 +16,13 @@ import {Label} from "@/components/label";
 import {MenuItem} from "@/components/menu";
 import {toast} from "@/components/toaster";
 import {Flex, HStack, VStack, styled} from "@/styled-system/jsx";
-import {changePassword} from "@/utils/mutations";
-import {ChangePasswordSchema, TChangePasswordSchema} from "@/utils/types";
 import {Portal} from "@ark-ui/react";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {LockKeyholeIcon} from "lucide-react";
 import {useTransition} from "react";
 import {useForm} from "react-hook-form";
+import {changePassword} from "./actions";
+import {ChangePasswordSchema, TChangePasswordSchema} from "./schema";
 
 export function ChangePassword() {
 	const [pending, startTransition] = useTransition();

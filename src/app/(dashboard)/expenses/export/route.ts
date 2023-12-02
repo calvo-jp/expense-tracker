@@ -1,69 +1,36 @@
 import {prisma} from "@/config/prisma";
 import {pascalToSentenceCase} from "@/utils/pascal-to-sentence-case";
-import {ExpenseFilterSchema} from "@/utils/types";
-import {Prisma} from "@prisma/client";
 import assert from "assert";
 import {cookies} from "next/headers";
 import slugify from "slugify";
 import * as XLSX from "xlsx";
+import {ExpenseFilterSchema} from "../schema";
+import {paramsToWhereClause} from "../utils.server";
 
 export async function GET(request: Request) {
-	const id = cookies().get("user")?.value;
 	const url = new URL(request.url);
-	const name = slugify(url.searchParams.get("filename") ?? "expenses", {
+	const userId = cookies().get("user")?.value;
+	const filename = slugify(url.searchParams.get("filename") ?? "expenses", {
 		lower: true,
 	});
 
-	assert(id);
-
-	const {
-		category,
-		location,
-		minAmount,
-		maxAmount,
-		transactionDateStart,
-		transactionDateUntil,
-	} = ExpenseFilterSchema.parse({
-		category: url.searchParams.getAll("category"),
-		location: url.searchParams.get("location"),
-		minAmount: url.searchParams.get("minAmount"),
-		maxAmount: url.searchParams.get("maxAmount"),
-		transactionDateStart: url.searchParams.get("transactionDateStart"),
-		transactionDateUntil: url.searchParams.get("transactionDateUntil"),
-	});
-
-	/*
-	 *--------- QUERY FILTER ---------
-	 */
-
-	const where: Prisma.ExpenseWhereInput = {
-		user: {id},
-
-		...([minAmount, maxAmount].some(Boolean) && {
-			amount: {
-				...(minAmount && {gte: minAmount}),
-				...(maxAmount && {lte: maxAmount}),
-			},
-		}),
-
-		...(category?.length && {
-			category: {in: category},
-		}),
-
-		...(location && {
-			location: {contains: location},
-		}),
-
-		...([transactionDateStart, transactionDateUntil].some(Boolean) && {
-			transactionDate: {
-				...(transactionDateStart && {gte: transactionDateStart}),
-				...(transactionDateUntil && {lte: transactionDateUntil}),
-			},
-		}),
-	};
+	assert(userId);
 
 	const expenses = await prisma.expense.findMany({
-		where,
+		where: {
+			userId,
+
+			...paramsToWhereClause(
+				ExpenseFilterSchema.parse({
+					category: url.searchParams.getAll("category"),
+					location: url.searchParams.get("location"),
+					minAmount: url.searchParams.get("minAmount"),
+					maxAmount: url.searchParams.get("maxAmount"),
+					transactionDateStart: url.searchParams.get("transactionDateStart"),
+					transactionDateUntil: url.searchParams.get("transactionDateUntil"),
+				}),
+			),
+		},
 		select: {
 			amount: true,
 			category: true,
@@ -89,7 +56,11 @@ export async function GET(request: Request) {
 	const buffer = XLSX.write(workbook, {type: "buffer", bookType: "xlsx"});
 	const headers = new Headers();
 
-	headers.append("Content-Disposition", `attachment; filename="${name}.xlsx"`);
+	headers.append(
+		"Content-Disposition",
+		`attachment; filename="${filename}.xlsx"`,
+	);
+
 	headers.append(
 		"Content-Type",
 		"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",

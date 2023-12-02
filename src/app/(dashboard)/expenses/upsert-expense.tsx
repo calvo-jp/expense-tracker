@@ -61,10 +61,8 @@ import {Textarea} from "@/components/textarea";
 import {toast} from "@/components/toaster";
 import {Flex, HStack, VStack, styled} from "@/styled-system/jsx";
 import {getCurrentLocation} from "@/utils/get-current-location";
-import {createExpense, updateExpense} from "@/utils/mutations";
 import {pascalToSentenceCase} from "@/utils/pascal-to-sentence-case";
 import {stringToPrismaEnum} from "@/utils/string-to-prisma-enum";
-import {TUpsertExpenseSchema, UpsertExpenseSchema} from "@/utils/types";
 import {Portal} from "@ark-ui/react";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Expense, ExpenseCategory} from "@prisma/client";
@@ -80,6 +78,8 @@ import {
 } from "lucide-react";
 import {ReactNode, useEffect, useTransition} from "react";
 import {useForm} from "react-hook-form";
+import {createExpense, updateExpense} from "./actions";
+import {TUpsertExpenseSchema, UpsertExpenseSchema} from "./schema";
 
 type UpsertExpenseProps = (
 	| {

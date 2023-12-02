@@ -2,10 +2,10 @@
 
 import {Icon} from "@/components/icon";
 import {HTMLStyledProps, styled} from "@/styled-system/jsx";
-import {logout} from "@/utils/mutations";
 import {PowerIcon} from "lucide-react";
 import {useRouter} from "next/navigation";
 import {forwardRef} from "react";
+import {logout} from "./actions";
 
 export const Signout = forwardRef<
 	HTMLButtonElement,

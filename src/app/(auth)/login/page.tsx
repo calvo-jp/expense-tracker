@@ -6,12 +6,12 @@ import {Input} from "@/components/input";
 import {Link} from "@/components/next-js/link";
 import {toast} from "@/components/toaster";
 import {Box, Flex, styled} from "@/styled-system/jsx";
-import {login} from "@/utils/mutations";
-import {LoginSchema, TLoginSchema} from "@/utils/types";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useRouter} from "next/navigation";
 import {useTransition} from "react";
 import {useForm} from "react-hook-form";
+import {login} from "./actions";
+import {LoginSchema, TLoginSchema} from "./schema";
 
 export default function Login() {
 	const [pending, startTransition] = useTransition();

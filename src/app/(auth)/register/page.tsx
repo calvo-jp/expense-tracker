@@ -6,12 +6,12 @@ import {Input} from "@/components/input";
 import {Link} from "@/components/next-js/link";
 import {toast} from "@/components/toaster";
 import {Box, Flex, styled} from "@/styled-system/jsx";
-import {createAccount} from "@/utils/mutations";
-import {CreateAccountSchema, TCreateAccountSchema} from "@/utils/types";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useRouter} from "next/navigation";
 import {useTransition} from "react";
 import {useForm} from "react-hook-form";
+import {createAccount} from "./actions";
+import {CreateAccountSchema, TCreateAccountSchema} from "./schema";
 
 export default function Register() {
 	const [pending, startTransition] = useTransition();

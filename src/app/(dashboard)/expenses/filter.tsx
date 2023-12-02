@@ -61,7 +61,6 @@ import {
 } from "@/components/number-input";
 import {Box, Flex, HStack} from "@/styled-system/jsx";
 import {pascalToSentenceCase} from "@/utils/pascal-to-sentence-case";
-import {ExpenseFilterSchema, TExpenseFilterSchema} from "@/utils/types";
 import {Portal} from "@ark-ui/react";
 import {ExpenseCategory} from "@prisma/client";
 import {format} from "date-fns";
@@ -77,6 +76,7 @@ import {
 } from "lucide-react";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
 import {useReducer, useTransition} from "react";
+import {ExpenseFilterSchema, TExpenseFilterSchema} from "./schema";
 
 export function Filter() {
 	const router = useRouter();

@@ -23,7 +23,6 @@ import {
 	SelectValueText,
 } from "@/components/select";
 import {Box, Flex, Spacer} from "@/styled-system/jsx";
-import {PaginationSchema} from "@/utils/types";
 import {Portal} from "@ark-ui/react";
 import {
 	CheckIcon,
@@ -32,7 +31,8 @@ import {
 	ChevronsUpDownIcon,
 } from "lucide-react";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
-import {useTransition} from "react";
+import {startTransition} from "react";
+import {PaginationSchema} from "./schema";
 
 const sizes = [10, 25, 50].map((size) => ({
 	value: `${size}`,
@@ -45,7 +45,6 @@ interface PageControlsProps {
 
 export function PageControls(props: PageControlsProps) {
 	const context = usePageControls(props.__SSR_DATA);
-	const [pending, startTransition] = useTransition();
 
 	return (
 		<Flex gap={4} alignItems="center">

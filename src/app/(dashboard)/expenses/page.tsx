@@ -20,13 +20,7 @@ import {
 import {prisma} from "@/config/prisma";
 import {Box, Center, Flex, HStack, Spacer, styled} from "@/styled-system/jsx";
 import {numberFormatter} from "@/utils/number-formatter";
-import {
-	ExpenseFilterSchema,
-	PaginationSchema,
-	TExpenseFilterSchema,
-} from "@/utils/types";
 import {Portal} from "@ark-ui/react";
-import {Prisma} from "@prisma/client";
 import assert from "assert";
 import {format} from "date-fns";
 import {FileEditIcon, PlusIcon, SettingsIcon} from "lucide-react";
@@ -35,10 +29,13 @@ import {cookies} from "next/headers";
 import {Suspense, cache} from "react";
 import {Spinner} from "../../spinner";
 import {PageControls} from "../page-controls";
+import {PaginationSchema} from "../schema";
 import {DeleteExpense} from "./delete-expense";
 import {Export} from "./export";
 import {Filter} from "./filter";
+import {ExpenseFilterSchema} from "./schema";
 import {UpsertExpense} from "./upsert-expense";
+import {paramsToWhereClause} from "./utils.server";
 
 export const metadata: Metadata = {
 	title: "Expenses",
@@ -79,18 +76,6 @@ export default async function Expenses(props: ExpensesProps) {
 					whiteSpace="nowrap"
 					WebkitOverflowScrolling="touch"
 					borderWidth="1px"
-					_scrollbar={{
-						bg: "bg.subtle",
-					}}
-					_scrollbarThumb={{
-						bg: "bg.default",
-						bgClip: "padding-box",
-						border: "5px solid token(colors.transparent)",
-						rounded: "full",
-					}}
-					_scrollbarTrack={{
-						bg: "transparent",
-					}}
 				>
 					<Table
 						pos="relative"
@@ -130,7 +115,7 @@ export default async function Expenses(props: ExpensesProps) {
 								<TableHead>Transaction Date</TableHead>
 								<TableHead>Date Created</TableHead>
 								<TableHead>Date Updated</TableHead>
-								<TableHead w="0" pos="sticky" right={0}>
+								<TableHead maxW={16} minW={16} pos="sticky" right={0}>
 									Actions
 								</TableHead>
 							</TableRow>
@@ -183,6 +168,12 @@ async function TableContent({searchParams}: ExpensesProps) {
 	return (
 		<>
 			<TableBody>
+				{expenses.length === 0 && (
+					<TableRow>
+						<TableCell colSpan={8}>No records found</TableCell>
+					</TableRow>
+				)}
+
 				{expenses.map((expense) => (
 					<TableRow key={expense.id}>
 						<TableCell>{expense.category}</TableCell>
@@ -248,35 +239,36 @@ async function TableContent({searchParams}: ExpensesProps) {
 					</TableRow>
 				))}
 			</TableBody>
-			<TableFooter>
-				<TableRow>
-					<TableCell />
-					<TableCell />
-					<TableCell fontFamily="mono" textAlign="right!">
-						{numberFormatter.format(
-							expenses.reduce((total, {amount}) => total + amount, 0),
-						)}
-					</TableCell>
-					<TableCell />
-					<TableCell />
-					<TableCell />
-					<TableCell />
-					<TableCell pos="sticky" right={0} />
-				</TableRow>
-			</TableFooter>
+
+			{expenses.length > 0 && (
+				<TableFooter>
+					<TableRow>
+						<TableCell />
+						<TableCell />
+						<TableCell fontFamily="mono" textAlign="right!">
+							{numberFormatter.format(
+								expenses.reduce((total, {amount}) => total + amount, 0),
+							)}
+						</TableCell>
+						<TableCell />
+						<TableCell />
+						<TableCell />
+						<TableCell />
+						<TableCell pos="sticky" right={0} />
+					</TableRow>
+				</TableFooter>
+			)}
 		</>
 	);
 }
 
 async function BottomControls({searchParams}: ExpensesProps) {
-	const id = cookies().get("user")?.value;
+	const userId = cookies().get("user")?.value;
 
-	assert(id);
+	assert(userId);
 
-	const params = parseParams(searchParams);
-	const count = await prisma.expense.count({
-		where: {user: {id}, ...paramsToWhereClause(params)},
-	});
+	const where = {userId, ...paramsToWhereClause(parseParams(searchParams))};
+	const count = await prisma.expense.count({where});
 
 	return (
 		<Box mt={8}>
@@ -290,38 +282,4 @@ const parseParams = cache((searchParams: unknown) => {
 		...ExpenseFilterSchema.parse(searchParams),
 		...PaginationSchema.parse(searchParams),
 	};
-});
-
-const paramsToWhereClause = cache((args: TExpenseFilterSchema) => {
-	const {
-		category,
-		location,
-		minAmount,
-		maxAmount,
-		transactionDateStart,
-		transactionDateUntil,
-	} = args;
-
-	const whereClause: Prisma.ExpenseWhereInput = {
-		...([minAmount, maxAmount].some(Boolean) && {
-			amount: {
-				...(minAmount && {gte: minAmount}),
-				...(maxAmount && {lte: maxAmount}),
-			},
-		}),
-		...(category?.length && {
-			category: {in: category},
-		}),
-		...(location && {
-			location: {contains: location},
-		}),
-		...([transactionDateStart, transactionDateUntil].some(Boolean) && {
-			transactionDate: {
-				...(transactionDateStart && {gte: transactionDateStart}),
-				...(transactionDateUntil && {lte: transactionDateUntil}),
-			},
-		}),
-	};
-
-	return whereClause;
 });

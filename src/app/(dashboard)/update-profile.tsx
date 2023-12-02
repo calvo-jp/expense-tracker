@@ -16,14 +16,14 @@ import {Label} from "@/components/label";
 import {MenuItem} from "@/components/menu";
 import {toast} from "@/components/toaster";
 import {Flex, HStack, VStack, styled} from "@/styled-system/jsx";
-import {updateProfile} from "@/utils/mutations";
-import {TUpdateProfileSchema, UpdateProfileSchema} from "@/utils/types";
 import {Portal} from "@ark-ui/react";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {User} from "@prisma/client";
 import {SettingsIcon} from "lucide-react";
 import {useEffect, useTransition} from "react";
 import {useForm} from "react-hook-form";
+import {updateProfile} from "./actions";
+import {TUpdateProfileSchema, UpdateProfileSchema} from "./schema";
 
 interface UpdateProfileProps {
 	__SSR_DATA: {user: User};

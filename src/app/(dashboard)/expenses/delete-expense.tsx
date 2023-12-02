@@ -15,11 +15,11 @@ import {Icon} from "@/components/icon";
 import {MenuItem} from "@/components/menu";
 import {toast} from "@/components/toaster";
 import {Box, Flex, HStack, styled} from "@/styled-system/jsx";
-import {deleteExpense} from "@/utils/mutations";
 import {Portal} from "@ark-ui/react";
 import {Expense} from "@prisma/client";
 import {FileX2Icon} from "lucide-react";
 import {useTransition} from "react";
+import {deleteExpense} from "./actions";
 
 interface DeleteExpenseProps {
 	data: Expense;
