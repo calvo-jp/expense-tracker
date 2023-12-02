@@ -64,7 +64,7 @@ const data = [
 export function AnnualReport() {
 	return (
 		<>
-			<AspectRatio w="full" ratio={16 / 5} mt={5}>
+			<AspectRatio w="full" ratio={16 / 7} mt={5}>
 				<ResponsiveContainer
 					width={token("sizes.full")}
 					height={token("sizes.full")}
