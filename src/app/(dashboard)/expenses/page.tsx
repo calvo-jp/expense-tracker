@@ -175,13 +175,6 @@ async function TableContent({searchParams}: ExpensesProps) {
 		skip: params.size * (params.page - 1),
 		take: params.size,
 		where: {user: {id}, ...paramsToWhereClause(params)},
-		include: {
-			user: {
-				select: {
-					currency: true,
-				},
-			},
-		},
 		orderBy: {
 			createdAt: "desc",
 		},
