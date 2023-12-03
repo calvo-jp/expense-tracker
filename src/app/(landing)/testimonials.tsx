@@ -10,6 +10,7 @@ import {
 	HStack,
 	styled,
 } from "@/styled-system/jsx";
+import {arrayChunk} from "@/utils/array-chunk";
 import {
 	Carousel,
 	CarouselIndicator,
@@ -22,6 +23,8 @@ import {
 import {ChevronLeftIcon, ChevronRightIcon, QuoteIcon} from "lucide-react";
 
 export function Testimonials() {
+	const chunks = arrayChunk(testimonials, 2);
+
 	return (
 		<Box id="testimonials" maxW="breakpoint-lg" mx="auto" py={24} px={8}>
 			<styled.h2
@@ -45,15 +48,14 @@ export function Testimonials() {
 					<CarouselViewport asChild>
 						<Box pos="relative" overflow="hidden">
 							<CarouselItemGroup>
-								{items.map((_, index) => (
+								{chunks.map((list, index) => (
 									<CarouselItem key={index} index={index} asChild>
 										<Grid columns={2} gap={6}>
-											<GridItem>
-												<Testimony />
-											</GridItem>
-											<GridItem>
-												<Testimony />
-											</GridItem>
+											{list.map((item) => (
+												<GridItem key={item.id}>
+													<Testimony data={item} />
+												</GridItem>
+											))}
 										</Grid>
 									</CarouselItem>
 								))}
@@ -72,7 +74,7 @@ export function Testimonials() {
 				<Center mt={10}>
 					<CarouselIndicatorGroup asChild>
 						<HStack>
-							{items.map((_, index) => (
+							{chunks.map((_, index) => (
 								<CarouselIndicator key={index} index={index} asChild>
 									<Circle aria-label={`Slide ${index}`} />
 								</CarouselIndicator>
@@ -84,8 +86,6 @@ export function Testimonials() {
 		</Box>
 	);
 }
-
-const items = Array.from({length: 3});
 
 const Trigger = styled("button", {
 	base: {
@@ -111,7 +111,23 @@ const Circle = styled("button", {
 	},
 });
 
-function Testimony() {
+interface TestimonyProps {
+	data: {
+		id: string;
+		message: string;
+		author: {
+			name: string;
+			company: {
+				name: string;
+				position: string;
+			};
+		};
+	};
+}
+
+function Testimony(props: TestimonyProps) {
+	const {id, author, message} = props.data;
+
 	return (
 		<Flex
 			p={8}
@@ -125,25 +141,96 @@ function Testimony() {
 				<QuoteIcon />
 			</Icon>
 
-			<styled.p flexGrow={1}>
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus dicta
-				nostrum unde natus ducimus iste itaque reiciendis repellat perspiciatis
-				beatae?
-			</styled.p>
+			<styled.p flexGrow={1}>{message}</styled.p>
 
 			<HStack>
 				<Avatar>
-					<AvatarImage src="https://i.pravatar.cc/300" />
+					<AvatarImage src={`https://i.pravatar.cc/300?u=${id}`} />
 				</Avatar>
 				<Box>
 					<Box fontSize="sm" fontWeight="medium">
-						Mark Zuckerberg
+						{author.name}
 					</Box>
 					<Box fontSize="xs" color="fg.muted">
-						CEO at Facebook
+						{author.company.position} at {author.company.name}
 					</Box>
 				</Box>
 			</HStack>
 		</Flex>
 	);
 }
+
+const testimonials: TestimonyProps["data"][] = [
+	{
+		id: crypto.randomUUID(),
+		author: {
+			name: "Mark Zuckerberg",
+			company: {
+				name: "Facebook",
+				position: "CEO",
+			},
+		},
+		message:
+			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus dicta nostrum unde natus ducimus iste itaque reiciendis repellat perspiciatis beatae",
+	},
+	{
+		id: crypto.randomUUID(),
+		author: {
+			name: "Mark Zuckerberg",
+			company: {
+				name: "Facebook",
+				position: "CEO",
+			},
+		},
+		message:
+			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus dicta nostrum unde natus ducimus iste itaque reiciendis repellat perspiciatis beatae",
+	},
+	{
+		id: crypto.randomUUID(),
+		author: {
+			name: "Mark Zuckerberg",
+			company: {
+				name: "Facebook",
+				position: "CEO",
+			},
+		},
+		message:
+			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus dicta nostrum unde natus ducimus iste itaque reiciendis repellat perspiciatis beatae",
+	},
+	{
+		id: crypto.randomUUID(),
+		author: {
+			name: "Mark Zuckerberg",
+			company: {
+				name: "Facebook",
+				position: "CEO",
+			},
+		},
+		message:
+			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus dicta nostrum unde natus ducimus iste itaque reiciendis repellat perspiciatis beatae",
+	},
+	{
+		id: crypto.randomUUID(),
+		author: {
+			name: "Mark Zuckerberg",
+			company: {
+				name: "Facebook",
+				position: "CEO",
+			},
+		},
+		message:
+			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus dicta nostrum unde natus ducimus iste itaque reiciendis repellat perspiciatis beatae",
+	},
+	{
+		id: crypto.randomUUID(),
+		author: {
+			name: "Mark Zuckerberg",
+			company: {
+				name: "Facebook",
+				position: "CEO",
+			},
+		},
+		message:
+			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus dicta nostrum unde natus ducimus iste itaque reiciendis repellat perspiciatis beatae",
+	},
+];
