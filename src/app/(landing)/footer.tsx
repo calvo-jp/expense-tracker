@@ -33,10 +33,15 @@ function Socials() {
 			<styled.ul gap={2.5} display="flex">
 				{socials.map((social) => (
 					<styled.li key={social.name}>
-						<styled.a href={social.href}>
+						<Link
+							href={social.href}
+							rel="noreferrer noopener"
+							target="_blank"
+							prefetch={false}
+						>
 							<Icon>{social.icon}</Icon>
 							<VisuallyHidden>{social.name}</VisuallyHidden>
-						</styled.a>
+						</Link>
 					</styled.li>
 				))}
 			</styled.ul>
