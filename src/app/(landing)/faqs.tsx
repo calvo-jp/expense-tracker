@@ -11,7 +11,7 @@ import {ChevronDownIcon} from "lucide-react";
 
 export function Faqs() {
 	return (
-		<Box maxW="breakpoint-md" mx="auto" py={24} px={8}>
+		<Box id="faqs" maxW="breakpoint-md" mx="auto" py={24} px={8}>
 			<styled.h2
 				textAlign="center"
 				fontFamily="heading"

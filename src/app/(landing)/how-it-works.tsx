@@ -4,7 +4,7 @@ import {Box, styled} from "@/styled-system/jsx";
 
 export function HowItWorks() {
 	return (
-		<Box maxW="breakpoint-lg" mx="auto" py={24} px={8}>
+		<Box id="how-it-works" maxW="breakpoint-lg" mx="auto" py={24} px={8}>
 			<styled.h2
 				textAlign="center"
 				fontFamily="heading"

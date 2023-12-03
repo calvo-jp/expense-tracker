@@ -5,7 +5,7 @@ import {Box, styled} from "@/styled-system/jsx";
 
 export function ContactUs() {
 	return (
-		<Box maxW="breakpoint-md" mx="auto" py={24} px={8}>
+		<Box id="contact-us" maxW="breakpoint-md" mx="auto" py={24} px={8}>
 			<styled.h2
 				textAlign="center"
 				fontFamily="heading"

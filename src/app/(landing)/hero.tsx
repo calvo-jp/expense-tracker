@@ -4,7 +4,7 @@ import {Box, Flex, styled} from "@/styled-system/jsx";
 
 export function Hero() {
 	return (
-		<Box maxW="breakpoint-lg" mx="auto" pt={32} pb={24} px={8}>
+		<Box id="about" maxW="breakpoint-lg" mx="auto" pt={32} pb={24} px={8}>
 			<Flex>
 				<Box flexShrink={0}>
 					<styled.h1 fontFamily="heading" fontSize="6xl" fontWeight="extrabold">

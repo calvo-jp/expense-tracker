@@ -5,7 +5,7 @@ import {QuoteIcon} from "lucide-react";
 
 export function Testimonials() {
 	return (
-		<Box maxW="breakpoint-lg" mx="auto" py={24} px={8}>
+		<Box id="testimonials" maxW="breakpoint-lg" mx="auto" py={24} px={8}>
 			<styled.h2
 				textAlign="center"
 				fontFamily="heading"

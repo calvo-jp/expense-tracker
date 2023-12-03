@@ -12,7 +12,7 @@ import {ReactNode} from "react";
 
 export function Features() {
 	return (
-		<Box maxW="breakpoint-lg" mx="auto" py={24} px={8}>
+		<Box id="features" maxW="breakpoint-lg" mx="auto" py={24} px={8}>
 			<styled.h2
 				textAlign="center"
 				fontFamily="heading"
