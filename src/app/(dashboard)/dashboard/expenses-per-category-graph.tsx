@@ -230,137 +230,135 @@ const data = [
 
 export function ExpensesPerCategoryGraph() {
 	return (
-		<>
-			<AspectRatio w="full" ratio={16 / 8} mt={5}>
-				<ResponsiveContainer
-					width={token("sizes.full")}
-					height={token("sizes.full")}
+		<AspectRatio w="full" maxH="26rem" ratio={16 / 8}>
+			<ResponsiveContainer
+				width={token("sizes.full")}
+				height={token("sizes.full")}
+			>
+				<LineChart
+					data={data}
+					margin={{
+						top: 8,
+						left: 8,
+						right: 8,
+						bottom: 8,
+					}}
 				>
-					<LineChart
-						data={data}
-						margin={{
-							top: 8,
-							left: 8,
-							right: 8,
-							bottom: 8,
+					<CartesianGrid stroke={token("colors.border.muted")} />
+					<XAxis
+						dataKey="name"
+						style={{
+							fontSize: token("fontSizes.sm"),
 						}}
-					>
-						<CartesianGrid stroke={token("colors.border.muted")} />
-						<XAxis
-							dataKey="name"
-							style={{
-								fontSize: token("fontSizes.sm"),
-							}}
-						/>
-						<YAxis
-							style={{
-								fontFamily: token("fonts.mono"),
-								fontSize: token("fontSizes.sm"),
-							}}
-						/>
-						<Tooltip
-							content={({payload = [], label}) => {
-								const total = payload.reduce((t, e) => {
-									return t + (e.value as unknown as number);
-								}, 0);
+					/>
+					<YAxis
+						style={{
+							fontFamily: token("fonts.mono"),
+							fontSize: token("fontSizes.sm"),
+						}}
+					/>
+					<Tooltip
+						content={({payload = [], label}) => {
+							const total = payload.reduce((t, e) => {
+								return t + (e.value as unknown as number);
+							}, 0);
 
-								return (
-									<Box
-										p={4}
-										bg="bg.subtle"
-										rounded="sm"
-										border="1px solid token(colors.border.default)"
-									>
-										<Box fontSize="sm" fontWeight="medium">
-											{getMonthFullName(label)}
+							return (
+								<Box
+									p={4}
+									bg="bg.subtle"
+									rounded="sm"
+									border="1px solid token(colors.border.default)"
+								>
+									<Box fontSize="sm" fontWeight="medium">
+										{getMonthFullName(label)}
+									</Box>
+
+									<Grid mt={2} columns={2} fontSize="xs" lineHeight="normal">
+										<Box>
+											{payload.map(({name}, index) => (
+												<Flex
+													key={`${name}${index}`}
+													gap={1.5}
+													alignItems="center"
+												>
+													<Box
+														w={3}
+														h={2}
+														flexShrink={0}
+														style={{
+															background:
+																BACKGROUND_COLOR_MAP[name as ExpenseCategory],
+														}}
+													/>
+													<Box>
+														{pascalToSentenceCase(name as unknown as string)}
+													</Box>
+												</Flex>
+											))}
+											<Flex gap={1.5} alignItems="center">
+												<Box w={3} h={2} bg="bg.emphasized" flexShrink={0} />
+												<Box>Total</Box>
+											</Flex>
 										</Box>
 
-										<Grid mt={2} columns={2} fontSize="xs" lineHeight="normal">
-											<Box>
-												{payload.map(({name}, index) => (
-													<Flex
-														key={`${name}${index}`}
-														gap={1.5}
-														alignItems="center"
-													>
-														<Box
-															w={3}
-															h={2}
-															flexShrink={0}
-															style={{
-																background:
-																	BACKGROUND_COLOR_MAP[name as ExpenseCategory],
-															}}
-														/>
-														<Box>
-															{pascalToSentenceCase(name as unknown as string)}
-														</Box>
-													</Flex>
-												))}
-												<Flex gap={1.5} alignItems="center">
-													<Box w={3} h={2} bg="bg.emphasized" flexShrink={0} />
-													<Box>Total</Box>
-												</Flex>
-											</Box>
-
-											<Box fontFamily="mono">
-												{payload.map(({name, value}, index) => (
-													<Box key={`${name}${index}`} textAlign="right">
-														{numberFormatter.format(value as unknown as number)}
-													</Box>
-												))}
-												<Box textAlign="right">
-													{numberFormatter.format(total)}
+										<Box fontFamily="mono">
+											{payload.map(({name, value}, index) => (
+												<Box key={`${name}${index}`} textAlign="right">
+													{numberFormatter.format(value as unknown as number)}
 												</Box>
+											))}
+											<Box textAlign="right">
+												{numberFormatter.format(total)}
 											</Box>
-										</Grid>
-									</Box>
-								);
-							}}
-						/>
+										</Box>
+									</Grid>
+								</Box>
+							);
+						}}
+					/>
 
-						<Legend
-							content={({payload = []}) => {
-								return (
-									<Flex
-										pt={8}
-										w="75%"
-										mx="auto"
-										fontSize="xs"
-										flexWrap="wrap"
-										columnGap={2.5}
-										justifyContent="center"
-									>
-										{payload.map((entry, index) => (
-											<Flex key={index} alignItems="center" gap={1}>
-												<Box
-													w={2}
-													h={1.5}
-													style={{
-														background: entry.color,
-													}}
-												/>
-												<Box>{pascalToSentenceCase(entry.value)}</Box>
-											</Flex>
-										))}
-									</Flex>
-								);
-							}}
-						/>
+					<Legend
+						content={({payload = []}) => {
+							return (
+								<Flex
+									pt={8}
+									w="75%"
+									mx="auto"
+									fontSize="xs"
+									flexWrap="wrap"
+									columnGap={2.5}
+									justifyContent="center"
+								>
+									{payload.map((entry, index) => (
+										<Flex key={index} alignItems="center" gap={1}>
+											<Box
+												w={2}
+												h={1.5}
+												style={{
+													background: entry.color,
+												}}
+											/>
+											<Box>{pascalToSentenceCase(entry.value)}</Box>
+										</Flex>
+									))}
+								</Flex>
+							);
+						}}
+					/>
 
-						{Object.values(ExpenseCategory).map((category) => (
-							<Line
-								key={category}
-								type="basis"
-								dataKey={category}
-								stroke={FOREGROUND_COLOR_MAP[category]}
-								dot={false}
-							/>
-						))}
-					</LineChart>
-				</ResponsiveContainer>
-			</AspectRatio>
-		</>
+					{Object.values(ExpenseCategory).map((category) => (
+						<Line
+							key={category}
+							type="basis"
+							dataKey={category}
+							stroke={FOREGROUND_COLOR_MAP[category]}
+							dot={false}
+						/>
+					))}
+				</LineChart>
+			</ResponsiveContainer>
+		</AspectRatio>
 	);
 }
 

@@ -9,8 +9,10 @@ export function ExpensesPerCategory() {
 			</styled.h2>
 
 			<Box
-				p={12}
 				mt={4}
+				py={12}
+				pr={10}
+				pl={5}
 				bg="neutral.a2"
 				border="1px solid token(colors.neutral.a4)"
 				rounded="sm"

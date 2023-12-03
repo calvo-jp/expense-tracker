@@ -30,7 +30,7 @@ export function RecentlyAdded() {
 						_hover: "fg.default",
 					}}
 				>
-					<styled.span fontSize="sm">See all</styled.span>
+					<styled.span fontSize="sm">Go to expenses</styled.span>
 					<Icon>
 						<ChevronRightIcon />
 					</Icon>
@@ -87,6 +87,15 @@ export function RecentlyAdded() {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
+						<TableRow>
+							<TableCell>Food</TableCell>
+							<TableCell>Food is life</TableCell>
+							<TableCell textAlign="right!">300.0</TableCell>
+							<TableCell>Bacolod City</TableCell>
+							<TableCell>2021 Jul 15</TableCell>
+							<TableCell>2021 Jul 2021 3:35 AM</TableCell>
+							<TableCell>2021 Jul 2021 3:35 AM</TableCell>
+						</TableRow>
 						<TableRow>
 							<TableCell>Food</TableCell>
 							<TableCell>Food is life</TableCell>
