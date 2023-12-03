@@ -1,12 +1,31 @@
 "use client";
 
 import {Button} from "@/components/button";
+import {ErrorMessage} from "@/components/error-message";
 import {Input} from "@/components/input";
 import {Textarea} from "@/components/textarea";
 import {toast} from "@/components/toaster";
-import {Box, styled} from "@/styled-system/jsx";
+import {Box, Flex, styled} from "@/styled-system/jsx";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {useForm} from "react-hook-form";
+import {z} from "zod";
+
+const ContactUsSchema = z.object({
+	name: z.string().min(2).max(25).trim(),
+	email: z.string().email(),
+	message: z.string().min(5).max(255).trim(),
+});
 
 export function ContactUs() {
+	const form = useForm<z.infer<typeof ContactUsSchema>>({
+		resolver: zodResolver(ContactUsSchema),
+		defaultValues: {
+			name: "",
+			email: "",
+			message: "",
+		},
+	});
+
 	return (
 		<Box id="contact-us" maxW="breakpoint-md" mx="auto" py={24} px={8}>
 			<styled.h2
@@ -25,18 +44,33 @@ export function ContactUs() {
 				display="flex"
 				flexDir="column"
 				gap={5}
-				onSubmit={(e) => {
-					e.preventDefault();
-
+				onSubmit={form.handleSubmit((data) => {
 					toast.create({
 						title: "Error",
 						description: "This feature is not yet implemented",
 					});
-				}}
+
+					form.reset();
+				})}
 			>
-				<Input size="xl" placeholder="Name" />
-				<Input size="xl" placeholder="Email" />
-				<Textarea size="xl" placeholder="Message" rows={4} />
+				<Flex flexDir="column" gap={2}>
+					<Input size="xl" placeholder="Name" {...form.register("name")} />
+					<ErrorMessage>{form.formState.errors.name?.message}</ErrorMessage>
+				</Flex>
+				<Flex flexDir="column" gap={2}>
+					<Input size="xl" placeholder="Email" {...form.register("email")} />
+					<ErrorMessage>{form.formState.errors.email?.message}</ErrorMessage>
+				</Flex>
+				<Flex flexDir="column" gap={2}>
+					<Textarea
+						size="xl"
+						placeholder="Message"
+						rows={4}
+						{...form.register("message")}
+					/>
+					<ErrorMessage>{form.formState.errors.message?.message}</ErrorMessage>
+				</Flex>
+
 				<Button type="submit" size="xl" display="block">
 					Submit
 				</Button>
