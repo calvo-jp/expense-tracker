@@ -1,5 +1,3 @@
-"use client";
-
 import {Image} from "@/components/next-js/image";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/tabs";
 import {Box, styled} from "@/styled-system/jsx";
