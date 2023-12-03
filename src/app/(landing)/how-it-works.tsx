@@ -62,7 +62,7 @@ const items = [
 		label: "Item One",
 		content: (
 			<>
-				<styled.p>
+				<styled.p color="fg.muted">
 					Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magni
 					inventore tempora totam mollitia, esse repudiandae voluptatem laborum
 					at perferendis tenetur.
@@ -82,7 +82,7 @@ const items = [
 		label: "Item Two",
 		content: (
 			<>
-				<styled.p>
+				<styled.p color="fg.muted">
 					Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magni
 					inventore tempora totam mollitia, esse repudiandae voluptatem laborum
 					at perferendis tenetur.
@@ -102,7 +102,7 @@ const items = [
 		label: "Item Three",
 		content: (
 			<>
-				<styled.p>
+				<styled.p color="fg.muted">
 					Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magni
 					inventore tempora totam mollitia, esse repudiandae voluptatem laborum
 					at perferendis tenetur.
