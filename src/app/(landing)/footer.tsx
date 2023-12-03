@@ -1,9 +1,8 @@
-import {Button} from "@/components/button";
 import {Icon} from "@/components/icon";
-import {Input} from "@/components/input";
 import {Link} from "@/components/next-js/link";
 import {Box, Grid, GridItem, VisuallyHidden, styled} from "@/styled-system/jsx";
 import {InstagramIcon, LinkedinIcon, TwitterIcon} from "lucide-react";
+import {Subscribe} from "./subscribe";
 
 export function Footer() {
 	return (
@@ -112,19 +111,3 @@ const quickLinks = [
 		path: "/#contact-us",
 	},
 ];
-
-function Subscribe() {
-	return (
-		<>
-			<Box fontFamily="heading" textTransform="uppercase" color="fg.subtle">
-				Newsletter
-			</Box>
-			<styled.form mt={5}>
-				<Input placeholder="Email" />
-				<Button w="full" mt={4}>
-					Subscribe
-				</Button>
-			</styled.form>
-		</>
-	);
-}

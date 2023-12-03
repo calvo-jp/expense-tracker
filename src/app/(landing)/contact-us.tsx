@@ -1,6 +1,9 @@
+"use client";
+
 import {Button} from "@/components/button";
 import {Input} from "@/components/input";
 import {Textarea} from "@/components/textarea";
+import {toast} from "@/components/toaster";
 import {Box, styled} from "@/styled-system/jsx";
 
 export function ContactUs() {
@@ -22,11 +25,19 @@ export function ContactUs() {
 				display="flex"
 				flexDir="column"
 				gap={5}
+				onSubmit={(e) => {
+					e.preventDefault();
+
+					toast.create({
+						title: "Error",
+						description: "This feature is not yet implemented",
+					});
+				}}
 			>
 				<Input size="xl" placeholder="Name" />
 				<Input size="xl" placeholder="Email" />
 				<Textarea size="xl" placeholder="Message" rows={4} />
-				<Button size="xl" display="block">
+				<Button type="submit" size="xl" display="block">
 					Submit
 				</Button>
 			</styled.form>
