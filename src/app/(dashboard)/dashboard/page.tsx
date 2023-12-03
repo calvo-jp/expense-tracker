@@ -1,11 +1,13 @@
 import {prisma} from "@/config/prisma";
-import {Box, Flex, styled} from "@/styled-system/jsx";
+import {Box, Flex, Spacer, styled} from "@/styled-system/jsx";
 import assert from "assert";
 import {Metadata} from "next";
 import {cookies} from "next/headers";
 import {Suspense, cache} from "react";
-import {AnnualReport} from "./annual-report";
-import {MonthlyReport} from "./monthly-report";
+import {Cards} from "./cards";
+import {ExpensesPerCategory} from "./expenses-per-category";
+import {Filter} from "./filter";
+import {RecentlyAdded} from "./recently-added";
 
 export const metadata: Metadata = {
 	title: "Dashboard",
@@ -31,18 +33,15 @@ export default async function Dashboard() {
 						</Suspense>
 					</styled.p>
 				</Box>
+				<Spacer />
+				<Filter />
 			</Flex>
 
-			<Box mt={12}>
-				<Box w="full">
-					<Suspense>
-						<AnnualReport />
-					</Suspense>
-				</Box>
-				<Box mt={16}>
-					<MonthlyReport />
-				</Box>
-			</Box>
+			<Flex flexDir="column" gap={12} mt={12}>
+				<Cards />
+				<ExpensesPerCategory />
+				<RecentlyAdded />
+			</Flex>
 		</Box>
 	);
 }

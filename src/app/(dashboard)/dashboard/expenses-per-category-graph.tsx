@@ -7,6 +7,7 @@ import {pascalToSentenceCase} from "@/utils/pascal-to-sentence-case";
 import {ExpenseCategory} from "@prisma/client";
 import {
 	CartesianGrid,
+	Legend,
 	Line,
 	LineChart,
 	ResponsiveContainer,
@@ -227,10 +228,10 @@ const data = [
 	},
 ];
 
-export function AnnualReportGraph() {
+export function ExpensesPerCategoryGraph() {
 	return (
 		<>
-			<AspectRatio w="full" ratio={16 / 6} mt={5}>
+			<AspectRatio w="full" ratio={16 / 8} mt={5}>
 				<ResponsiveContainer
 					width={token("sizes.full")}
 					height={token("sizes.full")}
@@ -238,10 +239,10 @@ export function AnnualReportGraph() {
 					<LineChart
 						data={data}
 						margin={{
-							top: 0,
-							left: 0,
+							top: 8,
+							left: 8,
 							right: 8,
-							bottom: 0,
+							bottom: 8,
 						}}
 					>
 						<CartesianGrid stroke={token("colors.border.muted")} />
@@ -314,6 +315,35 @@ export function AnnualReportGraph() {
 											</Box>
 										</Grid>
 									</Box>
+								);
+							}}
+						/>
+
+						<Legend
+							content={({payload = []}) => {
+								return (
+									<Flex
+										pt={8}
+										w="75%"
+										mx="auto"
+										fontSize="xs"
+										flexWrap="wrap"
+										columnGap={2.5}
+										justifyContent="center"
+									>
+										{payload.map((entry, index) => (
+											<Flex key={index} alignItems="center" gap={1}>
+												<Box
+													w={2}
+													h={1.5}
+													style={{
+														background: entry.color,
+													}}
+												/>
+												<Box>{pascalToSentenceCase(entry.value)}</Box>
+											</Flex>
+										))}
+									</Flex>
 								);
 							}}
 						/>

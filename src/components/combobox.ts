@@ -1,3 +1,5 @@
+"use client";
+
 import {styled} from "@/styled-system/jsx";
 import {combobox} from "@/styled-system/recipes";
 import {createStyleContext} from "@/utils/create-style-context";
