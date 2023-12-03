@@ -45,7 +45,7 @@ function Feature(props: FeatureProps) {
 	const {icon, name, description} = props.data;
 
 	return (
-		<Box borderWidth="1px" p={8} rounded="sm">
+		<Box borderWidth="1px" p={8} rounded="sm" bg="bg.subtle">
 			<Box bg="neutral.a2" w="fit" p={3} rounded="full">
 				<Icon size="xl">{icon}</Icon>
 			</Box>
