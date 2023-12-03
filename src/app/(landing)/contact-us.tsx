@@ -11,9 +11,13 @@ import {useForm} from "react-hook-form";
 import {z} from "zod";
 
 const ContactUsSchema = z.object({
-	name: z.string().min(2).max(25).trim(),
+	name: z.string().min(2, "Name too short").max(25, "Name too long").trim(),
 	email: z.string().email(),
-	message: z.string().min(5).max(255).trim(),
+	message: z
+		.string()
+		.min(5, "Message too short")
+		.max(255, "Message too long")
+		.trim(),
 });
 
 export function ContactUs() {
