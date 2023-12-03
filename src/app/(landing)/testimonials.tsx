@@ -1,4 +1,4 @@
-import {Avatar, AvatarImage} from "@/components/avatar";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/avatar";
 import {CarouselPrevTrigger} from "@/components/carousel";
 import {Icon} from "@/components/icon";
 import {
@@ -11,6 +11,7 @@ import {
 	styled,
 } from "@/styled-system/jsx";
 import {arrayChunk} from "@/utils/array-chunk";
+import {getInitials} from "@/utils/get-initials";
 import {
 	Carousel,
 	CarouselIndicator,
@@ -145,6 +146,7 @@ function Testimony(props: TestimonyProps) {
 
 			<HStack>
 				<Avatar>
+					<AvatarFallback>{getInitials(author.name)}</AvatarFallback>
 					<AvatarImage src={`https://i.pravatar.cc/300?u=${id}`} />
 				</Avatar>
 				<Box>
