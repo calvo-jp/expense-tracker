@@ -22,14 +22,14 @@ const body = Inter({
 });
 
 const heading = Open_Sans({
-	weight: ["400", "500", "600", "700"],
+	weight: ["400", "500", "600", "700", "800"],
 	display: "swap",
 	subsets: ["latin"],
 	variable: "--font-heading",
 });
 
 const mono = JetBrains_Mono({
-	weight: ["400", "500", "600", "700"],
+	weight: ["400"],
 	display: "swap",
 	subsets: ["latin"],
 	variable: "--font-mono",

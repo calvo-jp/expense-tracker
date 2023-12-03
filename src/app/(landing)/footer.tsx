@@ -28,7 +28,7 @@ export function Footer() {
 						<Box
 							fontFamily="heading"
 							textTransform="uppercase"
-							color="fg.disabled"
+							color="fg.subtle"
 						>
 							Quick Links
 						</Box>
@@ -47,7 +47,7 @@ export function Footer() {
 						<Box
 							fontFamily="heading"
 							textTransform="uppercase"
-							color="fg.disabled"
+							color="fg.subtle"
 						>
 							Newsletter
 						</Box>

@@ -7,7 +7,7 @@ export function Hero() {
 		<Box maxW="breakpoint-lg" mx="auto" pt={32} pb={24} px={8}>
 			<Flex>
 				<Box flexShrink={0}>
-					<styled.h1 fontFamily="heading" fontSize="6xl" fontWeight="bold">
+					<styled.h1 fontFamily="heading" fontSize="6xl" fontWeight="extrabold">
 						Spend wisely!
 					</styled.h1>
 					<styled.p mt={3} fontSize="lg" maxW="38rem" color="fg.muted">
