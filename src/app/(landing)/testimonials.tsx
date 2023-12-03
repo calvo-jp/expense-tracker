@@ -37,7 +37,7 @@ export function Testimonials() {
 				Testimonials
 			</styled.h2>
 
-			<Carousel>
+			<Carousel slidesPerView={1}>
 				<Flex mt={12} gap={6} alignItems="center">
 					<CarouselPrevTrigger asChild>
 						<Trigger flexShrink={0}>
@@ -77,7 +77,7 @@ export function Testimonials() {
 						<HStack>
 							{chunks.map((_, index) => (
 								<CarouselIndicator key={index} index={index} asChild>
-									<Circle aria-label={`Slide ${index}`} />
+									<Circle aria-label={`Slide ${index + 1}`} />
 								</CarouselIndicator>
 							))}
 						</HStack>

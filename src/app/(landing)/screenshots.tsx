@@ -49,7 +49,11 @@ export function Screenshots() {
 						</CarouselPrevTrigger>
 						<CarouselIndicatorGroup>
 							{images.map((image, index) => (
-								<CarouselIndicator key={image} index={index} />
+								<CarouselIndicator
+									key={image}
+									index={index}
+									aria-label={`Slide ${index + 1}`}
+								/>
 							))}
 						</CarouselIndicatorGroup>
 						<CarouselNextTrigger asChild>
