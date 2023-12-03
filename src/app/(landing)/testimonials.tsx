@@ -1,7 +1,25 @@
 import {Avatar, AvatarImage} from "@/components/avatar";
+import {CarouselPrevTrigger} from "@/components/carousel";
 import {Icon} from "@/components/icon";
-import {Box, Flex, Grid, GridItem, HStack, styled} from "@/styled-system/jsx";
-import {QuoteIcon} from "lucide-react";
+import {
+	Box,
+	Center,
+	Flex,
+	Grid,
+	GridItem,
+	HStack,
+	styled,
+} from "@/styled-system/jsx";
+import {
+	Carousel,
+	CarouselIndicator,
+	CarouselIndicatorGroup,
+	CarouselItem,
+	CarouselItemGroup,
+	CarouselNextTrigger,
+	CarouselViewport,
+} from "@ark-ui/react";
+import {ChevronLeftIcon, ChevronRightIcon, QuoteIcon} from "lucide-react";
 
 export function Testimonials() {
 	return (
@@ -15,17 +33,83 @@ export function Testimonials() {
 				Testimonials
 			</styled.h2>
 
-			<Grid mt={12} columns={2} gap={6}>
-				<GridItem>
-					<Testimony />
-				</GridItem>
-				<GridItem>
-					<Testimony />
-				</GridItem>
-			</Grid>
+			<Carousel>
+				<Flex mt={12} gap={6} alignItems="center">
+					<CarouselPrevTrigger asChild>
+						<Trigger flexShrink={0}>
+							<Icon size="2xl">
+								<ChevronLeftIcon />
+							</Icon>
+						</Trigger>
+					</CarouselPrevTrigger>
+					<CarouselViewport asChild>
+						<Box pos="relative" overflow="hidden">
+							<CarouselItemGroup>
+								{items.map((_, index) => (
+									<CarouselItem key={index} index={index} asChild>
+										<Grid columns={2} gap={6}>
+											<GridItem>
+												<Testimony />
+											</GridItem>
+											<GridItem>
+												<Testimony />
+											</GridItem>
+										</Grid>
+									</CarouselItem>
+								))}
+							</CarouselItemGroup>
+						</Box>
+					</CarouselViewport>
+					<CarouselNextTrigger asChild>
+						<Trigger flexShrink={0}>
+							<Icon size="2xl">
+								<ChevronRightIcon />
+							</Icon>
+						</Trigger>
+					</CarouselNextTrigger>
+				</Flex>
+
+				<Center mt={10}>
+					<CarouselIndicatorGroup asChild>
+						<HStack>
+							{items.map((_, index) => (
+								<CarouselIndicator key={index} index={index} asChild>
+									<Circle aria-label={`Slide ${index}`} />
+								</CarouselIndicator>
+							))}
+						</HStack>
+					</CarouselIndicatorGroup>
+				</Center>
+			</Carousel>
 		</Box>
 	);
 }
+
+const items = Array.from({length: 3});
+
+const Trigger = styled("button", {
+	base: {
+		cursor: "pointer",
+		_disabled: {
+			color: "fg.disabled",
+			cursor: "not-allowed",
+		},
+	},
+});
+
+const Circle = styled("button", {
+	base: {
+		w: 3,
+		h: 3,
+		cursor: "pointer",
+		border: "1px solid token(colors.fg.default)",
+		rounded: "full",
+		transition: "background token(durations.slow)",
+		_current: {
+			bg: "fg.default",
+		},
+	},
+});
 
 function Testimony() {
 	return (
