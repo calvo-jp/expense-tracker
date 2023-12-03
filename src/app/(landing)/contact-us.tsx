@@ -25,7 +25,7 @@ export function ContactUs() {
 			>
 				<Input size="xl" placeholder="Name" />
 				<Input size="xl" placeholder="Email" />
-				<Textarea size="xl" placeholder="Message" />
+				<Textarea size="xl" placeholder="Message" rows={4} />
 				<Button size="xl" display="block">
 					Submit
 				</Button>
