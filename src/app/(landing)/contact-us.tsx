@@ -17,7 +17,7 @@ export function ContactUs() {
 
 			<styled.form
 				mt={12}
-				maxW="26rem"
+				maxW="24rem"
 				mx="auto"
 				display="flex"
 				flexDir="column"
