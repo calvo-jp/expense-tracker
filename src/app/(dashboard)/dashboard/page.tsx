@@ -37,7 +37,7 @@ export default async function Dashboard() {
 				<Filter />
 			</Flex>
 
-			<Flex flexDir="column" gap={12} mt={12}>
+			<Flex flexDir="column" gap={14} mt={12}>
 				<Cards />
 				<ExpensesPerCategory />
 				<RecentlyAdded />
