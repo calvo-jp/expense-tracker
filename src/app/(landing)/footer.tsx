@@ -29,7 +29,7 @@ export function Footer() {
 function Socials() {
 	return (
 		<styled.nav>
-			<styled.ul gap={2.5} display="flex">
+			<styled.ul gap={3} display="flex">
 				{socials.map((social) => (
 					<styled.li key={social.name}>
 						<Link
