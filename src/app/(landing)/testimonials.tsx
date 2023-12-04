@@ -1,6 +1,7 @@
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/avatar";
 import {CarouselPrevTrigger} from "@/components/carousel";
 import {Icon} from "@/components/icon";
+import {css} from "@/styled-system/css";
 import {
 	Box,
 	Center,
@@ -53,15 +54,17 @@ export async function Testimonials() {
 				Testimonials
 			</styled.h2>
 
-			<Carousel slidesPerView={1}>
-				<Flex
-					mt={{
-						base: 10,
-						lg: 12,
-					}}
-					gap={6}
-					alignItems="center"
-				>
+			<Carousel
+				slidesPerView={1}
+				className={css({
+					mt: 12,
+					display: {
+						base: "none",
+						lg: "block",
+					},
+				})}
+			>
+				<Flex gap={6} alignItems="center">
 					<CarouselPrevTrigger asChild>
 						<Trigger flexShrink={0}>
 							<Icon size="2xl">
@@ -113,6 +116,19 @@ export async function Testimonials() {
 					</CarouselIndicatorGroup>
 				</Center>
 			</Carousel>
+
+			<Flex
+				mt={10}
+				flexDir="column"
+				gap={5}
+				lg={{
+					display: "none",
+				}}
+			>
+				{items.map((item, index) => (
+					<Testimony key={index} data={item} />
+				))}
+			</Flex>
 		</Box>
 	);
 }
