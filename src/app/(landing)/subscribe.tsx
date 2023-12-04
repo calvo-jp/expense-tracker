@@ -27,6 +27,14 @@ export function Subscribe() {
 			</Box>
 			<styled.form
 				mt={5}
+				display={{
+					base: "flex",
+					lg: "block",
+				}}
+				gap={{
+					base: 3,
+					lg: 0,
+				}}
 				onSubmit={form.handleSubmit(() => {
 					toast.create({
 						title: "Error",
@@ -36,8 +44,28 @@ export function Subscribe() {
 					form.reset();
 				})}
 			>
-				<Input placeholder="Email" {...form.register("email")} />
-				<Button type="submit" w="full" mt={4}>
+				<Input
+					size={{
+						base: "lg",
+						lg: "md",
+					}}
+					placeholder="Email"
+					{...form.register("email")}
+				/>
+				<Button
+					type="submit"
+					w={{
+						lg: "full",
+					}}
+					px={6}
+					mt={{
+						lg: 4,
+					}}
+					size={{
+						base: "lg",
+						lg: "md",
+					}}
+				>
 					Subscribe
 				</Button>
 			</styled.form>
