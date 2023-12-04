@@ -8,8 +8,13 @@ import {
 import {Icon} from "@/components/icon";
 import {Box, styled} from "@/styled-system/jsx";
 import {ChevronDownIcon} from "lucide-react";
+import path from "path";
+import {z} from "zod";
+import {parseAllMarkdownFiles} from "./utils";
 
-export function Faqs() {
+export async function Faqs() {
+	const faqs = await getItems();
+
 	return (
 		<Box id="faqs" maxW="breakpoint-md" mx="auto" py={24} px={8}>
 			<styled.h2
@@ -34,7 +39,11 @@ export function Faqs() {
 								</AccordionItemIndicator>
 							</AccordionItemTrigger>
 							<AccordionItemContent px={4}>
-								<Box>{a}</Box>
+								<Box
+									dangerouslySetInnerHTML={{
+										__html: a,
+									}}
+								/>
 							</AccordionItemContent>
 						</AccordionItem>
 					);
@@ -44,17 +53,20 @@ export function Faqs() {
 	);
 }
 
-const faqs = [
-	{
-		q: "Question 1?",
-		a: "Answer to question 1",
-	},
-	{
-		q: "Question 2?",
-		a: "Answer to question 2",
-	},
-	{
-		q: "Question 3?",
-		a: "Answer to question 3",
-	},
-];
+async function getItems() {
+	return await parseAllMarkdownFiles(
+		path.join(process.cwd(), "src/assets/markdown/faqs"),
+		(result) => {
+			return ItemSchema.parse({
+				q: result.meta.q,
+				a: result.html,
+			});
+		},
+	);
+}
+
+type TItemSchema = z.infer<typeof ItemSchema>;
+const ItemSchema = z.object({
+	q: z.string(),
+	a: z.string(),
+});

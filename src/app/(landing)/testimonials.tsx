@@ -22,9 +22,13 @@ import {
 	CarouselViewport,
 } from "@ark-ui/react";
 import {ChevronLeftIcon, ChevronRightIcon, QuoteIcon} from "lucide-react";
+import path from "path";
+import {z} from "zod";
+import {parseAllMarkdownFiles} from "./utils";
 
-export function Testimonials() {
-	const chunks = arrayChunk(testimonials, 2);
+export async function Testimonials() {
+	const items = await getItems();
+	const chunks = arrayChunk(items, 2);
 
 	return (
 		<Box id="testimonials" maxW="breakpoint-lg" mx="auto" py={24} px={8}>
@@ -52,8 +56,8 @@ export function Testimonials() {
 								{chunks.map((list, index) => (
 									<CarouselItem key={index} index={index} asChild>
 										<Grid columns={2} gap={6}>
-											{list.map((item) => (
-												<GridItem key={item.id}>
+											{list.map((item, index) => (
+												<GridItem key={index}>
 													<Testimony data={item} />
 												</GridItem>
 											))}
@@ -113,21 +117,11 @@ const Circle = styled("button", {
 });
 
 interface TestimonyProps {
-	data: {
-		id: string;
-		message: string;
-		author: {
-			name: string;
-			company: {
-				name: string;
-				position: string;
-			};
-		};
-	};
+	data: TTestimonySchema;
 }
 
 function Testimony(props: TestimonyProps) {
-	const {id, author, message} = props.data;
+	const {author, message} = props.data;
 
 	return (
 		<Flex
@@ -142,12 +136,17 @@ function Testimony(props: TestimonyProps) {
 				<QuoteIcon />
 			</Icon>
 
-			<styled.p flexGrow={1}>{message}</styled.p>
+			<styled.div
+				flexGrow={1}
+				dangerouslySetInnerHTML={{
+					__html: message,
+				}}
+			/>
 
 			<HStack>
 				<Avatar>
 					<AvatarFallback>{getInitials(author.name)}</AvatarFallback>
-					<AvatarImage src={`https://i.pravatar.cc/300?u=${id}`} />
+					<AvatarImage src={author.photo} />
 				</Avatar>
 				<Box>
 					<Box fontSize="sm" fontWeight="medium">
@@ -162,77 +161,27 @@ function Testimony(props: TestimonyProps) {
 	);
 }
 
-const testimonials: TestimonyProps["data"][] = [
-	{
-		id: crypto.randomUUID(),
-		author: {
-			name: "Mark Zuckerberg",
-			company: {
-				name: "Facebook",
-				position: "CEO",
-			},
+async function getItems() {
+	return await parseAllMarkdownFiles(
+		path.join(process.cwd(), "src/assets/markdown/testimonials"),
+		(result) => {
+			return TestimonySchema.parse({
+				author: result.meta.author,
+				message: result.html,
+			});
 		},
-		message:
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus dicta nostrum unde natus ducimus iste itaque reiciendis repellat perspiciatis beatae",
-	},
-	{
-		id: crypto.randomUUID(),
-		author: {
-			name: "Mark Zuckerberg",
-			company: {
-				name: "Facebook",
-				position: "CEO",
-			},
-		},
-		message:
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus dicta nostrum unde natus ducimus iste itaque reiciendis repellat perspiciatis beatae",
-	},
-	{
-		id: crypto.randomUUID(),
-		author: {
-			name: "Mark Zuckerberg",
-			company: {
-				name: "Facebook",
-				position: "CEO",
-			},
-		},
-		message:
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus dicta nostrum unde natus ducimus iste itaque reiciendis repellat perspiciatis beatae",
-	},
-	{
-		id: crypto.randomUUID(),
-		author: {
-			name: "Mark Zuckerberg",
-			company: {
-				name: "Facebook",
-				position: "CEO",
-			},
-		},
-		message:
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus dicta nostrum unde natus ducimus iste itaque reiciendis repellat perspiciatis beatae",
-	},
-	{
-		id: crypto.randomUUID(),
-		author: {
-			name: "Mark Zuckerberg",
-			company: {
-				name: "Facebook",
-				position: "CEO",
-			},
-		},
-		message:
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus dicta nostrum unde natus ducimus iste itaque reiciendis repellat perspiciatis beatae",
-	},
-	{
-		id: crypto.randomUUID(),
-		author: {
-			name: "Mark Zuckerberg",
-			company: {
-				name: "Facebook",
-				position: "CEO",
-			},
-		},
-		message:
-			"Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus dicta nostrum unde natus ducimus iste itaque reiciendis repellat perspiciatis beatae",
-	},
-];
+	);
+}
+
+type TTestimonySchema = z.infer<typeof TestimonySchema>;
+const TestimonySchema = z.object({
+	author: z.object({
+		name: z.string(),
+		photo: z.string().url(),
+		company: z.object({
+			name: z.string(),
+			position: z.string(),
+		}),
+	}),
+	message: z.string(),
+});
