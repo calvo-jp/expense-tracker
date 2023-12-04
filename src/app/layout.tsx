@@ -45,6 +45,7 @@ export default function RootLayout({children}: PropsWithChildren) {
 				base: "dark",
 				_light: "light",
 			}}
+			suppressHydrationWarning
 		>
 			<styled.body fontFamily="body">
 				<Providers>{children}</Providers>

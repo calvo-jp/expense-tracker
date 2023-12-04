@@ -12,17 +12,43 @@ import {ReactNode} from "react";
 
 export function Features() {
 	return (
-		<Box id="features" maxW="breakpoint-lg" mx="auto" py={24} px={8}>
+		<Box
+			id="features"
+			maxW="breakpoint-lg"
+			mx="auto"
+			py={{
+				base: 16,
+				lg: 24,
+			}}
+			px={{
+				base: 4,
+				lg: 8,
+			}}
+		>
 			<styled.h2
 				textAlign="center"
 				fontFamily="heading"
 				fontWeight="bold"
-				fontSize="4xl"
+				fontSize={{
+					base: "3xl",
+					lg: "4xl",
+				}}
 			>
 				Features
 			</styled.h2>
 
-			<Grid mt={12} columns={3} gap={5} alignItems="center">
+			<Grid
+				mt={{
+					base: 10,
+					lg: 12,
+				}}
+				columns={{
+					base: 1,
+					lg: 3,
+				}}
+				gap={5}
+				alignItems="center"
+			>
 				{features.map((feature, index) => (
 					<GridItem key={index}>
 						<Feature data={feature} />

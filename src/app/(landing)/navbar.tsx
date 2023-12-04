@@ -11,7 +11,10 @@ export function Navbar() {
 				maxW="breakpoint-lg"
 				mx="auto"
 				py={3}
-				px={8}
+				px={{
+					base: 4,
+					lg: 8,
+				}}
 				alignItems="center"
 			>
 				<Logo />

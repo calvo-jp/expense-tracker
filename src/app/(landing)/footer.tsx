@@ -6,9 +6,34 @@ import {Subscribe} from "./subscribe";
 
 export function Footer() {
 	return (
-		<styled.footer borderTopWidth="1px" mt={40} py={20}>
-			<Box px={8} mx="auto" maxW="breakpoint-md">
-				<Grid columns={3}>
+		<styled.footer
+			borderTopWidth="1px"
+			mt={{
+				base: 24,
+				lg: 40,
+			}}
+			py={{
+				base: 16,
+				lg: 20,
+			}}
+		>
+			<Box
+				px={{
+					base: 4,
+					lg: 8,
+				}}
+				mx="auto"
+				maxW="breakpoint-md"
+			>
+				<Grid
+					columns={{
+						lg: 3,
+					}}
+					gap={{
+						base: 16,
+						lg: 1,
+					}}
+				>
 					<GridItem>
 						<Box mb={5}>&copy; Expense Tracker {new Date().getFullYear()}</Box>
 

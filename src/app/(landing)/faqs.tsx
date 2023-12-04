@@ -16,17 +16,39 @@ export async function Faqs() {
 	const faqs = await getItems();
 
 	return (
-		<Box id="faqs" maxW="breakpoint-md" mx="auto" py={24} px={8}>
+		<Box
+			id="faqs"
+			maxW="breakpoint-md"
+			mx="auto"
+			py={{
+				base: 16,
+				lg: 24,
+			}}
+			px={{
+				base: 4,
+				lg: 8,
+			}}
+		>
 			<styled.h2
 				textAlign="center"
 				fontFamily="heading"
 				fontWeight="bold"
-				fontSize="4xl"
+				fontSize={{
+					base: "3xl",
+					lg: "4xl",
+				}}
 			>
 				Faqs
 			</styled.h2>
 
-			<Accordion mt={12} multiple defaultValue={[faqs[0].q]}>
+			<Accordion
+				mt={{
+					base: 10,
+					lg: 12,
+				}}
+				multiple
+				defaultValue={[faqs[0].q]}
+			>
 				{faqs.map(({q, a}) => {
 					return (
 						<AccordionItem key={a} value={a}>

@@ -31,7 +31,19 @@ export async function Testimonials() {
 	const chunks = arrayChunk(items, 2);
 
 	return (
-		<Box id="testimonials" maxW="breakpoint-lg" mx="auto" py={24} px={8}>
+		<Box
+			id="testimonials"
+			maxW="breakpoint-lg"
+			mx="auto"
+			py={{
+				base: 16,
+				lg: 24,
+			}}
+			px={{
+				base: 4,
+				lg: 8,
+			}}
+		>
 			<styled.h2
 				textAlign="center"
 				fontFamily="heading"
@@ -42,7 +54,14 @@ export async function Testimonials() {
 			</styled.h2>
 
 			<Carousel slidesPerView={1}>
-				<Flex mt={12} gap={6} alignItems="center">
+				<Flex
+					mt={{
+						base: 10,
+						lg: 12,
+					}}
+					gap={6}
+					alignItems="center"
+				>
 					<CarouselPrevTrigger asChild>
 						<Trigger flexShrink={0}>
 							<Icon size="2xl">
@@ -55,7 +74,13 @@ export async function Testimonials() {
 							<CarouselItemGroup>
 								{chunks.map((list, index) => (
 									<CarouselItem key={index} index={index} asChild>
-										<Grid columns={2} gap={6}>
+										<Grid
+											columns={{
+												base: 1,
+												lg: 2,
+											}}
+											gap={6}
+										>
 											{list.map((item, index) => (
 												<GridItem key={index}>
 													<Testimony data={item} />

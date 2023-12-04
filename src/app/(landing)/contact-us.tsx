@@ -31,18 +31,36 @@ export function ContactUs() {
 	});
 
 	return (
-		<Box id="contact-us" maxW="breakpoint-md" mx="auto" py={24} px={8}>
+		<Box
+			id="contact-us"
+			maxW="breakpoint-md"
+			mx="auto"
+			py={{
+				base: 16,
+				lg: 24,
+			}}
+			px={{
+				base: 4,
+				lg: 8,
+			}}
+		>
 			<styled.h2
 				textAlign="center"
 				fontFamily="heading"
 				fontWeight="bold"
-				fontSize="4xl"
+				fontSize={{
+					base: "3xl",
+					lg: "4xl",
+				}}
 			>
 				Get in Touch
 			</styled.h2>
 
 			<styled.form
-				mt={12}
+				mt={{
+					base: 10,
+					lg: 12,
+				}}
 				maxW="24rem"
 				mx="auto"
 				display="flex"

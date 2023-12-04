@@ -18,7 +18,12 @@ import {ChevronLeftIcon, ChevronRightIcon} from "lucide-react";
 
 export function Screenshots() {
 	return (
-		<Box py={24}>
+		<Box
+			py={{
+				base: 16,
+				lg: 24,
+			}}
+		>
 			<Carousel>
 				<CarouselViewport rounded="none!">
 					<CarouselItemGroup>
@@ -30,7 +35,10 @@ export function Screenshots() {
 									width={1100}
 									height={600}
 									className={css({
-										h: "24rem",
+										h: {
+											base: "16rem",
+											lg: "24rem",
+										},
 										w: "full",
 										objectFit: "cover",
 										objectPosition: "center",
