@@ -26,8 +26,8 @@ function Card({label, content, icon}: CardProps) {
 			gap={8}
 			alignItems="center"
 			rounded="sm"
-			bg="neutral.a2"
-			border="1px solid token(colors.neutral.a4)"
+			bg="gray.a2"
+			border="1px solid token(colors.gray.a4)"
 		>
 			<Icon w={10} h={10}>
 				{icon}

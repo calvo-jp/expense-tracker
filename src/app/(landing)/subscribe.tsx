@@ -52,6 +52,7 @@ export function Subscribe() {
 					placeholder="Email"
 					{...form.register("email")}
 				/>
+
 				<Button
 					type="submit"
 					w={{
@@ -59,7 +60,7 @@ export function Subscribe() {
 					}}
 					px={6}
 					mt={{
-						lg: 4,
+						lg: 5,
 					}}
 					size={{
 						base: "lg",

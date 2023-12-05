@@ -72,7 +72,7 @@ function Feature(props: FeatureProps) {
 
 	return (
 		<Box borderWidth="1px" p={8} rounded="sm" bg="bg.subtle">
-			<Box bg="neutral.a2" w="fit" p={3} rounded="full">
+			<Box bg="gray.a2" w="fit" p={3} rounded="full">
 				<Icon size="xl">{icon}</Icon>
 			</Box>
 			<styled.h3

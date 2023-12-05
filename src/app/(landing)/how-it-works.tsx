@@ -1,8 +1,18 @@
-import {Image} from "@/components/next-js/image";
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/tabs";
+import {
+	Tabs,
+	TabsContent,
+	TabsIndicator,
+	TabsList,
+	TabsTrigger,
+} from "@/components/tabs";
 import {Box, Divider, Flex, styled} from "@/styled-system/jsx";
+import path from "path";
+import {z} from "zod";
+import {parseAllMarkdownFiles} from "./utils";
 
-export function HowItWorks() {
+export async function HowItWorks() {
+	const items = await getItems();
+
 	return (
 		<Box
 			id="how-it-works"
@@ -36,7 +46,7 @@ export function HowItWorks() {
 				}}
 				gap={12}
 			>
-				<TabsList>
+				<TabsList pos="relative">
 					{items.map((item, index) => (
 						<TabsTrigger
 							key={item.label}
@@ -49,10 +59,7 @@ export function HowItWorks() {
 							py={2}
 							w="full"
 							cursor="pointer"
-							borderRight={{
-								base: "2px solid transparent",
-								_selected: "2px solid token(colors.neutral.a5)",
-							}}
+							transition="all token(durations.slow)"
 							_selected={{
 								bg: "bg.subtle",
 							}}
@@ -61,10 +68,13 @@ export function HowItWorks() {
 							<styled.span>{item.label}</styled.span>
 						</TabsTrigger>
 					))}
+
+					<TabsIndicator bg="gray.a5" h={5} w={0.5} />
 				</TabsList>
+
 				{items.map((item) => (
-					<TabsContent key={item.label} value={item.label}>
-						{item.content}
+					<TabsContent key={item.label} value={item.label} asChild>
+						<RawHtml>{item.content}</RawHtml>
 					</TabsContent>
 				))}
 			</Tabs>
@@ -104,6 +114,7 @@ export function HowItWorks() {
 						>
 							{index + 1}
 						</Flex>
+
 						<Divider
 							w="1px"
 							h={10}
@@ -111,9 +122,10 @@ export function HowItWorks() {
 							color="border.muted"
 							orientation="vertical"
 						/>
+
 						<Box py={5} textAlign="center">
 							<Box fontFamily="heading">{item.label}</Box>
-							<Box>{item.content}</Box>
+							<RawHtml>{item.content}</RawHtml>
 						</Box>
 					</Flex>
 				))}
@@ -122,92 +134,48 @@ export function HowItWorks() {
 	);
 }
 
-const items = [
-	{
-		label: "Item One",
-		content: (
-			<>
-				<styled.p
-					color="fg.muted"
-					fontSize={{
-						base: "sm",
-						lg: "md",
-					}}
-				>
-					Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magni
-					inventore tempora totam mollitia, esse repudiandae voluptatem laborum
-					at perferendis tenetur.
-				</styled.p>
-				<Image
-					src="https://images.pexels.com/photos/38519/macbook-laptop-ipad-apple-38519.jpeg?auto=compress&cs=tinysrgb&w=800"
-					alt=""
-					width={600}
-					height={200}
-					mt={5}
-					w={{
+function RawHtml({children}: {children: string}) {
+	return (
+		<styled.div
+			color="fg.muted"
+			fontSize={{
+				base: "sm",
+				lg: "md",
+			}}
+			css={{
+				"& p": {
+					mt: {
+						base: 5,
+						_first: 0,
+					},
+				},
+				"& img": {
+					w: {
 						base: "full",
 						lg: "2/3",
-					}}
-				/>
-			</>
-		),
-	},
-	{
-		label: "Item Two",
-		content: (
-			<>
-				<styled.p
-					color="fg.muted"
-					fontSize={{
-						base: "sm",
-						lg: "md",
-					}}
-				>
-					Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magni
-					inventore tempora totam mollitia, esse repudiandae voluptatem laborum
-					at perferendis tenetur.
-				</styled.p>
-				<Image
-					src="https://images.pexels.com/photos/38519/macbook-laptop-ipad-apple-38519.jpeg?auto=compress&cs=tinysrgb&w=800"
-					alt=""
-					width={600}
-					height={200}
-					mt={5}
-					w={{
-						base: "full",
-						lg: "2/3",
-					}}
-				/>
-			</>
-		),
-	},
-	{
-		label: "Item Three",
-		content: (
-			<>
-				<styled.p
-					color="fg.muted"
-					fontSize={{
-						base: "sm",
-						lg: "md",
-					}}
-				>
-					Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magni
-					inventore tempora totam mollitia, esse repudiandae voluptatem laborum
-					at perferendis tenetur.
-				</styled.p>
-				<Image
-					src="https://images.pexels.com/photos/38519/macbook-laptop-ipad-apple-38519.jpeg?auto=compress&cs=tinysrgb&w=800"
-					alt=""
-					width={600}
-					height={200}
-					mt={5}
-					w={{
-						base: "full",
-						lg: "2/3",
-					}}
-				/>
-			</>
-		),
-	},
-];
+					},
+				},
+			}}
+			dangerouslySetInnerHTML={{
+				__html: children,
+			}}
+		/>
+	);
+}
+
+const ItemSchema = z.object({
+	label: z.string(),
+	content: z.string(),
+});
+
+async function getItems() {
+	return parseAllMarkdownFiles(
+		path.join(process.cwd(), "src/assets/markdown/how-it-works"),
+		(result) => {
+			return ItemSchema.parse({
+				label: result.meta.label,
+				content: result.html,
+			});
+		},
+	);
+}

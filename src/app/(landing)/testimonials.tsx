@@ -86,7 +86,7 @@ export async function Testimonials() {
 										>
 											{list.map((item, index) => (
 												<GridItem key={index}>
-													<Testimony data={item} />
+													<Testimonial data={item} />
 												</GridItem>
 											))}
 										</Grid>
@@ -126,7 +126,7 @@ export async function Testimonials() {
 				}}
 			>
 				{items.map((item, index) => (
-					<Testimony key={index} data={item} />
+					<Testimonial key={index} data={item} />
 				))}
 			</Flex>
 		</Box>
@@ -147,21 +147,21 @@ const Circle = styled("button", {
 	base: {
 		w: 3,
 		h: 3,
+		bg: "gray.a5",
 		cursor: "pointer",
-		border: "1px solid token(colors.fg.default)",
 		rounded: "full",
 		transition: "background token(durations.slow)",
 		_current: {
-			bg: "fg.default",
+			bg: "gray.a11",
 		},
 	},
 });
 
-interface TestimonyProps {
-	data: TTestimonySchema;
+interface TestimonialProps {
+	data: TTestimonialSchema;
 }
 
-function Testimony(props: TestimonyProps) {
+function Testimonial(props: TestimonialProps) {
 	const {author, message} = props.data;
 
 	return (
@@ -173,7 +173,7 @@ function Testimony(props: TestimonyProps) {
 			gap={6}
 			bg="bg.subtle"
 		>
-			<Icon size="xl" color="fg.disabled">
+			<Icon size="xl" color="fg.subtle">
 				<QuoteIcon />
 			</Icon>
 
@@ -206,7 +206,7 @@ async function getItems() {
 	return await parseAllMarkdownFiles(
 		path.join(process.cwd(), "src/assets/markdown/testimonials"),
 		(result) => {
-			return TestimonySchema.parse({
+			return TestimonialSchema.parse({
 				author: result.meta.author,
 				message: result.html,
 			});
@@ -214,8 +214,8 @@ async function getItems() {
 	);
 }
 
-type TTestimonySchema = z.infer<typeof TestimonySchema>;
-const TestimonySchema = z.object({
+type TTestimonialSchema = z.infer<typeof TestimonialSchema>;
+const TestimonialSchema = z.object({
 	author: z.object({
 		name: z.string(),
 		photo: z.string().url(),

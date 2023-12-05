@@ -1,5 +1,13 @@
 import {Icon} from "@/components/icon";
 import {Link} from "@/components/next-js/link";
+import {
+	Tooltip,
+	TooltipArrow,
+	TooltipArrowTip,
+	TooltipContent,
+	TooltipPositioner,
+	TooltipTrigger,
+} from "@/components/tooltip";
 import {Box, Grid, GridItem, VisuallyHidden, styled} from "@/styled-system/jsx";
 import {InstagramIcon, LinkedinIcon, TwitterIcon} from "lucide-react";
 import {Subscribe} from "./subscribe";
@@ -57,15 +65,27 @@ function Socials() {
 			<styled.ul gap={3} display="flex">
 				{socials.map((social) => (
 					<styled.li key={social.name}>
-						<Link
-							href={social.href}
-							rel="noreferrer noopener"
-							target="_blank"
-							prefetch={false}
-						>
-							<Icon>{social.icon}</Icon>
-							<VisuallyHidden>{social.name}</VisuallyHidden>
-						</Link>
+						<Tooltip openDelay={50} closeDelay={75}>
+							<TooltipTrigger>
+								<Link
+									href={social.href}
+									rel="noreferrer noopener"
+									target="_blank"
+									prefetch={false}
+								>
+									<Icon>{social.icon}</Icon>
+									<VisuallyHidden>{social.name}</VisuallyHidden>
+								</Link>
+							</TooltipTrigger>
+							<TooltipPositioner>
+								<TooltipContent>
+									<TooltipArrow>
+										<TooltipArrowTip />
+									</TooltipArrow>
+									{social.name}
+								</TooltipContent>
+							</TooltipPositioner>
+						</Tooltip>
 					</styled.li>
 				))}
 			</styled.ul>

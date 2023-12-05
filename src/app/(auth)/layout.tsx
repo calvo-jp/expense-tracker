@@ -8,7 +8,7 @@ export default function Layout({children}: PropsWithChildren) {
 	if (cookies().has("user")) redirect("/dashboard");
 
 	return (
-		<styled.main maxW="22rem" mx="auto" py={24}>
+		<styled.main maxW="22rem" mx="auto" py={24} px={4}>
 			<Center>
 				<Logo h={14} />
 			</Center>

@@ -28,10 +28,11 @@ export function Hero() {
 					lg: "6xl",
 				}}
 				fontWeight="extrabold"
+				lineHeight="tight"
 			>
 				Spend wisely!
 			</styled.h1>
-			<styled.p mt={3} fontSize="lg" maxW="38rem" color="fg.muted">
+			<styled.p mt={4} fontSize="lg" maxW="38rem" color="fg.muted">
 				Stay in control of your finances - effortlessly monitor daily expenses
 				and gain valuable spending insights.
 			</styled.p>
