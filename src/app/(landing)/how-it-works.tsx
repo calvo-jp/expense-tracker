@@ -1,10 +1,22 @@
 import {Image} from "@/components/next-js/image";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/tabs";
-import {Box, styled} from "@/styled-system/jsx";
+import {Box, Divider, Flex, styled} from "@/styled-system/jsx";
 
 export function HowItWorks() {
 	return (
-		<Box id="how-it-works" maxW="breakpoint-lg" mx="auto" py={24} px={8}>
+		<Box
+			id="how-it-works"
+			maxW="breakpoint-lg"
+			mx="auto"
+			py={{
+				base: 16,
+				lg: 24,
+			}}
+			px={{
+				base: 4,
+				lg: 8,
+			}}
+		>
 			<styled.h2
 				textAlign="center"
 				fontFamily="heading"
@@ -18,7 +30,10 @@ export function HowItWorks() {
 				mt={14}
 				orientation="vertical"
 				defaultValue={items[0].label}
-				display="flex"
+				display={{
+					base: "none",
+					lg: "flex",
+				}}
 				gap={12}
 			>
 				<TabsList>
@@ -53,6 +68,56 @@ export function HowItWorks() {
 					</TabsContent>
 				))}
 			</Tabs>
+
+			<Flex
+				mt={10}
+				flexDir="column"
+				display={{
+					base: "flex",
+					lg: "none",
+				}}
+			>
+				{items.map((item, index) => (
+					<Flex key={item.label} flexDir="column">
+						{index > 0 && (
+							<Divider
+								w="1px"
+								h={10}
+								mx="auto"
+								color="border.muted"
+								orientation="vertical"
+							/>
+						)}
+
+						<Flex
+							rounded="sm"
+							bg="bg.subtle"
+							w={10}
+							h={10}
+							mx="auto"
+							alignItems="center"
+							justifyContent="center"
+							fontSize="lg"
+							fontFamily="mono"
+							fontWeight="bold"
+							border="1px solid token(colors.border.muted)"
+						>
+							{index + 1}
+						</Flex>
+						<Divider
+							w="1px"
+							h={10}
+							mx="auto"
+							color="border.muted"
+							orientation="vertical"
+						/>
+						<Box py={5} textAlign="center">
+							<Box fontFamily="heading">{item.label}</Box>
+							<Box>{item.content}</Box>
+						</Box>
+					</Flex>
+				))}
+			</Flex>
 		</Box>
 	);
 }
@@ -62,7 +127,13 @@ const items = [
 		label: "Item One",
 		content: (
 			<>
-				<styled.p color="fg.muted">
+				<styled.p
+					color="fg.muted"
+					fontSize={{
+						base: "sm",
+						lg: "md",
+					}}
+				>
 					Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magni
 					inventore tempora totam mollitia, esse repudiandae voluptatem laborum
 					at perferendis tenetur.
@@ -73,7 +144,10 @@ const items = [
 					width={600}
 					height={200}
 					mt={5}
-					w="2/3"
+					w={{
+						base: "full",
+						lg: "2/3",
+					}}
 				/>
 			</>
 		),
@@ -82,7 +156,13 @@ const items = [
 		label: "Item Two",
 		content: (
 			<>
-				<styled.p color="fg.muted">
+				<styled.p
+					color="fg.muted"
+					fontSize={{
+						base: "sm",
+						lg: "md",
+					}}
+				>
 					Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magni
 					inventore tempora totam mollitia, esse repudiandae voluptatem laborum
 					at perferendis tenetur.
@@ -93,7 +173,10 @@ const items = [
 					width={600}
 					height={200}
 					mt={5}
-					w="2/3"
+					w={{
+						base: "full",
+						lg: "2/3",
+					}}
 				/>
 			</>
 		),
@@ -102,7 +185,13 @@ const items = [
 		label: "Item Three",
 		content: (
 			<>
-				<styled.p color="fg.muted">
+				<styled.p
+					color="fg.muted"
+					fontSize={{
+						base: "sm",
+						lg: "md",
+					}}
+				>
 					Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magni
 					inventore tempora totam mollitia, esse repudiandae voluptatem laborum
 					at perferendis tenetur.
@@ -113,7 +202,10 @@ const items = [
 					width={600}
 					height={200}
 					mt={5}
-					w="2/3"
+					w={{
+						base: "full",
+						lg: "2/3",
+					}}
 				/>
 			</>
 		),
