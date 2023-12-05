@@ -29,7 +29,6 @@
 		"remark-parse": "11.0.0",
 		"remark-rehype": "11.0.0",
 		"remark-stringify": "11.0.0",
-		"server-only": "0.0.1",
 		"sharp": "0.33.0",
 		"slugify": "1.6.6",
 		"unified": "11.0.4",
