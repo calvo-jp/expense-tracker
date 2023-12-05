@@ -1,13 +1,41 @@
 import {Icon} from "@/components/icon";
+import {prisma} from "@/config/prisma";
 import {Box, Flex, styled} from "@/styled-system/jsx";
+import {abbreviateNumber} from "@/utils/abbreviate-number";
 import {CoinsIcon, FoldersIcon} from "lucide-react";
 import {ReactNode} from "react";
+import {DateRange} from "./utils";
 
-export function Cards() {
+export async function Cards(props: {range: DateRange}) {
+	const {start, until} = props.range;
+
+	const aggregrate = await prisma.expense.aggregate({
+		_count: {
+			id: true,
+		},
+		_sum: {
+			amount: true,
+		},
+		where: {
+			transactionDate: {
+				gte: start,
+				lte: until,
+			},
+		},
+	});
+
 	return (
 		<Flex gap={5}>
-			<Card icon={<CoinsIcon />} label="Total Expenses" content="1.2M" />
-			<Card icon={<FoldersIcon />} label="Total Records Added" content="1M" />
+			<Card
+				icon={<CoinsIcon />}
+				label="Total Expenses"
+				content={abbreviateNumber(aggregrate._sum.amount ?? 0)}
+			/>
+			<Card
+				icon={<FoldersIcon />}
+				label="Total Records Added"
+				content={abbreviateNumber(aggregrate._count.id ?? 0)}
+			/>
 		</Flex>
 	);
 }

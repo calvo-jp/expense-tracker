@@ -1,6 +1,10 @@
+import {Spinner} from "@/app/spinner";
+import {Icon} from "@/components/icon";
+import {Link} from "@/components/next-js/link";
 import {prisma} from "@/config/prisma";
 import {Box, Flex, Spacer, styled} from "@/styled-system/jsx";
 import assert from "assert";
+import {ChevronRightIcon} from "lucide-react";
 import {Metadata} from "next";
 import {cookies} from "next/headers";
 import {Suspense, cache} from "react";
@@ -8,12 +12,19 @@ import {Cards} from "./cards";
 import {ExpensesPerCategory} from "./expenses-per-category";
 import {Filter} from "./filter";
 import {RecentlyAdded} from "./recently-added";
+import {parseDuration} from "./utils";
 
 export const metadata: Metadata = {
 	title: "Dashboard",
 };
 
-export default async function Dashboard() {
+interface DashboardProps {
+	searchParams: Record<string, string | string[]>;
+}
+
+export default function Dashboard({searchParams}: DashboardProps) {
+	const duration = parseDuration(searchParams);
+
 	return (
 		<Box>
 			<Flex>
@@ -38,9 +49,52 @@ export default async function Dashboard() {
 			</Flex>
 
 			<Flex flexDir="column" gap={14} mt={12}>
-				<Cards />
-				<ExpensesPerCategory />
-				<RecentlyAdded />
+				<Suspense fallback={<Spinner />}>
+					<Cards range={duration} />
+				</Suspense>
+
+				<Box>
+					<styled.h2
+						mb={4}
+						fontSize="lg"
+						fontFamily="heading"
+						fontWeight="medium"
+					>
+						Expenses Per Category
+					</styled.h2>
+
+					<Suspense fallback={<Spinner />}>
+						<ExpensesPerCategory range={duration} />
+					</Suspense>
+				</Box>
+
+				<Box>
+					<Flex mb={4} alignItems="center">
+						<styled.h2 fontSize="lg" fontFamily="heading" fontWeight="medium">
+							Recently Added
+						</styled.h2>
+						<Spacer />
+						<Link
+							href="/expenses"
+							display="flex"
+							alignItems="center"
+							gap={1}
+							color={{
+								base: "fg.muted",
+								_hover: "fg.default",
+							}}
+						>
+							<styled.span fontSize="sm">Go to expenses</styled.span>
+							<Icon>
+								<ChevronRightIcon />
+							</Icon>
+						</Link>
+					</Flex>
+
+					<Suspense fallback={<Spinner />}>
+						<RecentlyAdded />
+					</Suspense>
+				</Box>
 			</Flex>
 		</Box>
 	);

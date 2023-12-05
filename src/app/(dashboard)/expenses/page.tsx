@@ -19,7 +19,8 @@ import {
 } from "@/components/table";
 import {prisma} from "@/config/prisma";
 import {Box, Center, Flex, HStack, Spacer, styled} from "@/styled-system/jsx";
-import {numberFormatter} from "@/utils/number-formatter";
+import {formatNumber} from "@/utils/format-number";
+import {pascalToSentenceCase} from "@/utils/pascal-to-sentence-case";
 import {Portal} from "@ark-ui/react";
 import assert from "assert";
 import {format} from "date-fns";
@@ -88,11 +89,11 @@ export default async function Expenses(props: ExpensesProps) {
 								bg: "none",
 							},
 							"& th, & td": {
+								px: 4,
 								bg: "bg.default",
 								border: "none",
 								borderLeft: "1px solid token(colors.border.subtle)",
 								borderBottom: "1px solid token(colors.border.subtle)",
-								textAlign: "center",
 								_first: {
 									borderLeft: "none",
 								},
@@ -176,14 +177,14 @@ async function TableContent({searchParams}: ExpensesProps) {
 
 				{expenses.map((expense) => (
 					<TableRow key={expense.id}>
-						<TableCell>{expense.category}</TableCell>
+						<TableCell>{pascalToSentenceCase(expense.category)}</TableCell>
 						<TableCell>
 							<styled.div maxW="12rem" truncate>
 								{expense.description}
 							</styled.div>
 						</TableCell>
 						<TableCell fontFamily="mono" textAlign="right!">
-							{numberFormatter.format(expense.amount)}
+							{formatNumber(expense.amount)}
 						</TableCell>
 						<TableCell>
 							<styled.div maxW="8rem" truncate>
@@ -246,7 +247,7 @@ async function TableContent({searchParams}: ExpensesProps) {
 						<TableCell />
 						<TableCell />
 						<TableCell fontFamily="mono" textAlign="right!">
-							{numberFormatter.format(
+							{formatNumber(
 								expenses.reduce((total, {amount}) => total + amount, 0),
 							)}
 						</TableCell>

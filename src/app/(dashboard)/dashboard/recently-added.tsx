@@ -1,5 +1,4 @@
-import {Icon} from "@/components/icon";
-import {Link} from "@/components/next-js/link";
+import {Spinner} from "@/app/spinner";
 import {
 	Table,
 	TableBody,
@@ -9,118 +8,149 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/table";
-import {Box, Flex, Spacer, styled} from "@/styled-system/jsx";
-import {ChevronRightIcon} from "lucide-react";
+import {prisma} from "@/config/prisma";
+import {Box, Center, HStack, styled} from "@/styled-system/jsx";
+import {formatNumber} from "@/utils/format-number";
+import {pascalToSentenceCase} from "@/utils/pascal-to-sentence-case";
+import assert from "assert";
+import {format} from "date-fns";
+import {cookies} from "next/headers";
+import {Suspense} from "react";
 
 export function RecentlyAdded() {
 	return (
-		<Box>
-			<Flex alignItems="center">
-				<styled.h2 fontSize="lg" fontFamily="heading" fontWeight="medium">
-					Recently Added
-				</styled.h2>
-				<Spacer />
-				<Link
-					href="/expenses"
-					display="flex"
-					alignItems="center"
-					gap={1}
-					color={{
-						base: "fg.muted",
-						_hover: "fg.default",
-					}}
-				>
-					<styled.span fontSize="sm">Go to expenses</styled.span>
-					<Icon>
-						<ChevronRightIcon />
-					</Icon>
-				</Link>
-			</Flex>
-
-			<Box
-				mt={4}
-				maxW="full"
-				display="block"
-				overflowX="auto"
-				overflowY="hidden"
-				whiteSpace="nowrap"
-				WebkitOverflowScrolling="touch"
-				borderWidth="1px"
+		<Box
+			maxW="full"
+			display="block"
+			overflowX="auto"
+			overflowY="hidden"
+			whiteSpace="nowrap"
+			WebkitOverflowScrolling="touch"
+			borderWidth="1px"
+		>
+			<Table
+				variant="outline"
+				border="none"
+				borderCollapse="separate"
+				borderSpacing={0}
+				css={{
+					"& thead, & tfoot, & tr": {
+						bg: "none",
+					},
+					"& th, & td": {
+						px: 4,
+						bg: "bg.default",
+						border: "none",
+						borderLeft: "1px solid token(colors.border.subtle)",
+						borderBottom: "1px solid token(colors.border.subtle)",
+						_first: {
+							borderLeft: "none",
+						},
+					},
+					"& th": {
+						fontSize: "xs",
+						fontFamily: "heading",
+					},
+					"& tfoot td": {
+						borderBottom: "none",
+					},
+				}}
 			>
-				<Table
-					variant="outline"
-					border="none"
-					borderCollapse="separate"
-					borderSpacing={0}
-					css={{
-						"& thead, & tfoot, & tr": {
-							bg: "none",
-						},
-						"& th, & td": {
-							bg: "bg.default",
-							border: "none",
-							borderLeft: "1px solid token(colors.border.subtle)",
-							borderBottom: "1px solid token(colors.border.subtle)",
-							textAlign: "center",
-							_first: {
-								borderLeft: "none",
-							},
-						},
-						"& th": {
-							fontSize: "xs",
-							fontFamily: "heading",
-						},
-						"& tfoot td": {
-							borderBottom: "none",
-						},
-					}}
+				<TableHeader>
+					<TableRow>
+						<TableHead>Category</TableHead>
+						<TableHead>Description</TableHead>
+						<TableHead>Amount</TableHead>
+						<TableHead>Location</TableHead>
+						<TableHead>Transaction Date</TableHead>
+						<TableHead>Date Created</TableHead>
+						<TableHead>Date Updated</TableHead>
+					</TableRow>
+				</TableHeader>
+				<Suspense
+					fallback={
+						<TableBody>
+							<TableRow>
+								<TableCell colSpan={7}>
+									<Center>
+										<HStack>
+											<Spinner />
+											<styled.span color="fg.muted">Loading...</styled.span>
+										</HStack>
+									</Center>
+								</TableCell>
+							</TableRow>
+						</TableBody>
+					}
 				>
-					<TableHeader>
-						<TableRow>
-							<TableHead>Category</TableHead>
-							<TableHead>Description</TableHead>
-							<TableHead>Amount</TableHead>
-							<TableHead>Location</TableHead>
-							<TableHead>Transaction Date</TableHead>
-							<TableHead>Date Created</TableHead>
-							<TableHead>Date Updated</TableHead>
-						</TableRow>
-					</TableHeader>
-					<TableBody>
-						<TableRow>
-							<TableCell>Food</TableCell>
-							<TableCell>Food is life</TableCell>
-							<TableCell textAlign="right!">300.0</TableCell>
-							<TableCell>Bacolod City</TableCell>
-							<TableCell>2021 Jul 15</TableCell>
-							<TableCell>2021 Jul 2021 3:35 AM</TableCell>
-							<TableCell>2021 Jul 2021 3:35 AM</TableCell>
-						</TableRow>
-						<TableRow>
-							<TableCell>Food</TableCell>
-							<TableCell>Food is life</TableCell>
-							<TableCell textAlign="right!">300.0</TableCell>
-							<TableCell>Bacolod City</TableCell>
-							<TableCell>2021 Jul 15</TableCell>
-							<TableCell>2021 Jul 2021 3:35 AM</TableCell>
-							<TableCell>2021 Jul 2021 3:35 AM</TableCell>
-						</TableRow>
-					</TableBody>
-					<TableFooter>
-						<TableRow>
-							<TableCell />
-							<TableCell />
-							<TableCell fontFamily="mono" textAlign="right!">
-								5,551.0
-							</TableCell>
-							<TableCell />
-							<TableCell />
-							<TableCell />
-							<TableCell />
-						</TableRow>
-					</TableFooter>
-				</Table>
-			</Box>
+					<TableContent />
+				</Suspense>
+			</Table>
 		</Box>
+	);
+}
+
+async function TableContent() {
+	const id = cookies().get("user")?.value;
+
+	assert(id);
+
+	const expenses = await prisma.expense.findMany({
+		take: 5,
+		where: {
+			user: {id},
+		},
+		orderBy: {
+			createdAt: "desc",
+		},
+	});
+
+	return (
+		<>
+			<TableBody>
+				{expenses.map((expense) => (
+					<TableRow key={expense.id}>
+						<TableCell>{pascalToSentenceCase(expense.category)}</TableCell>
+						<TableCell>
+							<styled.div maxW="12rem" truncate>
+								{expense.description}
+							</styled.div>
+						</TableCell>
+						<TableCell fontFamily="mono" textAlign="right!">
+							{formatNumber(expense.amount)}
+						</TableCell>
+						<TableCell>
+							<styled.div maxW="8rem" truncate>
+								{expense.location}
+							</styled.div>
+						</TableCell>
+						<TableCell>
+							{format(expense.transactionDate, "yyyy MMM dd")}
+						</TableCell>
+						<TableCell>
+							{format(expense.createdAt, "yyyy MMM dd hh:mm a")}
+						</TableCell>
+						<TableCell>
+							{format(expense.updatedAt, "yyyy MMM dd hh:mm a")}
+						</TableCell>
+					</TableRow>
+				))}
+			</TableBody>
+			<TableFooter>
+				<TableRow>
+					<TableCell />
+					<TableCell />
+					<TableCell fontFamily="mono" textAlign="right!">
+						{formatNumber(
+							expenses.reduce((total, {amount}) => total + amount, 0),
+						)}
+					</TableCell>
+					<TableCell />
+					<TableCell />
+					<TableCell />
+					<TableCell />
+				</TableRow>
+			</TableFooter>
+		</>
 	);
 }

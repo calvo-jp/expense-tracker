@@ -1,5 +1,6 @@
 "use client";
 
+import {Spinner} from "@/app/spinner";
 import {Icon} from "@/components/icon";
 import {
 	Select,
@@ -12,23 +13,50 @@ import {
 	SelectValueText,
 } from "@/components/select";
 import {HStack} from "@/styled-system/jsx";
+import {pascalToSentenceCase} from "@/utils/pascal-to-sentence-case";
 import {ChevronsUpDownIcon} from "lucide-react";
+import {usePathname, useRouter, useSearchParams} from "next/navigation";
+import {useTransition} from "react";
+import {Duration, DurationSchema} from "./utils";
 
 export function Filter() {
+	const router = useRouter();
+	const search = useSearchParams();
+	const pathname = usePathname();
+
+	const [pending, startTransition] = useTransition();
+
+	const {q} = DurationSchema.parse({
+		q: search.get("q"),
+	});
+
 	return (
 		<HStack>
 			<Select
 				w="9rem"
 				size="lg"
 				items={durationsOptions}
-				defaultValue={[durationsOptions[0].value]}
+				value={[q]}
+				onValueChange={(details) => {
+					const value = details.value.at(0);
+
+					if (value) {
+						const s = new URLSearchParams(search);
+
+						s.delete("q");
+						s.set("q", value);
+
+						startTransition(() => {
+							router.push(`${pathname}?${s.toString()}`);
+						});
+					}
+				}}
+				disabled={pending}
 			>
 				<SelectControl>
 					<SelectTrigger>
 						<SelectValueText />
-						<Icon>
-							<ChevronsUpDownIcon />
-						</Icon>
+						<Icon>{pending ? <Spinner /> : <ChevronsUpDownIcon />}</Icon>
 					</SelectTrigger>
 				</SelectControl>
 				<SelectPositioner>
@@ -47,16 +75,7 @@ export function Filter() {
 	);
 }
 
-const durations = [
-	"This Year",
-	"Last Year",
-	"This Month",
-	"Last Month",
-	"This Week",
-	"Last Week",
-];
-
-const durationsOptions = durations.map((value) => ({
+const durationsOptions = Object.values(Duration).map((value) => ({
 	value,
-	label: value,
+	label: pascalToSentenceCase(value),
 }));
