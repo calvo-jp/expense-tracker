@@ -1,8 +1,28 @@
-import {PrismaClient} from "@prisma/client";
+import {Prisma, PrismaClient} from "@prisma/client";
 
-const g = globalThis as unknown as {prisma: PrismaClient};
-const i = g.prisma ?? new PrismaClient();
+function createPrismaClient() {
+	return new PrismaClient().$extends({
+		model: {
+			$allModels: {
+				async exists<T>(
+					this: T,
+					where: Prisma.Args<T, "findFirst">["where"],
+				): Promise<boolean> {
+					const context = Prisma.getExtensionContext(this);
+					const result = await (context as any).findFirst({where});
 
-if (process.env.NODE_ENV === "development") g.prisma = i;
+					return result !== null;
+				},
+			},
+		},
+	});
+}
 
-export const prisma = i;
+type ExtendedPrismaClient = ReturnType<typeof createPrismaClient>;
+
+const global_ = globalThis as unknown as {prisma: ExtendedPrismaClient};
+const prisma_ = global_.prisma ?? createPrismaClient();
+
+if (process.env.NODE_ENV === "development") global_.prisma = prisma_;
+
+export const prisma = prisma_;
