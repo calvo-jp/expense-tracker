@@ -22,8 +22,8 @@ interface DashboardProps {
 	searchParams: Record<string, string | string[]>;
 }
 
-export default function Dashboard({searchParams}: DashboardProps) {
-	const duration = parseDuration(searchParams);
+export default function Dashboard(props: DashboardProps) {
+	const duration = parseDuration(props.searchParams);
 
 	return (
 		<Box>
@@ -44,13 +44,15 @@ export default function Dashboard({searchParams}: DashboardProps) {
 						</Suspense>
 					</styled.p>
 				</Box>
+
 				<Spacer />
-				<Filter />
+
+				<Filter __SSR_DATA={{duration}} />
 			</Flex>
 
 			<Flex flexDir="column" gap={14} mt={12}>
 				<Suspense fallback={<Spinner />}>
-					<Cards range={duration} />
+					<Cards duration={duration} />
 				</Suspense>
 
 				<Box>
@@ -64,7 +66,7 @@ export default function Dashboard({searchParams}: DashboardProps) {
 					</styled.h2>
 
 					<Suspense fallback={<Spinner />}>
-						<ExpensesPerCategory range={duration} />
+						<ExpensesPerCategory duration={duration} />
 					</Suspense>
 				</Box>
 

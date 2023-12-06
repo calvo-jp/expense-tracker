@@ -17,18 +17,20 @@ import {pascalToSentenceCase} from "@/utils/pascal-to-sentence-case";
 import {ChevronsUpDownIcon} from "lucide-react";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
 import {useTransition} from "react";
-import {Duration, DurationSchema} from "./utils";
+import {Duration} from "./utils";
 
-export function Filter() {
+interface FilterProps {
+	__SSR_DATA: {
+		duration: Duration;
+	};
+}
+
+export function Filter(props: FilterProps) {
 	const router = useRouter();
 	const search = useSearchParams();
 	const pathname = usePathname();
 
 	const [pending, startTransition] = useTransition();
-
-	const {q} = DurationSchema.parse({
-		q: search.get("q"),
-	});
 
 	return (
 		<HStack>
@@ -36,7 +38,7 @@ export function Filter() {
 				w="9rem"
 				size="lg"
 				items={durationsOptions}
-				value={[q]}
+				value={[props.__SSR_DATA.duration]}
 				onValueChange={(details) => {
 					const value = details.value.at(0);
 

@@ -1,8 +1,12 @@
 import {Box} from "@/styled-system/jsx";
 import {ExpensesPerCategoryGraph} from "./expenses-per-category-graph";
-import {DateRange} from "./utils";
+import {Duration} from "./utils";
 
-export async function ExpensesPerCategory(props: {range: DateRange}) {
+interface ExpensesPerCategoryProps {
+	duration: Duration;
+}
+
+export async function ExpensesPerCategory(props: ExpensesPerCategoryProps) {
 	// TODO
 	// raw mongodb aggregate query
 

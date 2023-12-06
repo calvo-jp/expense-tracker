@@ -74,5 +74,5 @@ export const DurationSchema = z
 	}));
 
 export const parseDuration = cache((searchParams: unknown) => {
-	return getDurationValue(DurationSchema.parse(searchParams).q);
+	return DurationSchema.parse(searchParams).q;
 });

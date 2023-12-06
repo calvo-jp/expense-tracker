@@ -4,10 +4,14 @@ import {Box, Flex, styled} from "@/styled-system/jsx";
 import {abbreviateNumber} from "@/utils/abbreviate-number";
 import {CoinsIcon, FoldersIcon} from "lucide-react";
 import {ReactNode} from "react";
-import {DateRange} from "./utils";
+import {Duration, getDurationValue} from "./utils";
 
-export async function Cards(props: {range: DateRange}) {
-	const {start, until} = props.range;
+interface CardsProps {
+	duration: Duration;
+}
+
+export async function Cards(props: CardsProps) {
+	const {start, until} = getDurationValue(props.duration);
 
 	const aggregrate = await prisma.expense.aggregate({
 		_count: {
