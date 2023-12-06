@@ -55,6 +55,7 @@ export function Subscribe() {
 
 				<Button
 					type="submit"
+					variant="solid"
 					w={{
 						lg: "full",
 					}}
@@ -66,6 +67,7 @@ export function Subscribe() {
 						base: "lg",
 						lg: "md",
 					}}
+					flexShrink={0}
 				>
 					Subscribe
 				</Button>
