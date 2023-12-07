@@ -1,9 +1,9 @@
 import {prisma} from "@/config/prisma";
 import {Box} from "@/styled-system/jsx";
+import {ExpenseCategory} from "@prisma/client";
 import assert from "assert";
 import {cookies} from "next/headers";
 import {ExpensesPerCategoryGraph} from "./expenses-per-category-graph";
-import {Data} from "./types";
 import {DateRange, Duration, getDurationValue} from "./utils";
 
 interface ExpensesPerCategoryProps {
@@ -38,6 +38,12 @@ async function getSummary(duration: Duration) {
 		default:
 			return getYearSummary(getDurationValue(duration));
 	}
+}
+
+export interface Data {
+	key: string;
+	amount: number;
+	category: ExpenseCategory;
 }
 
 async function getYearSummary(range: DateRange) {
@@ -122,12 +128,6 @@ async function getYearSummary(range: DateRange) {
 						$round: ["$total", 2],
 					},
 					category: "$_id.category",
-					meta: {
-						type: "month",
-						index: {
-							$subtract: ["$month", 1],
-						},
-					},
 				},
 			},
 			{
@@ -138,7 +138,10 @@ async function getYearSummary(range: DateRange) {
 		],
 	});
 
-	return summary as unknown as Data[];
+	const s = summary as unknown as Data[];
+	const l = [...MONTHS_PLACEHOLDER, ...s];
+
+	return normalizeData(l);
 }
 
 async function getMonthSummary(range: DateRange) {
@@ -226,10 +229,6 @@ async function getMonthSummary(range: DateRange) {
 						$round: ["$total", 2],
 					},
 					category: "$_id.category",
-					meta: {
-						type: "week",
-						index: "$week",
-					},
 				},
 			},
 			{
@@ -240,7 +239,10 @@ async function getMonthSummary(range: DateRange) {
 		],
 	});
 
-	return summary as unknown as Data[];
+	const s = summary as unknown as Data[];
+	const l = [...WEEKS_PLACEHOLDER, ...s];
+
+	return normalizeData(l);
 }
 
 async function getWeekSummary(range: DateRange) {
@@ -320,10 +322,6 @@ async function getWeekSummary(range: DateRange) {
 						$round: ["$total", 2],
 					},
 					category: "$_id.category",
-					meta: {
-						type: "day",
-						index: "$day",
-					},
 				},
 			},
 			{
@@ -334,5 +332,62 @@ async function getWeekSummary(range: DateRange) {
 		],
 	});
 
-	return summary as unknown as Data[];
+	const s = summary as unknown as Data[];
+	const l = [...DAYS_PLACEHOLDER, ...s];
+
+	return normalizeData(l);
+}
+
+const MONTHS_PLACEHOLDER = createPlaceholder([
+	"Jan",
+	"Feb",
+	"Mar",
+	"Apr",
+	"May",
+	"Jun",
+	"Jul",
+	"Aug",
+	"Sep",
+	"Oct",
+	"Nov",
+	"Dec",
+]);
+const WEEKS_PLACEHOLDER = createPlaceholder(["1st", "2nd", "3rd", "4th"]);
+const DAYS_PLACEHOLDER = createPlaceholder([
+	"Sun",
+	"Mon",
+	"Tue",
+	"Wed",
+	"Thu",
+	"Fri",
+	"Sat",
+]);
+
+function createPlaceholder<T extends string>(keys: T[]) {
+	const amount = 0;
+
+	return keys.reduce<Data[]>((arr, key) => {
+		return [
+			...arr,
+			...Object.values(ExpenseCategory).map((category) => ({
+				key,
+				amount,
+				category,
+			})),
+		];
+	}, []);
+}
+
+function normalizeData(data: Data[]) {
+	const val: Record<string, Partial<Record<ExpenseCategory, number>>> = {};
+
+	data.forEach((obj) => {
+		if (!val[obj.key]) {
+			val[obj.key] = {};
+		}
+
+		val[obj.key][obj.category] = obj.amount;
+	});
+
+	return val as Record<string, Record<ExpenseCategory, number>>;
 }

@@ -15,36 +15,16 @@ import {
 	XAxis,
 	YAxis,
 } from "recharts";
-import {Data} from "./types";
 
 interface ExpensesPerCategoryGraphProps {
-	data: Data[];
-}
-
-const CATEGORIES = Object.keys(ExpenseCategory);
-const CATEGORIES_PLACEHOLDER = CATEGORIES.reduce<Dict<number>>(
-	(p, k) => ({...p, [k]: 0}),
-	{},
-);
-
-interface Dict<T> {
-	[key: string]: T;
+	data: Record<string, Record<ExpenseCategory, number>>;
 }
 
 export function ExpensesPerCategoryGraph(props: ExpensesPerCategoryGraphProps) {
-	const data = props.data
-		.reduce<Dict<string | number>[]>((l, o) => {
-			const i = o.meta.index;
-
-			if (!l[i]) {
-				l[i] = {...CATEGORIES_PLACEHOLDER, name: o.key};
-			}
-
-			l[i] = {...l[i], [o.category]: o.amount};
-
-			return l;
-		}, [])
-		.filter(Boolean);
+	const data = Object.entries(props.data).map(([name, obj]) => ({
+		name,
+		...obj,
+	}));
 
 	return (
 		<AspectRatio w="full" maxH="26rem" ratio={16 / 8}>
