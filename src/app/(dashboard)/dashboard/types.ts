@@ -1,22 +1,20 @@
 import {ExpenseCategory} from "@prisma/client";
 
-export interface MonthData {
-	month: string;
-	index: number;
-	total: number;
+export interface Data {
+	key: string;
+	amount: number;
 	category: ExpenseCategory;
-}
-
-export interface WeekData {
-	week: string;
-	index: number;
-	total: number;
-	category: ExpenseCategory;
-}
-
-export interface DayData {
-	day: string;
-	index: string;
-	total: string;
-	category: ExpenseCategory;
+	meta:
+		| {
+				type: "month";
+				index: number;
+		  }
+		| {
+				type: "week";
+				index: number;
+		  }
+		| {
+				type: "day";
+				index: number;
+		  };
 }

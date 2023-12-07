@@ -15,224 +15,37 @@ import {
 	XAxis,
 	YAxis,
 } from "recharts";
-import {DayData, MonthData, WeekData} from "./types";
-
-function randInt(max: number, min: number) {
-	return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-const data = [
-	{
-		name: "Jan",
-		[ExpenseCategory.Clothing]: randInt(10000, 0),
-		[ExpenseCategory.DebtsPayment]: randInt(10000, 0),
-		[ExpenseCategory.Education]: randInt(10000, 0),
-		[ExpenseCategory.Entertainment]: randInt(10000, 0),
-		[ExpenseCategory.Food]: randInt(10000, 0),
-		[ExpenseCategory.Healthcare]: randInt(10000, 0),
-		[ExpenseCategory.Housing]: randInt(10000, 0),
-		[ExpenseCategory.Insurance]: randInt(10000, 0),
-		[ExpenseCategory.Miscellaneous]: randInt(10000, 0),
-		[ExpenseCategory.Others]: randInt(10000, 0),
-		[ExpenseCategory.PersonalCare]: randInt(10000, 0),
-		[ExpenseCategory.Savings]: randInt(10000, 0),
-		[ExpenseCategory.Transportation]: randInt(10000, 0),
-		[ExpenseCategory.Utilities]: randInt(10000, 0),
-	},
-	{
-		name: "Feb",
-		[ExpenseCategory.Clothing]: randInt(10000, 0),
-		[ExpenseCategory.DebtsPayment]: randInt(10000, 0),
-		[ExpenseCategory.Education]: randInt(10000, 0),
-		[ExpenseCategory.Entertainment]: randInt(10000, 0),
-		[ExpenseCategory.Food]: randInt(10000, 0),
-		[ExpenseCategory.Healthcare]: randInt(10000, 0),
-		[ExpenseCategory.Housing]: randInt(10000, 0),
-		[ExpenseCategory.Insurance]: randInt(10000, 0),
-		[ExpenseCategory.Miscellaneous]: randInt(10000, 0),
-		[ExpenseCategory.Others]: randInt(10000, 0),
-		[ExpenseCategory.PersonalCare]: randInt(10000, 0),
-		[ExpenseCategory.Savings]: randInt(10000, 0),
-		[ExpenseCategory.Transportation]: randInt(10000, 0),
-		[ExpenseCategory.Utilities]: randInt(10000, 0),
-	},
-	{
-		name: "Mar",
-		[ExpenseCategory.Clothing]: randInt(10000, 0),
-		[ExpenseCategory.DebtsPayment]: randInt(10000, 0),
-		[ExpenseCategory.Education]: randInt(10000, 0),
-		[ExpenseCategory.Entertainment]: randInt(10000, 0),
-		[ExpenseCategory.Food]: randInt(10000, 0),
-		[ExpenseCategory.Healthcare]: randInt(10000, 0),
-		[ExpenseCategory.Housing]: randInt(10000, 0),
-		[ExpenseCategory.Insurance]: randInt(10000, 0),
-		[ExpenseCategory.Miscellaneous]: randInt(10000, 0),
-		[ExpenseCategory.Others]: randInt(10000, 0),
-		[ExpenseCategory.PersonalCare]: randInt(10000, 0),
-		[ExpenseCategory.Savings]: randInt(10000, 0),
-		[ExpenseCategory.Transportation]: randInt(10000, 0),
-		[ExpenseCategory.Utilities]: randInt(10000, 0),
-	},
-	{
-		name: "Apr",
-		[ExpenseCategory.Clothing]: randInt(10000, 0),
-		[ExpenseCategory.DebtsPayment]: randInt(10000, 0),
-		[ExpenseCategory.Education]: randInt(10000, 0),
-		[ExpenseCategory.Entertainment]: randInt(10000, 0),
-		[ExpenseCategory.Food]: randInt(10000, 0),
-		[ExpenseCategory.Healthcare]: randInt(10000, 0),
-		[ExpenseCategory.Housing]: randInt(10000, 0),
-		[ExpenseCategory.Insurance]: randInt(10000, 0),
-		[ExpenseCategory.Miscellaneous]: randInt(10000, 0),
-		[ExpenseCategory.Others]: randInt(10000, 0),
-		[ExpenseCategory.PersonalCare]: randInt(10000, 0),
-		[ExpenseCategory.Savings]: randInt(10000, 0),
-		[ExpenseCategory.Transportation]: randInt(10000, 0),
-		[ExpenseCategory.Utilities]: randInt(10000, 0),
-	},
-	{
-		name: "May",
-		[ExpenseCategory.Clothing]: randInt(10000, 0),
-		[ExpenseCategory.DebtsPayment]: randInt(10000, 0),
-		[ExpenseCategory.Education]: randInt(10000, 0),
-		[ExpenseCategory.Entertainment]: randInt(10000, 0),
-		[ExpenseCategory.Food]: randInt(10000, 0),
-		[ExpenseCategory.Healthcare]: randInt(10000, 0),
-		[ExpenseCategory.Housing]: randInt(10000, 0),
-		[ExpenseCategory.Insurance]: randInt(10000, 0),
-		[ExpenseCategory.Miscellaneous]: randInt(10000, 0),
-		[ExpenseCategory.Others]: randInt(10000, 0),
-		[ExpenseCategory.PersonalCare]: randInt(10000, 0),
-		[ExpenseCategory.Savings]: randInt(10000, 0),
-		[ExpenseCategory.Transportation]: randInt(10000, 0),
-		[ExpenseCategory.Utilities]: randInt(10000, 0),
-	},
-	{
-		name: "Jun",
-		[ExpenseCategory.Clothing]: randInt(10000, 0),
-		[ExpenseCategory.DebtsPayment]: randInt(10000, 0),
-		[ExpenseCategory.Education]: randInt(10000, 0),
-		[ExpenseCategory.Entertainment]: randInt(10000, 0),
-		[ExpenseCategory.Food]: randInt(10000, 0),
-		[ExpenseCategory.Healthcare]: randInt(10000, 0),
-		[ExpenseCategory.Housing]: randInt(10000, 0),
-		[ExpenseCategory.Insurance]: randInt(10000, 0),
-		[ExpenseCategory.Miscellaneous]: randInt(10000, 0),
-		[ExpenseCategory.Others]: randInt(10000, 0),
-		[ExpenseCategory.PersonalCare]: randInt(10000, 0),
-		[ExpenseCategory.Savings]: randInt(10000, 0),
-		[ExpenseCategory.Transportation]: randInt(10000, 0),
-		[ExpenseCategory.Utilities]: randInt(10000, 0),
-	},
-	{
-		name: "Jul",
-		[ExpenseCategory.Clothing]: randInt(10000, 0),
-		[ExpenseCategory.DebtsPayment]: randInt(10000, 0),
-		[ExpenseCategory.Education]: randInt(10000, 0),
-		[ExpenseCategory.Entertainment]: randInt(10000, 0),
-		[ExpenseCategory.Food]: randInt(10000, 0),
-		[ExpenseCategory.Healthcare]: randInt(10000, 0),
-		[ExpenseCategory.Housing]: randInt(10000, 0),
-		[ExpenseCategory.Insurance]: randInt(10000, 0),
-		[ExpenseCategory.Miscellaneous]: randInt(10000, 0),
-		[ExpenseCategory.Others]: randInt(10000, 0),
-		[ExpenseCategory.PersonalCare]: randInt(10000, 0),
-		[ExpenseCategory.Savings]: randInt(10000, 0),
-		[ExpenseCategory.Transportation]: randInt(10000, 0),
-		[ExpenseCategory.Utilities]: randInt(10000, 0),
-	},
-	{
-		name: "Aug",
-		[ExpenseCategory.Clothing]: randInt(10000, 0),
-		[ExpenseCategory.DebtsPayment]: randInt(10000, 0),
-		[ExpenseCategory.Education]: randInt(10000, 0),
-		[ExpenseCategory.Entertainment]: randInt(10000, 0),
-		[ExpenseCategory.Food]: randInt(10000, 0),
-		[ExpenseCategory.Healthcare]: randInt(10000, 0),
-		[ExpenseCategory.Housing]: randInt(10000, 0),
-		[ExpenseCategory.Insurance]: randInt(10000, 0),
-		[ExpenseCategory.Miscellaneous]: randInt(10000, 0),
-		[ExpenseCategory.Others]: randInt(10000, 0),
-		[ExpenseCategory.PersonalCare]: randInt(10000, 0),
-		[ExpenseCategory.Savings]: randInt(10000, 0),
-		[ExpenseCategory.Transportation]: randInt(10000, 0),
-		[ExpenseCategory.Utilities]: randInt(10000, 0),
-	},
-	{
-		name: "Sep",
-		[ExpenseCategory.Clothing]: randInt(10000, 0),
-		[ExpenseCategory.DebtsPayment]: randInt(10000, 0),
-		[ExpenseCategory.Education]: randInt(10000, 0),
-		[ExpenseCategory.Entertainment]: randInt(10000, 0),
-		[ExpenseCategory.Food]: randInt(10000, 0),
-		[ExpenseCategory.Healthcare]: randInt(10000, 0),
-		[ExpenseCategory.Housing]: randInt(10000, 0),
-		[ExpenseCategory.Insurance]: randInt(10000, 0),
-		[ExpenseCategory.Miscellaneous]: randInt(10000, 0),
-		[ExpenseCategory.Others]: randInt(10000, 0),
-		[ExpenseCategory.PersonalCare]: randInt(10000, 0),
-		[ExpenseCategory.Savings]: randInt(10000, 0),
-		[ExpenseCategory.Transportation]: randInt(10000, 0),
-		[ExpenseCategory.Utilities]: randInt(10000, 0),
-	},
-	{
-		name: "Oct",
-		[ExpenseCategory.Clothing]: randInt(10000, 0),
-		[ExpenseCategory.DebtsPayment]: randInt(10000, 0),
-		[ExpenseCategory.Education]: randInt(10000, 0),
-		[ExpenseCategory.Entertainment]: randInt(10000, 0),
-		[ExpenseCategory.Food]: randInt(10000, 0),
-		[ExpenseCategory.Healthcare]: randInt(10000, 0),
-		[ExpenseCategory.Housing]: randInt(10000, 0),
-		[ExpenseCategory.Insurance]: randInt(10000, 0),
-		[ExpenseCategory.Miscellaneous]: randInt(10000, 0),
-		[ExpenseCategory.Others]: randInt(10000, 0),
-		[ExpenseCategory.PersonalCare]: randInt(10000, 0),
-		[ExpenseCategory.Savings]: randInt(10000, 0),
-		[ExpenseCategory.Transportation]: randInt(10000, 0),
-		[ExpenseCategory.Utilities]: randInt(10000, 0),
-	},
-	{
-		name: "Nov",
-		[ExpenseCategory.Clothing]: randInt(10000, 0),
-		[ExpenseCategory.DebtsPayment]: randInt(10000, 0),
-		[ExpenseCategory.Education]: randInt(10000, 0),
-		[ExpenseCategory.Entertainment]: randInt(10000, 0),
-		[ExpenseCategory.Food]: randInt(10000, 0),
-		[ExpenseCategory.Healthcare]: randInt(10000, 0),
-		[ExpenseCategory.Housing]: randInt(10000, 0),
-		[ExpenseCategory.Insurance]: randInt(10000, 0),
-		[ExpenseCategory.Miscellaneous]: randInt(10000, 0),
-		[ExpenseCategory.Others]: randInt(10000, 0),
-		[ExpenseCategory.PersonalCare]: randInt(10000, 0),
-		[ExpenseCategory.Savings]: randInt(10000, 0),
-		[ExpenseCategory.Transportation]: randInt(10000, 0),
-		[ExpenseCategory.Utilities]: randInt(10000, 0),
-	},
-	{
-		name: "Dec",
-		[ExpenseCategory.Clothing]: randInt(10000, 0),
-		[ExpenseCategory.DebtsPayment]: randInt(10000, 0),
-		[ExpenseCategory.Education]: randInt(10000, 0),
-		[ExpenseCategory.Entertainment]: randInt(10000, 0),
-		[ExpenseCategory.Food]: randInt(10000, 0),
-		[ExpenseCategory.Healthcare]: randInt(10000, 0),
-		[ExpenseCategory.Housing]: randInt(10000, 0),
-		[ExpenseCategory.Insurance]: randInt(10000, 0),
-		[ExpenseCategory.Miscellaneous]: randInt(10000, 0),
-		[ExpenseCategory.Others]: randInt(10000, 0),
-		[ExpenseCategory.PersonalCare]: randInt(10000, 0),
-		[ExpenseCategory.Savings]: randInt(10000, 0),
-		[ExpenseCategory.Transportation]: randInt(10000, 0),
-		[ExpenseCategory.Utilities]: randInt(10000, 0),
-	},
-];
+import {Data} from "./types";
 
 interface ExpensesPerCategoryGraphProps {
-	data: MonthData[] | WeekData[] | DayData[];
+	data: Data[];
+}
+
+const CATEGORIES = Object.keys(ExpenseCategory);
+const CATEGORIES_PLACEHOLDER = CATEGORIES.reduce<Dict<number>>(
+	(p, k) => ({...p, [k]: 0}),
+	{},
+);
+
+interface Dict<T> {
+	[key: string]: T;
 }
 
 export function ExpensesPerCategoryGraph(props: ExpensesPerCategoryGraphProps) {
+	const data = props.data
+		.reduce<Dict<string | number>[]>((l, o) => {
+			const i = o.meta.index;
+
+			if (!l[i]) {
+				l[i] = {name: o.key, ...CATEGORIES_PLACEHOLDER};
+			} else {
+				l[i] = {...l[i], [o.category]: o.amount};
+			}
+
+			return l;
+		}, [])
+		.filter(Boolean);
+
 	return (
 		<AspectRatio w="full" maxH="26rem" ratio={16 / 8}>
 			<ResponsiveContainer
@@ -263,9 +76,9 @@ export function ExpensesPerCategoryGraph(props: ExpensesPerCategoryGraphProps) {
 					/>
 					<Tooltip
 						content={({payload = [], label}) => {
-							const total = payload.reduce((t, e) => {
-								return t + (e.value as unknown as number);
-							}, 0);
+							payload = payload.toSorted(
+								(i, j) => (j.value as number) - (i.value as number),
+							);
 
 							return (
 								<Box
@@ -295,24 +108,17 @@ export function ExpensesPerCategoryGraph(props: ExpensesPerCategoryGraphProps) {
 																BACKGROUND_COLOR_MAP[name as ExpenseCategory],
 														}}
 													/>
-													<Box>
-														{pascalToSentenceCase(name as unknown as string)}
-													</Box>
+													<Box>{pascalToSentenceCase(name as string)}</Box>
 												</Flex>
 											))}
-											<Flex gap={1.5} alignItems="center">
-												<Box w={3} h={2} bg="bg.emphasized" flexShrink={0} />
-												<Box>Total</Box>
-											</Flex>
 										</Box>
 
 										<Box fontFamily="mono">
 											{payload.map(({name, value}, index) => (
 												<Box key={`${name}${index}`} textAlign="right">
-													{formatNumber(value as unknown as number)}
+													{formatNumber(value as number)}
 												</Box>
 											))}
-											<Box textAlign="right">{formatNumber(total)}</Box>
 										</Box>
 									</Grid>
 								</Box>

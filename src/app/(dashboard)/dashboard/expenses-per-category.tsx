@@ -3,7 +3,7 @@ import {Box} from "@/styled-system/jsx";
 import assert from "assert";
 import {cookies} from "next/headers";
 import {ExpensesPerCategoryGraph} from "./expenses-per-category-graph";
-import {DayData, MonthData, WeekData} from "./types";
+import {Data} from "./types";
 import {DateRange, Duration, getDurationValue} from "./utils";
 
 interface ExpensesPerCategoryProps {
@@ -102,7 +102,7 @@ async function getYearSummary(range: DateRange) {
 			{
 				$project: {
 					_id: 0,
-					month: {
+					key: {
 						$switch: {
 							branches: [
 								{case: {$eq: ["$month", 1]}, then: "Jan"},
@@ -120,12 +120,15 @@ async function getYearSummary(range: DateRange) {
 							],
 						},
 					},
-					category: "$_id.category",
-					index: {
-						$subtract: ["$month", 1],
-					},
-					total: {
+					amount: {
 						$round: ["$total", 2],
+					},
+					category: "$_id.category",
+					meta: {
+						type: "month",
+						index: {
+							$subtract: ["$month", 1],
+						},
 					},
 				},
 			},
@@ -137,7 +140,7 @@ async function getYearSummary(range: DateRange) {
 		],
 	});
 
-	return summary as unknown as MonthData[];
+	return summary as unknown as Data[];
 }
 
 async function getMonthSummary(range: DateRange) {
@@ -209,7 +212,7 @@ async function getMonthSummary(range: DateRange) {
 			{
 				$project: {
 					_id: 0,
-					week: {
+					key: {
 						$switch: {
 							branches: [
 								{case: {$eq: ["$week", 1]}, then: "1st"},
@@ -221,10 +224,13 @@ async function getMonthSummary(range: DateRange) {
 							],
 						},
 					},
-					index: "$week",
-					category: "$_id.category",
-					total: {
+					amount: {
 						$round: ["$total", 2],
+					},
+					category: "$_id.category",
+					meta: {
+						type: "week",
+						index: "$week",
 					},
 				},
 			},
@@ -236,7 +242,7 @@ async function getMonthSummary(range: DateRange) {
 		],
 	});
 
-	return summary as unknown as WeekData[];
+	return summary as unknown as Data[];
 }
 
 async function getWeekSummary(range: DateRange) {
@@ -299,7 +305,7 @@ async function getWeekSummary(range: DateRange) {
 			{
 				$project: {
 					_id: 0,
-					day: {
+					key: {
 						$switch: {
 							branches: [
 								{case: {$eq: ["$day", 1]}, then: "Sun"},
@@ -312,10 +318,13 @@ async function getWeekSummary(range: DateRange) {
 							],
 						},
 					},
-					index: "$day",
-					category: "$_id.category",
-					total: {
+					amount: {
 						$round: ["$total", 2],
+					},
+					category: "$_id.category",
+					meta: {
+						type: "day",
+						index: "$day",
 					},
 				},
 			},
@@ -327,5 +336,5 @@ async function getWeekSummary(range: DateRange) {
 		],
 	});
 
-	return summary as unknown as DayData[];
+	return summary as unknown as Data[];
 }
