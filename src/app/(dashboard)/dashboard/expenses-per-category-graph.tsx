@@ -15,6 +15,7 @@ import {
 	XAxis,
 	YAxis,
 } from "recharts";
+import {DayData, MonthData, WeekData} from "./types";
 
 function randInt(max: number, min: number) {
 	return Math.floor(Math.random() * (max - min + 1) + min);
@@ -227,7 +228,11 @@ const data = [
 	},
 ];
 
-export function ExpensesPerCategoryGraph() {
+interface ExpensesPerCategoryGraphProps {
+	data: MonthData[] | WeekData[] | DayData[];
+}
+
+export function ExpensesPerCategoryGraph(props: ExpensesPerCategoryGraphProps) {
 	return (
 		<AspectRatio w="full" maxH="26rem" ratio={16 / 8}>
 			<ResponsiveContainer

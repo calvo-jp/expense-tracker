@@ -11,7 +11,9 @@ interface ExpensesPerCategoryProps {
 }
 
 export async function ExpensesPerCategory(props: ExpensesPerCategoryProps) {
-	console.log(await getSummary(Duration.LastWeek));
+	const summary = await getSummary(props.duration);
+
+	console.log(summary);
 
 	return (
 		<Box
@@ -22,16 +24,13 @@ export async function ExpensesPerCategory(props: ExpensesPerCategoryProps) {
 			border="1px solid token(colors.gray.a4)"
 			rounded="sm"
 		>
-			<ExpensesPerCategoryGraph />
+			<ExpensesPerCategoryGraph data={summary} />
 		</Box>
 	);
 }
 
 async function getSummary(duration: Duration) {
 	switch (duration) {
-		case Duration.ThisYear:
-		case Duration.LastYear:
-			return getYearSummary(getDurationValue(duration));
 		case Duration.ThisMonth:
 		case Duration.LastMonth:
 			return getMonthSummary(getDurationValue(duration));
@@ -39,7 +38,7 @@ async function getSummary(duration: Duration) {
 		case Duration.LastWeek:
 			return getWeekSummary(getDurationValue(duration));
 		default:
-			break;
+			return getYearSummary(getDurationValue(duration));
 	}
 }
 
