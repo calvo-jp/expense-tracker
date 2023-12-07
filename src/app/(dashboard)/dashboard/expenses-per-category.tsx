@@ -195,9 +195,26 @@ async function getMonthSummary(range: DateRange) {
 				},
 			},
 			{
+				$addFields: {
+					week: "$_id",
+				},
+			},
+			{
 				$project: {
 					_id: 0,
-					week: "$_id",
+					week: {
+						$switch: {
+							branches: [
+								{case: {$eq: ["$week", 1]}, then: "1st"},
+								{case: {$eq: ["$week", 2]}, then: "2nd"},
+								{case: {$eq: ["$week", 3]}, then: "3rd"},
+								{case: {$eq: ["$week", 4]}, then: "4th"},
+								{case: {$eq: ["$week", 5]}, then: "5th"},
+								{case: {$eq: ["$week", 6]}, then: "6th"},
+							],
+						},
+					},
+					index: "$week",
 					total: {
 						$round: ["$total", 2],
 					},
