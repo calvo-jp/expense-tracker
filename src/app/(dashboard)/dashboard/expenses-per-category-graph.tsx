@@ -227,18 +227,6 @@ const data = [
 	},
 ];
 
-type ExpenseCategoryGraphProps =
-	| {
-			type: "months";
-			data: Record<string, number>;
-	  }
-	| {
-			type: "weeks";
-	  }
-	| {
-			type: "days";
-	  };
-
 export function ExpensesPerCategoryGraph() {
 	return (
 		<AspectRatio w="full" maxH="26rem" ratio={16 / 8}>

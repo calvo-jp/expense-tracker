@@ -3,6 +3,7 @@ import {Box} from "@/styled-system/jsx";
 import assert from "assert";
 import {cookies} from "next/headers";
 import {ExpensesPerCategoryGraph} from "./expenses-per-category-graph";
+import {DayData, MonthData, WeekData} from "./types";
 import {DateRange, Duration, getDurationValue} from "./utils";
 
 interface ExpensesPerCategoryProps {
@@ -10,9 +11,7 @@ interface ExpensesPerCategoryProps {
 }
 
 export async function ExpensesPerCategory(props: ExpensesPerCategoryProps) {
-	const summary = await getSummary(Duration.LastWeek);
-
-	console.log(summary);
+	console.log(await getSummary(Duration.LastWeek));
 
 	return (
 		<Box
@@ -49,7 +48,7 @@ async function getYearSummary(range: DateRange) {
 
 	assert(userId);
 
-	return await prisma.expense.aggregateRaw({
+	const summary = await prisma.expense.aggregateRaw({
 		pipeline: [
 			/**
 			 * @see https://github.com/prisma/prisma/discussions/12937
@@ -86,7 +85,10 @@ async function getYearSummary(range: DateRange) {
 			{
 				$group: {
 					_id: {
-						$month: "$transactionDate",
+						category: "$category",
+						month: {
+							$month: "$transactionDate",
+						},
 					},
 					total: {
 						$sum: "$amount",
@@ -95,7 +97,7 @@ async function getYearSummary(range: DateRange) {
 			},
 			{
 				$addFields: {
-					month: "$_id",
+					month: "$_id.month",
 				},
 			},
 			{
@@ -119,6 +121,7 @@ async function getYearSummary(range: DateRange) {
 							],
 						},
 					},
+					category: "$_id.category",
 					index: {
 						$subtract: ["$month", 1],
 					},
@@ -134,6 +137,8 @@ async function getYearSummary(range: DateRange) {
 			},
 		],
 	});
+
+	return summary as unknown as MonthData[];
 }
 
 async function getMonthSummary(range: DateRange) {
@@ -141,7 +146,7 @@ async function getMonthSummary(range: DateRange) {
 
 	assert(userId);
 
-	return await prisma.expense.aggregateRaw({
+	const summary = await prisma.expense.aggregateRaw({
 		pipeline: [
 			{
 				$match: {
@@ -175,19 +180,22 @@ async function getMonthSummary(range: DateRange) {
 			{
 				$group: {
 					_id: {
-						$add: [
-							{
-								$floor: {
-									$divide: [
-										{
-											$dayOfMonth: "$transactionDate",
-										},
-										7,
-									],
+						category: "$category",
+						week: {
+							$add: [
+								{
+									$floor: {
+										$divide: [
+											{
+												$dayOfMonth: "$transactionDate",
+											},
+											7,
+										],
+									},
 								},
-							},
-							1,
-						],
+								1,
+							],
+						},
 					},
 					total: {
 						$sum: "$amount",
@@ -196,7 +204,7 @@ async function getMonthSummary(range: DateRange) {
 			},
 			{
 				$addFields: {
-					week: "$_id",
+					week: "$_id.week",
 				},
 			},
 			{
@@ -215,6 +223,7 @@ async function getMonthSummary(range: DateRange) {
 						},
 					},
 					index: "$week",
+					category: "$_id.category",
 					total: {
 						$round: ["$total", 2],
 					},
@@ -227,6 +236,8 @@ async function getMonthSummary(range: DateRange) {
 			},
 		],
 	});
+
+	return summary as unknown as WeekData[];
 }
 
 async function getWeekSummary(range: DateRange) {
@@ -234,7 +245,7 @@ async function getWeekSummary(range: DateRange) {
 
 	assert(userId);
 
-	return await prisma.expense.aggregateRaw({
+	const summary = await prisma.expense.aggregateRaw({
 		pipeline: [
 			/**
 			 * @see https://github.com/prisma/prisma/discussions/12937
@@ -271,7 +282,10 @@ async function getWeekSummary(range: DateRange) {
 			{
 				$group: {
 					_id: {
-						$dayOfWeek: "$transactionDate",
+						category: "$category",
+						dayOfWeek: {
+							$dayOfWeek: "$transactionDate",
+						},
 					},
 					total: {
 						$sum: "$amount",
@@ -280,7 +294,7 @@ async function getWeekSummary(range: DateRange) {
 			},
 			{
 				$addFields: {
-					day: "$_id",
+					day: "$_id.dayOfWeek",
 				},
 			},
 			{
@@ -300,6 +314,7 @@ async function getWeekSummary(range: DateRange) {
 						},
 					},
 					index: "$day",
+					category: "$_id.category",
 					total: {
 						$round: ["$total", 2],
 					},
@@ -312,4 +327,6 @@ async function getWeekSummary(range: DateRange) {
 			},
 		],
 	});
+
+	return summary as unknown as DayData[];
 }
