@@ -42,6 +42,7 @@ export function Filter(props: FilterProps) {
 				onValueChange={(details) => {
 					const value = details.value.at(0);
 
+					if (value === props.__SSR_DATA.duration) return;
 					if (value) {
 						const s = new URLSearchParams(search);
 
