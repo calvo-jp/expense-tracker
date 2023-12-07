@@ -23,7 +23,7 @@ async function main() {
 	const today = new Date();
 
 	await prisma.expense.createMany({
-		data: Array.from({length: 100}).map(() => ({
+		data: Array.from({length: 125}).map(() => ({
 			userId: user.id,
 			amount: faker.number.float({
 				min: 100,
@@ -32,7 +32,7 @@ async function main() {
 			}),
 			category: faker.helpers.arrayElement(Object.values(ExpenseCategory)),
 			location: faker.location.city(),
-			description: faker.word.sample(),
+			description: faker.word.words(),
 			transactionDate: faker.date.between({
 				to: today,
 				from: subYears(today, 2),
