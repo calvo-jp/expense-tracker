@@ -23,10 +23,7 @@ export async function updateProfile(input: unknown) {
 	const {email} = data;
 
 	/* duplicate email */
-	if (
-		email &&
-		(await prisma.user.count({where: {email, AND: {NOT: {id}}}})) > 0
-	) {
+	if (email && (await prisma.user.exists({email, AND: {NOT: {id}}}))) {
 		return "Email already in use";
 	}
 

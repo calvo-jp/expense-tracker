@@ -15,7 +15,7 @@ export async function createAccount(input: unknown) {
 	const {email} = data;
 
 	/* duplicate email */
-	if ((await prisma.user.count({where: {email}})) > 0) {
+	if (await prisma.user.exists({email})) {
 		return "Email already in use";
 	}
 

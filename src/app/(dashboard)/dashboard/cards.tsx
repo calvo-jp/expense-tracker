@@ -2,7 +2,9 @@ import {Icon} from "@/components/icon";
 import {prisma} from "@/config/prisma";
 import {Box, Flex, styled} from "@/styled-system/jsx";
 import {abbreviateNumber} from "@/utils/abbreviate-number";
+import assert from "assert";
 import {CoinsIcon, FoldersIcon} from "lucide-react";
+import {cookies} from "next/headers";
 import {ReactNode} from "react";
 import {Duration, getDurationValue} from "./utils";
 
@@ -11,6 +13,10 @@ interface CardsProps {
 }
 
 export async function Cards(props: CardsProps) {
+	const userId = cookies().get("user")?.value;
+
+	assert(userId);
+
 	const {start, until} = getDurationValue(props.duration);
 
 	const aggregrate = await prisma.expense.aggregate({
@@ -21,6 +27,7 @@ export async function Cards(props: CardsProps) {
 			amount: true,
 		},
 		where: {
+			userId,
 			transactionDate: {
 				gte: start,
 				lte: until,
