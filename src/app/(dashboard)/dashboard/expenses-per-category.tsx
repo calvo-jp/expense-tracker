@@ -13,8 +13,6 @@ interface ExpensesPerCategoryProps {
 export async function ExpensesPerCategory(props: ExpensesPerCategoryProps) {
 	const summary = await getSummary(props.duration);
 
-	console.log(summary);
-
 	return (
 		<Box
 			py={12}

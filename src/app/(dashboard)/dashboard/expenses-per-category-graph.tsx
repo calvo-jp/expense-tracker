@@ -37,10 +37,10 @@ export function ExpensesPerCategoryGraph(props: ExpensesPerCategoryGraphProps) {
 			const i = o.meta.index;
 
 			if (!l[i]) {
-				l[i] = {name: o.key, ...CATEGORIES_PLACEHOLDER};
-			} else {
-				l[i] = {...l[i], [o.category]: o.amount};
+				l[i] = {...CATEGORIES_PLACEHOLDER, name: o.key};
 			}
+
+			l[i] = {...l[i], [o.category]: o.amount};
 
 			return l;
 		}, [])
