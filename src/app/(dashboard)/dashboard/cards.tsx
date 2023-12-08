@@ -1,7 +1,6 @@
 import {Icon} from "@/components/icon";
 import {prisma} from "@/config/prisma";
 import {Box, Flex, styled} from "@/styled-system/jsx";
-import {abbreviateNumber} from "@/utils/abbreviate-number";
 import assert from "assert";
 import {CoinsIcon, FoldersIcon} from "lucide-react";
 import {cookies} from "next/headers";
@@ -40,12 +39,12 @@ export async function Cards(props: CardsProps) {
 			<Card
 				icon={<CoinsIcon />}
 				label="Total Expenses"
-				content={abbreviateNumber(aggregrate._sum.amount ?? 0)}
+				value={aggregrate._sum.amount ?? 0}
 			/>
 			<Card
 				icon={<FoldersIcon />}
 				label="Total Records Added"
-				content={abbreviateNumber(aggregrate._count.id ?? 0)}
+				value={aggregrate._count.id ?? 0}
 			/>
 		</Flex>
 	);
@@ -54,10 +53,10 @@ export async function Cards(props: CardsProps) {
 interface CardProps {
 	icon: ReactNode;
 	label: ReactNode;
-	content: ReactNode;
+	value: number;
 }
 
-function Card({label, content, icon}: CardProps) {
+function Card({label, value, icon}: CardProps) {
 	return (
 		<Flex
 			w="20rem"
@@ -83,9 +82,16 @@ function Card({label, content, icon}: CardProps) {
 					fontWeight="bold"
 					lineHeight="none"
 				>
-					{content}
+					{abbreviateNumber(value)}
 				</styled.div>
 			</Box>
 		</Flex>
 	);
+}
+
+function abbreviateNumber(value: number) {
+	return new Intl.NumberFormat("en-US", {
+		notation: "compact",
+		compactDisplay: "short",
+	}).format(value);
 }
