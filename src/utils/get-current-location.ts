@@ -1,6 +1,4 @@
-import {cache} from "react";
-
-export const getCurrentLocation = cache(async () => {
+export async function getCurrentLocation() {
 	try {
 		const resp = await fetch("https://ipapi.co/json");
 		const data = await resp.json();
@@ -9,4 +7,4 @@ export const getCurrentLocation = cache(async () => {
 	} catch {
 		return "";
 	}
-});
+}

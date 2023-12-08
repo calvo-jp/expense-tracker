@@ -1,8 +1,7 @@
 import {Prisma} from "@prisma/client";
-import {cache} from "react";
 import {TExpenseFilterSchema} from "./schema";
 
-export const paramsToWhereClause = cache((args: TExpenseFilterSchema) => {
+export function paramsToWhereClause(args: TExpenseFilterSchema) {
 	const {
 		category,
 		location,
@@ -35,4 +34,4 @@ export const paramsToWhereClause = cache((args: TExpenseFilterSchema) => {
 			},
 		}),
 	} satisfies Prisma.ExpenseWhereInput;
-});
+}

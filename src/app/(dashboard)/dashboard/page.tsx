@@ -7,7 +7,7 @@ import assert from "assert";
 import {ChevronRightIcon, ClockIcon, SplitIcon} from "lucide-react";
 import {Metadata} from "next";
 import {cookies} from "next/headers";
-import {Suspense, cache} from "react";
+import {Suspense} from "react";
 import {Breakdown} from "./breakdown";
 import {Cards} from "./cards";
 import {Filter} from "./filter";
@@ -123,7 +123,7 @@ async function Username() {
 	);
 }
 
-const getUser = cache(async (id: string) => {
+async function getUser(id: string) {
 	return await prisma.user.findUniqueOrThrow({
 		where: {id},
 		select: {
@@ -131,4 +131,4 @@ const getUser = cache(async (id: string) => {
 			username: true,
 		},
 	});
-});
+}

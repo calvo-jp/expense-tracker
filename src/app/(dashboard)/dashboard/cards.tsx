@@ -44,7 +44,7 @@ async function TotalExpenses({duration}: {duration: Duration}) {
 
 	const {start, until} = getDurationValue(duration);
 
-	const data = await prisma.expense.aggregate({
+	const {_sum} = await prisma.expense.aggregate({
 		_sum: {
 			amount: true,
 		},
@@ -58,7 +58,7 @@ async function TotalExpenses({duration}: {duration: Duration}) {
 	});
 
 	return (
-		<Card bgGradient="to-r" gradientFrom="amber.a5" gradientTo="orange.a5">
+		<Card bgGradient="to-r" gradientFrom="amber.7" gradientTo="orange.7">
 			<CardIcon>
 				<Icon>
 					<WalletIcon />
@@ -66,9 +66,7 @@ async function TotalExpenses({duration}: {duration: Duration}) {
 			</CardIcon>
 			<CardContent>
 				<CardLabel>Total Expenses</CardLabel>
-				<CardHeading mt={2}>
-					{abbreviateNumber(data._sum.amount ?? 0)}
-				</CardHeading>
+				<CardHeading mt={2}>{abbreviateNumber(_sum.amount ?? 0)}</CardHeading>
 			</CardContent>
 		</Card>
 	);
@@ -81,7 +79,7 @@ async function TotalRecords({duration}: {duration: Duration}) {
 
 	const {start, until} = getDurationValue(duration);
 
-	const data = await prisma.expense.aggregate({
+	const {_count} = await prisma.expense.aggregate({
 		_count: {
 			id: true,
 		},
@@ -95,7 +93,7 @@ async function TotalRecords({duration}: {duration: Duration}) {
 	});
 
 	return (
-		<Card bgGradient="to-r" gradientFrom="plum.a5" gradientTo="purple.a5">
+		<Card bgGradient="to-r" gradientFrom="plum.7" gradientTo="purple.7">
 			<CardIcon>
 				<Icon>
 					<FoldersIcon />
@@ -103,9 +101,7 @@ async function TotalRecords({duration}: {duration: Duration}) {
 			</CardIcon>
 			<CardContent>
 				<CardLabel>Total Records</CardLabel>
-				<CardHeading mt={2}>
-					{abbreviateNumber(data._count.id ?? 0)}
-				</CardHeading>
+				<CardHeading mt={2}>{abbreviateNumber(_count.id ?? 0)}</CardHeading>
 			</CardContent>
 		</Card>
 	);
@@ -113,7 +109,7 @@ async function TotalRecords({duration}: {duration: Duration}) {
 
 async function MostExpensive({duration}: {duration: Duration}) {
 	return (
-		<Card bgGradient="to-r" gradientFrom="tomato.a5" gradientTo="ruby.a5">
+		<Card bgGradient="to-r" gradientFrom="tomato.7" gradientTo="ruby.7">
 			<CardIcon>
 				<Icon>
 					<CoinsIcon />
@@ -154,7 +150,7 @@ async function MostExpensive({duration}: {duration: Duration}) {
 
 async function Comparison({duration}: {duration: Duration}) {
 	return (
-		<Card bgGradient="to-r" gradientFrom="lime.a5" gradientTo="mint.a5">
+		<Card bgGradient="to-r" gradientFrom="lime.7" gradientTo="mint.7">
 			<CardIcon>
 				<Icon>
 					<TrendingUpIcon />

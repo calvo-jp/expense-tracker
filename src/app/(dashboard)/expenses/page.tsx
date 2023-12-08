@@ -27,7 +27,7 @@ import {format} from "date-fns";
 import {FileEditIcon, PlusIcon, SettingsIcon} from "lucide-react";
 import {Metadata} from "next";
 import {cookies} from "next/headers";
-import {Suspense, cache} from "react";
+import {Suspense} from "react";
 import {Spinner} from "../../spinner";
 import {PageControls} from "../page-controls";
 import {PaginationSchema} from "../schema";
@@ -278,9 +278,9 @@ async function BottomControls({searchParams}: ExpensesProps) {
 	);
 }
 
-const parseParams = cache((searchParams: unknown) => {
+const parseParams = (searchParams: unknown) => {
 	return {
 		...ExpenseFilterSchema.parse(searchParams),
 		...PaginationSchema.parse(searchParams),
 	};
-});
+};
