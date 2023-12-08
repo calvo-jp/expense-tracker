@@ -3,9 +3,9 @@ import {ark} from "@ark-ui/react";
 
 export const Card = styled(ark.div, {
 	base: {
-		w: "18.5rem",
-		h: "10.5rem",
 		p: 10,
+		h: "10.5rem",
+		minW: "18.5rem",
 		rounded: "sm",
 		display: "flex",
 		alignItems: "center",
@@ -45,6 +45,7 @@ export const CardLabel = styled(ark.div, {
 			_light: "black.a9",
 		},
 		fontSize: "sm",
+		fontFamily: "heading",
 	},
 });
 
