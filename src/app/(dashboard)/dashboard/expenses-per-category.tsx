@@ -206,24 +206,10 @@ async function getMonthSummary(range: DateRange) {
 				},
 			},
 			{
-				$addFields: {
-					week: "$_id.week",
-				},
-			},
-			{
 				$project: {
 					_id: 0,
 					key: {
-						$switch: {
-							branches: [
-								{case: {$eq: ["$week", 1]}, then: "1st"},
-								{case: {$eq: ["$week", 2]}, then: "2nd"},
-								{case: {$eq: ["$week", 3]}, then: "3rd"},
-								{case: {$eq: ["$week", 4]}, then: "4th"},
-								{case: {$eq: ["$week", 5]}, then: "5th"},
-								{case: {$eq: ["$week", 6]}, then: "6th"},
-							],
-						},
+						$concat: ["Week ", {$toString: "$_id.week"}],
 					},
 					amount: {
 						$round: ["$total", 2],
@@ -352,7 +338,14 @@ const MONTHS_PLACEHOLDER = createPlaceholder([
 	"Nov",
 	"Dec",
 ]);
-const WEEKS_PLACEHOLDER = createPlaceholder(["1st", "2nd", "3rd", "4th"]);
+const WEEKS_PLACEHOLDER = createPlaceholder([
+	"Week 1",
+	"Week 2",
+	"Week 3",
+	"Week 4",
+	"Week 5",
+	"Week 6",
+]);
 const DAYS_PLACEHOLDER = createPlaceholder([
 	"Sun",
 	"Mon",

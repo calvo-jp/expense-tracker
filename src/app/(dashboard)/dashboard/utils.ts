@@ -9,6 +9,7 @@ import {
 	subWeeks,
 	subYears,
 } from "date-fns";
+import {cache} from "react";
 import {z} from "zod";
 
 export interface DateRange {
@@ -25,7 +26,7 @@ export enum Duration {
 	LastYear = "LastYear",
 }
 
-export function getDurationValue(duration: Duration): DateRange {
+export const getDurationValue = cache((duration: Duration): DateRange => {
 	const today = new Date();
 	const lastWeekFromToday = subWeeks(today, 1);
 	const lastMonthFromToday = subMonths(today, 1);
@@ -59,7 +60,7 @@ export function getDurationValue(duration: Duration): DateRange {
 	};
 
 	return map[duration];
-}
+});
 
 export const DurationSchema = z
 	.object({
@@ -72,6 +73,6 @@ export const DurationSchema = z
 		q: Duration.ThisYear,
 	}));
 
-export function parseDuration(searchParams: unknown) {
+export const parseDuration = cache((searchParams: unknown) => {
 	return DurationSchema.parse(searchParams).q;
-}
+});

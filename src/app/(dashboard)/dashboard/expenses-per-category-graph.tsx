@@ -68,7 +68,7 @@ export function ExpensesPerCategoryGraph(props: ExpensesPerCategoryGraphProps) {
 									border="1px solid token(colors.border.default)"
 								>
 									<Box fontSize="sm" fontWeight="medium">
-										{getMonthFullName(label)}
+										{normalizeKey(label)}
 									</Box>
 
 									<Grid mt={2} columns={2} fontSize="xs" lineHeight="normal">
@@ -150,8 +150,8 @@ export function ExpensesPerCategoryGraph(props: ExpensesPerCategoryGraphProps) {
 	);
 }
 
-function getMonthFullName(shortName: string) {
-	return {
+function normalizeKey(originalValue: string) {
+	const name = {
 		Jan: "January",
 		Feb: "February",
 		Mar: "March",
@@ -164,7 +164,16 @@ function getMonthFullName(shortName: string) {
 		Oct: "October",
 		Nov: "November",
 		Dec: "December",
-	}[shortName];
+		Sun: "Sunday",
+		Mon: "Monday",
+		Tue: "Tuesday",
+		Wed: "Wednesday",
+		Thu: "Thursday",
+		Fri: "Friday",
+		Sat: "Saturday",
+	}[originalValue];
+
+	return name ?? originalValue;
 }
 
 const BACKGROUND_COLOR_MAP = {
