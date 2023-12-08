@@ -8,8 +8,8 @@ import {ChevronRightIcon} from "lucide-react";
 import {Metadata} from "next";
 import {cookies} from "next/headers";
 import {Suspense, cache} from "react";
+import {Breakdown} from "./breakdown";
 import {Cards} from "./cards";
-import {ExpensesPerCategory} from "./expenses-per-category";
 import {Filter} from "./filter";
 import {RecentlyAdded} from "./recently-added";
 import {parseDuration} from "./utils";
@@ -50,12 +50,12 @@ export default function Dashboard(props: DashboardProps) {
 				<Filter __SSR_DATA={{duration}} />
 			</Flex>
 
-			<Flex flexDir="column" gap={14} mt={12}>
+			<Flex flexDir="column" mt={12}>
 				<Suspense fallback={<Spinner />}>
 					<Cards duration={duration} />
 				</Suspense>
 
-				<Box>
+				<Box mt={10}>
 					<styled.h2
 						mb={4}
 						fontSize="lg"
@@ -66,11 +66,11 @@ export default function Dashboard(props: DashboardProps) {
 					</styled.h2>
 
 					<Suspense fallback={<Spinner />}>
-						<ExpensesPerCategory duration={duration} />
+						<Breakdown duration={duration} />
 					</Suspense>
 				</Box>
 
-				<Box>
+				<Box mt={14}>
 					<Flex mb={4} alignItems="center">
 						<styled.h2 fontSize="lg" fontFamily="heading" fontWeight="medium">
 							Recently Added

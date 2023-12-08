@@ -3,14 +3,14 @@ import {Box} from "@/styled-system/jsx";
 import {ExpenseCategory} from "@prisma/client";
 import assert from "assert";
 import {cookies} from "next/headers";
-import {ExpensesPerCategoryGraph} from "./expenses-per-category-graph";
+import {BreakdownGraph} from "./breakdown-graph";
 import {DateRange, Duration, getDurationValue} from "./utils";
 
-interface ExpensesPerCategoryProps {
+interface BreakdownProps {
 	duration: Duration;
 }
 
-export async function ExpensesPerCategory(props: ExpensesPerCategoryProps) {
+export async function Breakdown(props: BreakdownProps) {
 	const summary = await getSummary(props.duration);
 
 	return (
@@ -22,7 +22,7 @@ export async function ExpensesPerCategory(props: ExpensesPerCategoryProps) {
 			border="1px solid token(colors.gray.a4)"
 			rounded="sm"
 		>
-			<ExpensesPerCategoryGraph data={summary} />
+			<BreakdownGraph data={summary} />
 		</Box>
 	);
 }

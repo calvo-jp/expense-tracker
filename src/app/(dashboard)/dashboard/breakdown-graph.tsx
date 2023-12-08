@@ -16,11 +16,11 @@ import {
 	YAxis,
 } from "recharts";
 
-interface ExpensesPerCategoryGraphProps {
+interface BreakdownGraphProps {
 	data: Record<string, Record<ExpenseCategory, number>>;
 }
 
-export function ExpensesPerCategoryGraph(props: ExpensesPerCategoryGraphProps) {
+export function BreakdownGraph(props: BreakdownGraphProps) {
 	const data = Object.entries(props.data).map(([name, obj]) => ({
 		name,
 		...obj,
