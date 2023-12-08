@@ -1,3 +1,4 @@
+import {Spinner} from "@/app/spinner";
 import {Icon} from "@/components/icon";
 import {prisma} from "@/config/prisma";
 import {Box, Circle, Flex, HStack, styled} from "@/styled-system/jsx";
@@ -34,7 +35,17 @@ export async function Cards(props: CardsProps) {
 }
 
 function CardSkeleton() {
-	return null;
+	return (
+		<Card
+			bg="gray.a2"
+			border="1px solid token(colors.gray.a4)"
+			rounded="sm"
+			alignItems="center"
+			justifyContent="center"
+		>
+			<Spinner w={7} h={7} />
+		</Card>
+	);
 }
 
 async function TotalExpenses({duration}: {duration: Duration}) {
