@@ -11,6 +11,12 @@ interface CardsProps {
 	duration: Duration;
 }
 
+//
+// TODO
+// - most expensive
+// -
+//
+
 export async function Cards(props: CardsProps) {
 	const userId = cookies().get("user")?.value;
 
@@ -59,7 +65,7 @@ interface CardProps {
 function Card({label, value, icon}: CardProps) {
 	return (
 		<Flex
-			w="20rem"
+			w="18.5rem"
 			p={10}
 			gap={8}
 			alignItems="center"
