@@ -6,7 +6,6 @@ export const Card = styled(ark.div, {
 		p: 10,
 		h: "10.5rem",
 		minW: "18.5rem",
-		rounded: "sm",
 		display: "flex",
 		alignItems: "center",
 		gap: 6,
