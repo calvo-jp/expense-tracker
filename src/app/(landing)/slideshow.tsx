@@ -9,12 +9,11 @@ import {
 	CarouselPrevTrigger,
 	CarouselViewport,
 } from "@/components/carousel";
-import { Icon } from "@/components/icon";
-import { IconButton } from "@/components/icon-button";
-import { Image } from "@/components/next-js/image";
-import { css } from "@/styled-system/css";
-import { Box } from "@/styled-system/jsx";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import {Icon} from "@/components/icon";
+import {IconButton} from "@/components/icon-button";
+import {Image} from "@/components/next-js/image";
+import {Box} from "@/styled-system/jsx";
+import {ChevronLeftIcon, ChevronRightIcon} from "lucide-react";
 
 export function Slideshow() {
 	return (
@@ -34,15 +33,13 @@ export function Slideshow() {
 									alt=""
 									width={1100}
 									height={600}
-									className={css({
-										h: {
-											base: "16rem",
-											lg: "24rem",
-										},
-										w: "full",
-										objectFit: "cover",
-										objectPosition: "center",
-									})}
+									w="full"
+									h={{
+										base: "16rem",
+										lg: "24rem",
+									}}
+									objectFit="cover"
+									objectPosition="center"
 								/>
 							</CarouselItem>
 						))}
