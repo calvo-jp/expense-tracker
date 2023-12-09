@@ -124,7 +124,9 @@ export async function HowItWorks() {
 						/>
 
 						<Box py={5} textAlign="center">
-							<Box fontFamily="heading">{item.label}</Box>
+							<Box mb={1} fontFamily="heading">
+								{item.label}
+							</Box>
 							<RawHtml>{item.content}</RawHtml>
 						</Box>
 					</Flex>
