@@ -93,7 +93,7 @@ export default function Dashboard(props: DashboardProps) {
 								_hover: "fg.default",
 							}}
 						>
-							<styled.span fontSize="sm">Go to expenses</styled.span>
+							<styled.span fontSize="sm">See all expenses</styled.span>
 							<Icon>
 								<ChevronRightIcon />
 							</Icon>
@@ -101,7 +101,7 @@ export default function Dashboard(props: DashboardProps) {
 					</Flex>
 
 					<Suspense fallback={<Spinner />}>
-						<RecentlyAdded />
+						<RecentlyAdded duration={duration} />
 					</Suspense>
 				</Box>
 			</Flex>

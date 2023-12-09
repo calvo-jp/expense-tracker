@@ -303,8 +303,6 @@ async function Comparison({duration}: {duration: Duration}) {
 	const c = l as unknown as {key: string; value: number}[];
 	const p = c.length < 2 ? 0 : getPercentChange(c[1].value, c[0].value);
 
-	console.log(c);
-
 	return (
 		<Card bgGradient="to-r" gradientFrom="lime.7" gradientTo="mint.7">
 			<CardIcon>
