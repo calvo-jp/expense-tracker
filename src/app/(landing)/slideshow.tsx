@@ -9,14 +9,14 @@ import {
 	CarouselPrevTrigger,
 	CarouselViewport,
 } from "@/components/carousel";
-import {Icon} from "@/components/icon";
-import {IconButton} from "@/components/icon-button";
-import {Image} from "@/components/next-js/image";
-import {css} from "@/styled-system/css";
-import {Box} from "@/styled-system/jsx";
-import {ChevronLeftIcon, ChevronRightIcon} from "lucide-react";
+import { Icon } from "@/components/icon";
+import { IconButton } from "@/components/icon-button";
+import { Image } from "@/components/next-js/image";
+import { css } from "@/styled-system/css";
+import { Box } from "@/styled-system/jsx";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
-export function Screenshots() {
+export function Slideshow() {
 	return (
 		<Box
 			py={{
