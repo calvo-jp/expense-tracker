@@ -6,10 +6,13 @@ export const Card = styled(ark.div, {
 		p: 10,
 		h: "10.5rem",
 		minW: "18.5rem",
+		rounded: "sm",
 		display: "flex",
 		alignItems: "center",
 		gap: 6,
 		flexShrink: 0,
+		scrollSnapAlign: "start",
+		scrollSnapStop: "always",
 	},
 });
 
@@ -54,5 +57,6 @@ export const CardHeading = styled(ark.div, {
 		fontSize: "4xl",
 		fontWeight: "bold",
 		lineHeight: "none",
+		truncate: true,
 	},
 });

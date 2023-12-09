@@ -1,7 +1,7 @@
 import {Spinner} from "@/app/spinner";
 import {Icon} from "@/components/icon";
 import {prisma} from "@/config/prisma";
-import {Box, Circle, Flex, HStack, styled} from "@/styled-system/jsx";
+import {Box, Flex} from "@/styled-system/jsx";
 import {pascalToSentenceCase} from "@/utils/pascal-to-sentence-case";
 import {ExpenseCategory} from "@prisma/client";
 import assert from "assert";
@@ -17,7 +17,14 @@ interface CardsProps {
 
 export async function Cards(props: CardsProps) {
 	return (
-		<Flex gap={5} overflowX="auto" pb={5}>
+		<Flex
+			pos="relative"
+			pb={4}
+			gap={5}
+			overflowX="auto"
+			scrollSnapType="x mandatory"
+			scrollBehavior="smooth"
+		>
 			<Suspense fallback={<CardSkeleton />}>
 				<TotalExpenses duration={props.duration} />
 			</Suspense>
@@ -119,6 +126,74 @@ async function TotalRecords({duration}: {duration: Duration}) {
 }
 
 async function MostExpensive({duration}: {duration: Duration}) {
+	const userId = cookies().get("user")?.value;
+
+	assert(userId);
+
+	const {start, until} = getDurationValue(duration);
+
+	const l = await prisma.expense.aggregateRaw({
+		pipeline: [
+			{
+				$match: {
+					$expr: {
+						$and: [
+							{userId},
+							{
+								$gte: [
+									"$transactionDate",
+									{
+										$dateFromString: {
+											dateString: start,
+										},
+									},
+								],
+							},
+							{
+								$lte: [
+									"$transactionDate",
+									{
+										$dateFromString: {
+											dateString: until,
+										},
+									},
+								],
+							},
+						],
+					},
+				},
+			},
+			{
+				$group: {
+					_id: "$category",
+					total: {
+						$sum: "$amount",
+					},
+				},
+			},
+			{
+				$project: {
+					_id: 0,
+					category: "$_id",
+					amount: {
+						$round: ["$total", 2],
+					},
+				},
+			},
+			{
+				$sort: {
+					amount: -1,
+				},
+			},
+			{
+				$limit: 1,
+			},
+		],
+	});
+
+	const c = l as unknown as {category: ExpenseCategory; amount: number}[];
+	const o = c?.at(0);
+
 	return (
 		<Card bgGradient="to-r" gradientFrom="tomato.7" gradientTo="ruby.7">
 			<CardIcon>
@@ -128,13 +203,12 @@ async function MostExpensive({duration}: {duration: Duration}) {
 			</CardIcon>
 			<CardContent>
 				<CardLabel>Most Expensive</CardLabel>
-				<Box mt={2}>
+				<Box mt={2} flexGrow={1}>
 					<CardHeading fontSize="2xl">
-						{pascalToSentenceCase(ExpenseCategory.Food)}
+						{o ? pascalToSentenceCase(o.category) : "NA"}
 					</CardHeading>
-					<HStack
+					<Box
 						mt={1}
-						gap={1.5}
 						fontFamily="mono"
 						fontSize="sm"
 						color={{
@@ -142,17 +216,8 @@ async function MostExpensive({duration}: {duration: Duration}) {
 							_light: "black.a8",
 						}}
 					>
-						<styled.span>{abbreviateNumber(255525)}</styled.span>
-						<Circle
-							w={1}
-							h={1}
-							bg={{
-								base: "white.a4",
-								_light: "black.a4",
-							}}
-						/>
-						<styled.span>{formatPercent(0.25)}</styled.span>
-					</HStack>
+						Total: {abbreviateNumber(o?.amount ?? 0)}
+					</Box>
 				</Box>
 			</CardContent>
 		</Card>
@@ -179,13 +244,5 @@ function abbreviateNumber(value: number) {
 	return new Intl.NumberFormat("en-US", {
 		notation: "compact",
 		compactDisplay: "short",
-	}).format(value);
-}
-
-function formatPercent(value: number) {
-	return Intl.NumberFormat("en-US", {
-		style: "percent",
-		maximumFractionDigits: 0,
-		minimumFractionDigits: 0,
 	}).format(value);
 }
