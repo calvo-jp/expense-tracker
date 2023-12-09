@@ -311,7 +311,7 @@ async function Comparison({duration}: {duration: Duration}) {
 				</Icon>
 			</CardIcon>
 			<CardContent>
-				<CardLabel>{label}</CardLabel>
+				<CardLabel>vs {label}</CardLabel>
 				<CardHeading>{formatNumber(p)}%</CardHeading>
 			</CardContent>
 		</Card>
@@ -335,35 +335,34 @@ function getComparisonHelpers(duration: Duration) {
 		s = subYears(startOfYear(t), 1);
 		u = endOfYear(t);
 		e = "$year";
-		l = "vs Last Year";
+		l = "Last Year";
 	} else if (duration === Duration.LastYear) {
 		s = subYears(startOfYear(t), 2);
 		u = subYears(endOfYear(t), 1);
 		e = "$year";
-		l = `vs ${format(s, "yyyy")}`;
+		l = format(s, "yyyy");
 	} else if (duration === Duration.ThisMonth) {
 		s = subMonths(startOfMonth(t), 1);
 		u = endOfMonth(t);
 		e = "$month";
-		l = "vs Last Month";
+		l = "Last Month";
 	} else if (duration === Duration.LastMonth) {
 		s = subMonths(startOfMonth(t), 2);
 		u = subMonths(endOfMonth(t), 1);
 		e = "$month";
-		l = `vs ${format(s, "MMMM")}`;
+		l = format(s, "MMMM");
 	} else if (duration === Duration.ThisWeek) {
 		s = subWeeks(startOfWeek(t), 1);
 		u = endOfWeek(t);
 		e = "$week";
-		l = "vs Last Week";
+		l = "Last Week";
 	} else {
 		s = subWeeks(startOfWeek(t), 2);
 		u = subWeeks(endOfWeek(t), 1);
 		e = "$week";
-
 		l = isSameMonth(s, endOfWeek(s))
-			? `vs ${format(s, "MMM dd")} - ${format(endOfWeek(s), "dd")}`
-			: `vs ${format(s, "MMM dd")} - ${format(endOfWeek(s), "MMM dd")}`;
+			? `${format(s, "MMM dd")} - ${format(endOfWeek(s), "dd")}`
+			: `${format(s, "MMM dd")} - ${format(endOfWeek(s), "MMM dd")}`;
 	}
 
 	return {
