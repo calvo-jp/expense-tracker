@@ -1,4 +1,3 @@
-import {prisma} from "@/config/prisma";
 import {omit} from "@/utils/omit";
 import {PrismaAdapter} from "@auth/prisma-adapter";
 import {PrismaClient} from "@prisma/client";
@@ -6,6 +5,7 @@ import bcrypt from "bcrypt";
 import {AuthOptions} from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import {z} from "zod";
+import {prisma} from "./prisma";
 
 export const authOptions: AuthOptions = {
 	adapter: PrismaAdapter(prisma as unknown as PrismaClient),
