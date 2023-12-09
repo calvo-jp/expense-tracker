@@ -1,6 +1,5 @@
 "use client";
 
-import {SessionProvider} from "next-auth/react";
 import {ThemeProvider} from "next-themes";
 import {PropsWithChildren} from "react";
 
@@ -12,7 +11,7 @@ export function Providers(props: PropsWithChildren) {
 			defaultTheme="system"
 			disableTransitionOnChange
 		>
-			<SessionProvider>{props.children}</SessionProvider>
+			{props.children}
 		</ThemeProvider>
 	);
 }
