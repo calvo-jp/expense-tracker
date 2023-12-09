@@ -352,7 +352,7 @@ function getComparisonHelpers(duration: Duration) {
 		s = subMonths(startOfMonth(t), 2);
 		u = subMonths(endOfMonth(t), 1);
 		e = "$month";
-		l = `vs ${format(s, "MMM")}`;
+		l = `vs ${format(s, "MMMM")}`;
 	} else if (duration === Duration.ThisWeek) {
 		s = subWeeks(startOfWeek(t), 1);
 		u = endOfWeek(t);
