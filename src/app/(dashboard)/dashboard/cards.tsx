@@ -84,7 +84,7 @@ async function TotalExpenses({duration}: {duration: Duration}) {
 			</CardIcon>
 			<CardContent>
 				<CardLabel>Total Expenses</CardLabel>
-				<CardHeading mt={2}>{abbreviateNumber(_sum.amount ?? 0)}</CardHeading>
+				<CardHeading>{abbreviateNumber(_sum.amount ?? 0)}</CardHeading>
 			</CardContent>
 		</Card>
 	);
@@ -119,7 +119,7 @@ async function TotalRecords({duration}: {duration: Duration}) {
 			</CardIcon>
 			<CardContent>
 				<CardLabel>Total Records</CardLabel>
-				<CardHeading mt={2}>{abbreviateNumber(_count.id ?? 0)}</CardHeading>
+				<CardHeading>{abbreviateNumber(_count.id ?? 0)}</CardHeading>
 			</CardContent>
 		</Card>
 	);
@@ -203,12 +203,11 @@ async function MostExpensive({duration}: {duration: Duration}) {
 			</CardIcon>
 			<CardContent>
 				<CardLabel>Most Expensive</CardLabel>
-				<Box mt={2} flexGrow={1}>
+				<Box mt={1} flexGrow={1}>
 					<CardHeading fontSize="2xl">
 						{o ? pascalToSentenceCase(o.category) : "NA"}
 					</CardHeading>
 					<Box
-						mt={1}
 						fontFamily="mono"
 						fontSize="sm"
 						color={{
@@ -234,7 +233,7 @@ async function Comparison({duration}: {duration: Duration}) {
 			</CardIcon>
 			<CardContent>
 				<CardLabel>vs. Last Month</CardLabel>
-				<CardHeading mt={2}>{0}</CardHeading>
+				<CardHeading>{0}</CardHeading>
 			</CardContent>
 		</Card>
 	);

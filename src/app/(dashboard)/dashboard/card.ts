@@ -56,7 +56,6 @@ export const CardHeading = styled(ark.div, {
 		fontFamily: "heading",
 		fontSize: "4xl",
 		fontWeight: "bold",
-		lineHeight: "none",
 		truncate: true,
 	},
 });
