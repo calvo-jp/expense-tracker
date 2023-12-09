@@ -2,9 +2,21 @@ import {Spinner} from "@/app/spinner";
 import {Icon} from "@/components/icon";
 import {prisma} from "@/config/prisma";
 import {Box, Flex} from "@/styled-system/jsx";
+import {formatNumber} from "@/utils/format-number";
 import {pascalToSentenceCase} from "@/utils/pascal-to-sentence-case";
 import {ExpenseCategory} from "@prisma/client";
 import assert from "assert";
+import {
+	endOfMonth,
+	endOfWeek,
+	endOfYear,
+	startOfMonth,
+	startOfWeek,
+	startOfYear,
+	subMonths,
+	subWeeks,
+	subYears,
+} from "date-fns";
 import {CoinsIcon, FoldersIcon, TrendingUpIcon, WalletIcon} from "lucide-react";
 import {cookies} from "next/headers";
 import {Suspense} from "react";
@@ -224,6 +236,71 @@ async function MostExpensive({duration}: {duration: Duration}) {
 }
 
 async function Comparison({duration}: {duration: Duration}) {
+	const userId = cookies().get("user")?.value;
+
+	assert(userId);
+
+	const {range, expr, label} = getComparisonHelpers(duration);
+	const {start, until} = range;
+
+	const l = await prisma.expense.aggregateRaw({
+		pipeline: [
+			{
+				$match: {
+					$expr: {
+						$and: [
+							{userId},
+							{
+								$gte: [
+									"$transactionDate",
+									{
+										$dateFromString: {
+											dateString: start,
+										},
+									},
+								],
+							},
+							{
+								$lte: [
+									"$transactionDate",
+									{
+										$dateFromString: {
+											dateString: until,
+										},
+									},
+								],
+							},
+						],
+					},
+				},
+			},
+			{
+				$group: {
+					_id: {
+						[expr]: "$transactionDate",
+					},
+					total: {
+						$sum: "$amount",
+					},
+				},
+			},
+			{
+				$project: {
+					_id: 0,
+					key: {
+						$toString: "$_id",
+					},
+					value: {
+						$round: ["$total", 2],
+					},
+				},
+			},
+		],
+	});
+
+	const c = l as unknown as {key: string; value: number}[];
+	const p = c.length < 2 ? 0 : getPercentChange(c[1].value, c[0].value);
+
 	return (
 		<Card bgGradient="to-r" gradientFrom="lime.7" gradientTo="mint.7">
 			<CardIcon>
@@ -232,11 +309,52 @@ async function Comparison({duration}: {duration: Duration}) {
 				</Icon>
 			</CardIcon>
 			<CardContent>
-				<CardLabel>vs. Last Month</CardLabel>
-				<CardHeading>{0}</CardHeading>
+				<CardLabel>{label}</CardLabel>
+				<CardHeading>{formatNumber(p)}%</CardHeading>
 			</CardContent>
 		</Card>
 	);
+}
+
+function getPercentChange(oldValue: number, newValue: number) {
+	return ((newValue - oldValue) / Math.abs(oldValue)) * 100;
+}
+
+function getComparisonHelpers(duration: Duration) {
+	let t = new Date();
+
+	let s: Date;
+	let u: Date;
+
+	let e: string;
+	let l: string;
+
+	if ([Duration.ThisYear, Duration.LastYear].includes(duration)) {
+		s = subYears(startOfYear(t), 1);
+		u = endOfYear(t);
+		e = "$year";
+		l = "vs Last Year";
+	} else if ([Duration.ThisMonth, Duration.LastMonth].includes(duration)) {
+		s = subMonths(startOfMonth(t), 1);
+		u = endOfMonth(t);
+		e = "$month";
+		l = "vs Last Month";
+	} else {
+		s = subWeeks(startOfWeek(t), 1);
+		u = endOfWeek(t);
+		e = "$week";
+		l = "vs Last Week";
+	}
+
+	return {
+		today: t,
+		label: l,
+		expr: e,
+		range: {
+			start: s,
+			until: u,
+		},
+	};
 }
 
 function abbreviateNumber(value: number) {
