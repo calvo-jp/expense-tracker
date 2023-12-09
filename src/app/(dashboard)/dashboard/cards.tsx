@@ -10,6 +10,8 @@ import {
 	endOfMonth,
 	endOfWeek,
 	endOfYear,
+	format,
+	isSameMonth,
 	startOfMonth,
 	startOfWeek,
 	startOfYear,
@@ -301,6 +303,8 @@ async function Comparison({duration}: {duration: Duration}) {
 	const c = l as unknown as {key: string; value: number}[];
 	const p = c.length < 2 ? 0 : getPercentChange(c[1].value, c[0].value);
 
+	console.log(c);
+
 	return (
 		<Card bgGradient="to-r" gradientFrom="lime.7" gradientTo="mint.7">
 			<CardIcon>
@@ -329,21 +333,39 @@ function getComparisonHelpers(duration: Duration) {
 	let e: string;
 	let l: string;
 
-	if ([Duration.ThisYear, Duration.LastYear].includes(duration)) {
+	if (duration === Duration.ThisYear) {
 		s = subYears(startOfYear(t), 1);
 		u = endOfYear(t);
 		e = "$year";
 		l = "vs Last Year";
-	} else if ([Duration.ThisMonth, Duration.LastMonth].includes(duration)) {
+	} else if (duration === Duration.LastYear) {
+		s = subYears(startOfYear(t), 2);
+		u = subYears(endOfYear(t), 1);
+		e = "$year";
+		l = `vs ${format(s, "yyyy")}`;
+	} else if (duration === Duration.ThisMonth) {
 		s = subMonths(startOfMonth(t), 1);
 		u = endOfMonth(t);
 		e = "$month";
 		l = "vs Last Month";
-	} else {
+	} else if (duration === Duration.LastMonth) {
+		s = subMonths(startOfMonth(t), 2);
+		u = subMonths(endOfMonth(t), 1);
+		e = "$month";
+		l = `vs ${format(s, "MMM")}`;
+	} else if (duration === Duration.ThisWeek) {
 		s = subWeeks(startOfWeek(t), 1);
 		u = endOfWeek(t);
 		e = "$week";
 		l = "vs Last Week";
+	} else {
+		s = subWeeks(startOfWeek(t), 2);
+		u = subWeeks(endOfWeek(t), 1);
+		e = "$week";
+
+		l = isSameMonth(s, endOfWeek(s))
+			? `vs ${format(s, "MMM dd")} - ${format(endOfWeek(s), "dd")}`
+			: `vs ${format(s, "MMM dd")} - ${format(endOfWeek(s), "MMM dd")}`;
 	}
 
 	return {
