@@ -12,6 +12,12 @@ export const metadata: Metadata = {
 		default: "Expense Tracker",
 		template: "Expense Tracker | %s",
 	},
+	metadataBase: new URL("https://calvojp-expense-tracker.vercel.app"),
+	openGraph: {
+		title: "Spend wisely!",
+		description:
+			"Stay in control of your finances - effortlessly monitor daily expenses and gain valuable spending insights.",
+	},
 };
 
 const body = Inter({
