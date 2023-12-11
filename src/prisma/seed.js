@@ -13,9 +13,9 @@ async function main() {
 
 	const user = await prisma.user.create({
 		data: {
-			name: "JP Calvo",
-			email: "calvojp92@gmail.com",
-			username: "calvojp",
+			name: faker.person.fullName(),
+			email: faker.internet.email(),
+			username: "guest",
 			password: await bcrypt.hash("password", await bcrypt.genSalt(16)),
 		},
 	});

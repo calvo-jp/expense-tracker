@@ -1,12 +1,25 @@
 "use client";
 
 import {Button} from "@/components/button";
+import {Code} from "@/components/code";
 import {ErrorMessage} from "@/components/error-message";
+import {Icon} from "@/components/icon";
+import {IconButton} from "@/components/icon-button";
 import {Input} from "@/components/input";
 import {Link} from "@/components/next-js/link";
+import {
+	Popover,
+	PopoverArrow,
+	PopoverArrowTip,
+	PopoverContent,
+	PopoverPositioner,
+	PopoverTrigger,
+} from "@/components/popover";
 import {toast} from "@/components/toaster";
 import {Box, Flex, styled} from "@/styled-system/jsx";
+import {Portal} from "@ark-ui/react";
 import {zodResolver} from "@hookform/resolvers/zod";
+import {FlaskConicalIcon} from "lucide-react";
 import {useRouter} from "next/navigation";
 import {useTransition} from "react";
 import {useForm} from "react-hook-form";
@@ -86,6 +99,52 @@ export default function Login() {
 					Register
 				</Link>
 			</Flex>
+
+			<Popover
+				positioning={{
+					placement: "left-start",
+				}}
+			>
+				<Portal>
+					<PopoverTrigger asChild>
+						<IconButton
+							variant="ghost"
+							pos="absolute"
+							right={{
+								base: 4,
+								lg: 6,
+							}}
+							bottom={{
+								base: 4,
+								lg: 6,
+							}}
+						>
+							<Icon size="lg">
+								<FlaskConicalIcon />
+							</Icon>
+						</IconButton>
+					</PopoverTrigger>
+				</Portal>
+
+				<Portal>
+					<PopoverPositioner>
+						<PopoverContent>
+							<PopoverArrow>
+								<PopoverArrowTip />
+							</PopoverArrow>
+
+							<Code>
+								<styled.div>
+									<styled.span color="fg.muted">Username:</styled.span> guest
+								</styled.div>
+								<styled.div>
+									<styled.span color="fg.muted">Password:</styled.span> password
+								</styled.div>
+							</Code>
+						</PopoverContent>
+					</PopoverPositioner>
+				</Portal>
+			</Popover>
 		</>
 	);
 }
