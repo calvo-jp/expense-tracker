@@ -1,4 +1,5 @@
 import {Avatar, AvatarFallback} from "@/components/avatar";
+import {Icon} from "@/components/icon";
 import {
 	Menu,
 	MenuContent,
@@ -12,6 +13,7 @@ import {Box, Spacer, styled} from "@/styled-system/jsx";
 import {getInitials} from "@/utils/get-initials";
 import {Portal} from "@ark-ui/react";
 import assert from "assert";
+import {ChevronDownIcon} from "lucide-react";
 import {cookies} from "next/headers";
 import {Logo} from "../logo";
 import {ChangePassword} from "./change-password";
@@ -48,12 +50,28 @@ export async function Navbar() {
 					}}
 				>
 					<MenuTrigger asChild>
-						<styled.button cursor="pointer">
+						<styled.button
+							display="flex"
+							alignItems="center"
+							gap={1.5}
+							px={1}
+							cursor="pointer"
+							css={{
+								_open: {
+									"& svg": {
+										transform: "rotate(180deg)",
+									},
+								},
+							}}
+						>
 							<Avatar>
 								<AvatarFallback>
 									{getInitials(user.name ?? user.username)}
 								</AvatarFallback>
 							</Avatar>
+							<Icon transition="transform token(durations.slow)">
+								<ChevronDownIcon />
+							</Icon>
 						</styled.button>
 					</MenuTrigger>
 
