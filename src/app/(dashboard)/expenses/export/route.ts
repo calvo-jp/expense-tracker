@@ -1,6 +1,7 @@
 import {prisma} from "@/config/prisma";
 import {pascalToSentenceCase} from "@/utils/pascal-to-sentence-case";
 import assert from "assert";
+import {format} from "date-fns";
 import {cookies} from "next/headers";
 import slugify from "slugify";
 import * as XLSX from "xlsx";
@@ -40,16 +41,24 @@ export async function GET(request: Request) {
 		},
 	});
 
-	const data = expenses.map((o) => ({
-		Category: pascalToSentenceCase(o.category),
-		Description: o.description,
-		Location: o.location,
-		Amount: o.amount,
-		"Transaction Date": o.transactionDate,
+	const data = expenses.map((obj) => ({
+		Category: pascalToSentenceCase(obj.category),
+		Description: obj.description,
+		Amount: obj.amount,
+		Location: obj.location,
+		"Transaction Date": format(obj.transactionDate, "yyyy MMM dd hh:mm a"),
 	}));
 
 	const workbook = XLSX.utils.book_new();
 	const worksheet = XLSX.utils.json_to_sheet(data);
+
+	worksheet["!cols"] = [
+		{width: 20},
+		{width: 25},
+		{width: 20},
+		{width: 25},
+		{width: 20},
+	];
 
 	XLSX.utils.book_append_sheet(workbook, worksheet, "Expenses");
 

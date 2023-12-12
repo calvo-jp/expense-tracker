@@ -76,7 +76,7 @@ export function Export() {
 												const link = document.createElement("a");
 
 												link.href = url;
-												link.download = slugify(filename);
+												link.download = `${slugify(filename)}.xlsx`;
 												link.click();
 
 												URL.revokeObjectURL(url);
