@@ -5,7 +5,7 @@ import {PropsWithChildren} from "react";
 import {Logo} from "../logo";
 
 export default function Layout({children}: PropsWithChildren) {
-	if (cookies().has("user")) redirect("/dashboard");
+	if (cookies().has("user")) return redirect("/dashboard");
 
 	return (
 		<styled.main maxW="22rem" mx="auto" py={24} px={4}>
