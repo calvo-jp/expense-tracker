@@ -19,7 +19,7 @@ export const Signout = forwardRef<
 			onClick={(e) => {
 				onClick?.(e);
 				logout().then(() => {
-					router.push("/login");
+					router.push("/");
 				});
 			}}
 			{...props}
