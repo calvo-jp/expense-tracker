@@ -1,5 +1,6 @@
 "use client";
 
+import {Spinner} from "@/app/spinner";
 import {Button} from "@/components/button";
 import {
 	Dialog,
@@ -114,7 +115,7 @@ export function Export() {
 											</Button>
 										</DialogCloseTrigger>
 										<Button w="full" size="lg" type="submit" disabled={pending}>
-											Export
+											{pending ? <Spinner /> : "Export"}
 										</Button>
 									</HStack>
 								</styled.form>

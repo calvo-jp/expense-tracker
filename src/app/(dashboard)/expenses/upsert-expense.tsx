@@ -1,5 +1,6 @@
 "use client";
 
+import {Spinner} from "@/app/spinner";
 import {Button} from "@/components/button";
 import {
 	Combobox,
@@ -283,7 +284,7 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 																form.watch("transactionDate"),
 																"yyyy-MM-dd",
 															),
-													  ]
+														]
 													: undefined
 											}
 											onValueChange={(details) => {
@@ -525,7 +526,7 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 											</Button>
 										</DialogCloseTrigger>
 										<Button w="full" size="lg" type="submit" disabled={pending}>
-											Submit
+											{pending ? <Spinner /> : "Submit"}
 										</Button>
 									</HStack>
 								</styled.form>

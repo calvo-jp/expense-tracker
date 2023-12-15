@@ -22,6 +22,7 @@ import {User} from "@prisma/client";
 import {SettingsIcon} from "lucide-react";
 import {useEffect, useTransition} from "react";
 import {useForm} from "react-hook-form";
+import {Spinner} from "../spinner";
 import {updateProfile} from "./actions";
 import {TUpdateProfileSchema, UpdateProfileSchema} from "./schema";
 
@@ -139,7 +140,7 @@ export function UpdateProfile({__SSR_DATA: {user}}: UpdateProfileProps) {
 											</Button>
 										</DialogCloseTrigger>
 										<Button w="full" size="lg" type="submit" disabled={pending}>
-											Submit
+											{pending ? <Spinner /> : "Submit"}
 										</Button>
 									</HStack>
 								</styled.form>

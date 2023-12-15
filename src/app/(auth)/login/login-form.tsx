@@ -1,5 +1,6 @@
 "use client";
 
+import {Spinner} from "@/app/spinner";
 import {Button} from "@/components/button";
 import {ErrorMessage} from "@/components/error-message";
 import {Input} from "@/components/input";
@@ -68,7 +69,7 @@ export function LoginForm() {
 			</Box>
 
 			<Button type="submit" w="full" size="xl" disabled={pending}>
-				Login
+				{pending ? <Spinner /> : "Login"}
 			</Button>
 		</styled.form>
 	);

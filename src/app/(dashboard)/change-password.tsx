@@ -21,6 +21,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {LockKeyholeIcon} from "lucide-react";
 import {useTransition} from "react";
 import {useForm} from "react-hook-form";
+import {Spinner} from "../spinner";
 import {changePassword} from "./actions";
 import {ChangePasswordSchema, TChangePasswordSchema} from "./schema";
 
@@ -142,7 +143,7 @@ export function ChangePassword() {
 											</Button>
 										</DialogCloseTrigger>
 										<Button w="full" size="lg" type="submit" disabled={pending}>
-											Submit
+											{pending ? <Spinner /> : "Submit"}
 										</Button>
 									</HStack>
 								</styled.form>

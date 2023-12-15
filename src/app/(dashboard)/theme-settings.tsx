@@ -36,6 +36,7 @@ import {
 } from "lucide-react";
 import {useTheme} from "next-themes";
 import {useEffect, useState, useTransition} from "react";
+import {Spinner} from "../spinner";
 
 export function ThemeSettings() {
 	const globalTheme = useTheme();
@@ -145,7 +146,7 @@ export function ThemeSettings() {
 												});
 											}}
 										>
-											Apply
+											{pending ? <Spinner /> : "Apply"}
 										</Button>
 									</HStack>
 								</styled.form>

@@ -1,5 +1,6 @@
 "use client";
 
+import {Spinner} from "@/app/spinner";
 import {Button} from "@/components/button";
 import {
 	Dialog,
@@ -86,7 +87,7 @@ export function DeleteExpense(props: DeleteExpenseProps) {
 												});
 											}}
 										>
-											Proceed
+											{pending ? <Spinner /> : "Proceed"}
 										</Button>
 									</Flex>
 								</Box>
