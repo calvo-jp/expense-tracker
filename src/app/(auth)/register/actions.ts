@@ -1,35 +1,16 @@
 "use server";
 
 import {prisma} from "@/config/prisma";
-import bcrypt from "bcrypt";
-import {addDays} from "date-fns";
-import {cookies} from "next/headers";
-import {CreateAccountSchema} from "./schema";
+import {TCreateAccountSchema} from "./schema";
 
-export async function createAccount(input: unknown) {
-	const parsed = CreateAccountSchema.safeParse(input);
-
-	if (!parsed.success) return parsed.error.errors[0].message;
-
-	const {data} = parsed;
+export async function createAccount(data: TCreateAccountSchema) {
 	const {email} = data;
 
-	/* duplicate email */
-	if (await prisma.user.exists({email})) {
-		return "Email already in use";
-	}
-
-	data.password = await bcrypt.hash(data.password, await bcrypt.genSalt(16));
+	if (await prisma.user.exists({email})) return "Email already in use";
 
 	try {
-		const user = await prisma.user.create({
-			data,
-			select: {
-				id: true,
-			},
-		});
+		await prisma.user.create({data, select: {}});
 
-		cookies().set("user", user.id, {expires: addDays(new Date(), 30)});
 		return null;
 	} catch {
 		return "Something went wrong";

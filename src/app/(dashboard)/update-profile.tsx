@@ -18,33 +18,28 @@ import {toast} from "@/components/toaster";
 import {Flex, HStack, VStack, styled} from "@/styled-system/jsx";
 import {Portal} from "@ark-ui/react";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {User} from "@prisma/client";
 import {SettingsIcon} from "lucide-react";
-import {useEffect, useTransition} from "react";
+import {useSession} from "next-auth/react";
+import {useEffect} from "react";
 import {useForm} from "react-hook-form";
 import {Spinner} from "../spinner";
 import {updateProfile} from "./actions";
 import {TUpdateProfileSchema, UpdateProfileSchema} from "./schema";
 
-interface UpdateProfileProps {
-	__SSR_DATA: {user: User};
-}
-
-export function UpdateProfile({__SSR_DATA: {user}}: UpdateProfileProps) {
-	const [pending, startTransition] = useTransition();
-
+export function UpdateProfile() {
+	const session = useSession({required: true});
 	const form = useForm<TUpdateProfileSchema>({
 		resolver: zodResolver(UpdateProfileSchema),
 		defaultValues: {
 			name: "",
-			email: "",
 		},
 	});
 
 	useEffect(() => {
-		form.setValue("name", user.name);
-		form.setValue("email", user.email);
-	}, [form, user]);
+		form.setValue("name", session.data?.user.name ?? "");
+	}, [form, session.data?.user.name]);
+
+	if (session.status === "loading") return null;
 
 	return (
 		<Dialog
@@ -70,24 +65,23 @@ export function UpdateProfile({__SSR_DATA: {user}}: UpdateProfileProps) {
 								<styled.form
 									w="25rem"
 									p={8}
-									onSubmit={form.handleSubmit((data) => {
-										return startTransition(async () => {
-											const error = await updateProfile(data);
+									onSubmit={form.handleSubmit(async (data) => {
+										const error = await updateProfile(data);
 
-											if (error) {
-												toast.error({
-													title: "Error",
-													description: error,
-												});
-
-												return;
-											}
-
-											api.close();
+										if (error) {
 											toast.error({
-												title: "Success",
-												description: "Profile has been updated",
+												title: "Error",
+												description: error,
 											});
+
+											return;
+										}
+
+										session.update();
+										api.close();
+										toast.success({
+											title: "Success",
+											description: "Profile has been updated",
 										});
 									})}
 								>
@@ -111,19 +105,9 @@ export function UpdateProfile({__SSR_DATA: {user}}: UpdateProfileProps) {
 												id="update-profile.email"
 												size="lg"
 												placeholder="Email"
-												{...form.register("email")}
-											/>
-											<ErrorMessage>
-												{form.formState.errors.email?.message}
-											</ErrorMessage>
-										</Flex>
-										<Flex flexDir="column" gap={1.5}>
-											<Label>Username</Label>
-											<Input
-												size="lg"
+												value={session.data?.user.email ?? ""}
+												onChange={function noop() {}}
 												disabled
-												placeholder="Username"
-												defaultValue={user.username}
 											/>
 										</Flex>
 									</VStack>
@@ -134,13 +118,18 @@ export function UpdateProfile({__SSR_DATA: {user}}: UpdateProfileProps) {
 												w="full"
 												size="lg"
 												variant="outline"
-												disabled={pending}
+												disabled={form.formState.isSubmitting}
 											>
 												Cancel
 											</Button>
 										</DialogCloseTrigger>
-										<Button w="full" size="lg" type="submit" disabled={pending}>
-											{pending ? <Spinner /> : "Submit"}
+										<Button
+											w="full"
+											size="lg"
+											type="submit"
+											disabled={form.formState.isSubmitting}
+										>
+											{form.formState.isSubmitting ? <Spinner /> : "Submit"}
 										</Button>
 									</HStack>
 								</styled.form>

@@ -3,7 +3,6 @@
 const {PrismaClient, ExpenseCategory} = require("@prisma/client");
 const {subYears} = require("date-fns");
 const {faker} = require("@faker-js/faker");
-const bcrypt = require("bcrypt");
 const prisma = new PrismaClient();
 
 async function main() {
@@ -14,9 +13,7 @@ async function main() {
 	const user = await prisma.user.create({
 		data: {
 			name: faker.person.fullName(),
-			email: faker.internet.email(),
-			username: "guest",
-			password: await bcrypt.hash("password", await bcrypt.genSalt(16)),
+			email: "calvojp92@gmail.com",
 		},
 	});
 

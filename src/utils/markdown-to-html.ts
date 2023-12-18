@@ -5,6 +5,7 @@ import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import {Plugin, unified} from "unified";
 import {matter} from "vfile-matter";
+import {z} from "zod";
 
 const frontmatterParserPlugin: Plugin = () => {
 	return function parseFrontmatter(_, file) {
@@ -22,14 +23,13 @@ const processor = unified()
 	.use(remarkRehype)
 	.use(rehypeStringify);
 
-interface Dict {
-	[key: string]: string | undefined;
-}
-
 export async function markdownToHtml(markdown: string) {
 	const vfile = await processor.process(markdown);
 	const html = vfile.toString();
-	const meta = vfile.data?.matter as Dict;
+	const meta = z
+		.record(z.unknown())
+		.catch({})
+		.parse(vfile.data?.matter);
 
 	return {
 		html,

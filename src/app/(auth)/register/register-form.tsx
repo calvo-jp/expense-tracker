@@ -6,44 +6,61 @@ import {ErrorMessage} from "@/components/error-message";
 import {Input} from "@/components/input";
 import {toast} from "@/components/toaster";
 import {Box, styled} from "@/styled-system/jsx";
+import {useConditionalRedirect} from "@/utils/use-conditional-redirect";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {useRouter} from "next/navigation";
-import {useTransition} from "react";
+import {signIn, useSession} from "next-auth/react";
 import {useForm} from "react-hook-form";
 import {createAccount} from "./actions";
 import {CreateAccountSchema, TCreateAccountSchema} from "./schema";
 
-export function RegisterForm() {
-	const [pending, startTransition] = useTransition();
+export async function RegisterForm() {
+	const session = useSession();
 
-	const router = useRouter();
 	const form = useForm<TCreateAccountSchema>({
 		resolver: zodResolver(CreateAccountSchema),
 		defaultValues: {
 			name: "",
 			email: "",
-			username: "",
-			password: "",
 		},
 	});
+
+	useConditionalRedirect(session.status === "authenticated", "/dashboard");
 
 	return (
 		<styled.form
 			display="flex"
 			flexDir="column"
 			gap={6}
-			onSubmit={form.handleSubmit((data) => {
-				return startTransition(async () => {
-					const error = await createAccount(data);
+			onSubmit={form.handleSubmit(async (data) => {
+				const error = await createAccount(data);
 
-					if (error) {
-						toast.error({
-							title: "Error",
-							description: error,
-						});
-					} else {
-						router.push("/dashboard");
-					}
+				if (error) {
+					toast.error({
+						title: "Error",
+						description: error,
+					});
+
+					return;
+				}
+
+				const {email} = data;
+				const response = await signIn("email", {
+					email,
+					redirect: false,
+				});
+
+				if (response?.error) {
+					toast.error({
+						title: "Error",
+						description: "Something went wrong",
+					});
+
+					return;
+				}
+
+				toast.success({
+					title: "Success",
+					description: `Magic link sent to ${email}`,
 				});
 			})}
 		>
@@ -69,30 +86,16 @@ export function RegisterForm() {
 					{form.formState.errors.email?.message}
 				</ErrorMessage>
 			</Box>
-			<Box>
-				<Input
-					size="xl"
-					placeholder="Username"
-					{...form.register("username")}
-				/>
-				<ErrorMessage mt={1.5}>
-					{form.formState.errors.username?.message}
-				</ErrorMessage>
-			</Box>
-			<Box>
-				<Input
-					size="xl"
-					type="password"
-					placeholder="Password"
-					{...form.register("password")}
-				/>
-				<ErrorMessage mt={1.5}>
-					{form.formState.errors.password?.message}
-				</ErrorMessage>
-			</Box>
 
-			<Button type="submit" w="full" size="xl" disabled={pending}>
-				{pending ? <Spinner /> : "Submit"}
+			<Button
+				type="submit"
+				w="full"
+				size="xl"
+				disabled={
+					form.formState.isSubmitting || session.status !== "unauthenticated"
+				}
+			>
+				{form.formState.isSubmitting ? <Spinner /> : "Submit"}
 			</Button>
 		</styled.form>
 	);

@@ -3,31 +3,7 @@ import {z} from "zod";
 export type TUpdateProfileSchema = z.infer<typeof UpdateProfileSchema>;
 export const UpdateProfileSchema = z.object({
 	name: z.string().min(4, "Name too short").max(50, "Name too long"),
-	email: z.string().email(),
 });
-
-export type TChangePasswordSchema = z.infer<typeof ChangePasswordSchema>;
-export const ChangePasswordSchema = z
-	.object({
-		oldPassword: z
-			.string()
-			.min(8, "Old password too short")
-			.max(150, "Old password too long"),
-		newPassword: z
-			.string()
-			.min(8, "Password too short")
-			.max(150, "Password too long"),
-		confirmPassword: z.string(),
-	})
-	.superRefine(({newPassword, confirmPassword}, ctx) => {
-		if (newPassword !== confirmPassword) {
-			ctx.addIssue({
-				code: "custom",
-				path: ["confirmPassword"],
-				message: "Passwords don't match",
-			});
-		}
-	});
 
 export type TPaginationSchema = z.infer<typeof PaginationSchema>;
 export const PaginationSchema = z
