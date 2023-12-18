@@ -1,12 +1,12 @@
 import {Box, Flex, styled} from "@/styled-system/jsx";
 import {PropsWithChildren} from "react";
 import {Navbar} from "./navbar";
-import {Protected} from "./protected";
+import {ProtectedRouteWorkaround} from "./protected-route-workaround";
 import {Sidebar} from "./sidebar";
 
 export default function Layout({children}: PropsWithChildren) {
 	return (
-		<Protected>
+		<ProtectedRouteWorkaround>
 			<Box h="100vh" minW="breakpoint-lg">
 				<Navbar />
 				<Flex alignItems="flex-start">
@@ -23,6 +23,6 @@ export default function Layout({children}: PropsWithChildren) {
 					</styled.main>
 				</Flex>
 			</Box>
-		</Protected>
+		</ProtectedRouteWorkaround>
 	);
 }

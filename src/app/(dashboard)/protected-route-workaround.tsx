@@ -14,7 +14,7 @@ import {Spinner} from "../spinner";
  *
  */
 
-export function Protected({children}: PropsWithChildren) {
+export function ProtectedRouteWorkaround({children}: PropsWithChildren) {
 	const session = useSession();
 
 	useConditionalRedirect(
