@@ -9,6 +9,7 @@ import {Box, styled} from "@/styled-system/jsx";
 import {useConditionalRedirect} from "@/utils/use-conditional-redirect";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {signIn, useSession} from "next-auth/react";
+import {useSearchParams} from "next/navigation";
 import {useForm} from "react-hook-form";
 import {LoginSchema, TLoginSchema} from "./schema";
 
@@ -22,7 +23,9 @@ export function LoginForm() {
 		},
 	});
 
-	useConditionalRedirect(session.status === "authenticated", "/dashboard");
+	const callbackUrl = useCallbackUrl();
+
+	useConditionalRedirect(session.status === "authenticated", callbackUrl);
 
 	return (
 		<styled.form
@@ -73,4 +76,12 @@ export function LoginForm() {
 			</Button>
 		</styled.form>
 	);
+}
+
+function useCallbackUrl(fallback = "/dashboard") {
+	const search = useSearchParams();
+
+	return !search.has("callbackUrl")
+		? fallback
+		: new URL(search.get("callbackUrl")!).pathname;
 }
