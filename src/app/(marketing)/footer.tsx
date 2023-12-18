@@ -1,5 +1,5 @@
 import {Icon} from "@/components/icon";
-import {Link} from "@/components/next-js/link";
+import {Link} from "@/components/link";
 import {
 	Tooltip,
 	TooltipArrow,

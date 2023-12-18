@@ -11,7 +11,7 @@ import {
 } from "@/components/carousel";
 import {Icon} from "@/components/icon";
 import {IconButton} from "@/components/icon-button";
-import {Image} from "@/components/next-js/image";
+import {Image} from "@/components/image";
 import {Box} from "@/styled-system/jsx";
 import {ChevronLeftIcon, ChevronRightIcon} from "lucide-react";
 

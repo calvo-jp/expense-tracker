@@ -1,5 +1,5 @@
 import {Button} from "@/components/button";
-import {Link} from "@/components/next-js/link";
+import {Link} from "@/components/link";
 import {Box, styled} from "@/styled-system/jsx";
 
 export function Hero() {

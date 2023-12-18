@@ -1,6 +1,6 @@
 import {Spinner} from "@/app/spinner";
 import {Icon} from "@/components/icon";
-import {Link} from "@/components/next-js/link";
+import {Link} from "@/components/link";
 import {authOptions} from "@/config/auth-options";
 import {Box, Flex, HStack, Spacer, styled} from "@/styled-system/jsx";
 import assert from "assert";

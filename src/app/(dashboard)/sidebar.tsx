@@ -1,5 +1,5 @@
 import {Icon} from "@/components/icon";
-import {Link} from "@/components/next-js/link";
+import {Link} from "@/components/link";
 import {Box, styled} from "@/styled-system/jsx";
 import {ark} from "@ark-ui/react";
 import {CoinsIcon, LineChartIcon} from "lucide-react";

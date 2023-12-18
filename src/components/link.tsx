@@ -21,7 +21,6 @@ export const Link = forwardRef<
 	Assign<HTMLStyledProps<"a">, LinkProps>
 >(function Link(props, ref) {
 	const pathname = usePathname();
-
 	const selected =
 		removeTrailingSlash(props.href.toString()) ===
 		removeTrailingSlash(pathname);

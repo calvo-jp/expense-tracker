@@ -1,4 +1,4 @@
-import {Link} from "@/components/next-js/link";
+import {Link} from "@/components/link";
 import {Flex, styled} from "@/styled-system/jsx";
 import {Metadata} from "next";
 import {RegisterForm} from "./register-form";

@@ -1,5 +1,5 @@
 import {Button} from "@/components/button";
-import {Link} from "@/components/next-js/link";
+import {Link} from "@/components/link";
 import {HStack, Spacer, styled} from "@/styled-system/jsx";
 import {Logo} from "../logo";
 import {SwitchTheme} from "./switch-theme";
