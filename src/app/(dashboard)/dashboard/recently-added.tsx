@@ -7,13 +7,14 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/table";
+import {authOptions} from "@/config/auth-options";
 import {prisma} from "@/config/prisma";
 import {Box, styled} from "@/styled-system/jsx";
 import {formatNumber} from "@/utils/format-number";
 import {pascalToSentenceCase} from "@/utils/pascal-to-sentence-case";
 import assert from "assert";
 import {format} from "date-fns";
-import {cookies} from "next/headers";
+import {getServerSession} from "next-auth";
 import {Duration, getDurationValue} from "./utils";
 
 interface RecentlyAddedProps {
@@ -21,10 +22,11 @@ interface RecentlyAddedProps {
 }
 
 export async function RecentlyAdded(props: RecentlyAddedProps) {
-	const id = cookies().get("user")?.value;
+	const session = await getServerSession(authOptions);
 
-	assert(id);
+	assert(session);
 
+	const {id} = session.user;
 	const {start, until} = getDurationValue(props.duration);
 
 	const expenses = await prisma.expense.findMany({

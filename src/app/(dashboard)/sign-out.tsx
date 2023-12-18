@@ -3,9 +3,9 @@
 import {Icon} from "@/components/icon";
 import {HTMLStyledProps, styled} from "@/styled-system/jsx";
 import {PowerIcon} from "lucide-react";
+import {signOut} from "next-auth/react";
 import {useRouter} from "next/navigation";
 import {forwardRef} from "react";
-import {logout} from "./actions";
 
 export const Signout = forwardRef<
 	HTMLButtonElement,
@@ -16,11 +16,10 @@ export const Signout = forwardRef<
 	return (
 		<styled.button
 			ref={ref}
-			onClick={(e) => {
+			onClick={async (e) => {
 				onClick?.(e);
-				logout().then(() => {
-					router.push("/");
-				});
+				await signOut();
+				router.push("/login");
 			}}
 			{...props}
 		>

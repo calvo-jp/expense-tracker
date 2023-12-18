@@ -17,6 +17,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/table";
+import {authOptions} from "@/config/auth-options";
 import {prisma} from "@/config/prisma";
 import {Box, Center, Flex, HStack, Spacer, styled} from "@/styled-system/jsx";
 import {formatNumber} from "@/utils/format-number";
@@ -26,7 +27,7 @@ import assert from "assert";
 import {format} from "date-fns";
 import {FileEditIcon, PlusIcon, SettingsIcon} from "lucide-react";
 import {Metadata} from "next";
-import {cookies} from "next/headers";
+import {getServerSession} from "next-auth";
 import {Suspense} from "react";
 import {Spinner} from "../../spinner";
 import {PageControls} from "../page-controls";
@@ -152,15 +153,16 @@ export default async function Expenses(props: ExpensesProps) {
 }
 
 async function TableContent({searchParams}: ExpensesProps) {
-	const id = cookies().get("user")?.value;
+	const session = await getServerSession(authOptions);
 
-	assert(id);
+	assert(session);
 
+	const userId = session.user.id;
 	const params = parseParams(searchParams);
 	const expenses = await prisma.expense.findMany({
 		skip: params.size * (params.page - 1),
 		take: params.size,
-		where: {user: {id}, ...paramsToWhereClause(params)},
+		where: {userId, ...paramsToWhereClause(params)},
 		orderBy: {
 			createdAt: "desc",
 		},
@@ -264,10 +266,11 @@ async function TableContent({searchParams}: ExpensesProps) {
 }
 
 async function BottomControls({searchParams}: ExpensesProps) {
-	const userId = cookies().get("user")?.value;
+	const session = await getServerSession(authOptions);
 
-	assert(userId);
+	assert(session);
 
+	const userId = session.user.id;
 	const where = {userId, ...paramsToWhereClause(parseParams(searchParams))};
 	const count = await prisma.expense.count({where});
 

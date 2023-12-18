@@ -1,8 +1,9 @@
+import {authOptions} from "@/config/auth-options";
 import {prisma} from "@/config/prisma";
 import {Box} from "@/styled-system/jsx";
 import {ExpenseCategory} from "@prisma/client";
 import assert from "assert";
-import {cookies} from "next/headers";
+import {getServerSession} from "next-auth";
 import {BreakdownGraph} from "./breakdown-graph";
 import {DateRange, Duration, getDurationValue} from "./utils";
 
@@ -47,9 +48,11 @@ export interface Data {
 }
 
 async function getYearSummary(range: DateRange) {
-	const userId = cookies().get("user")?.value;
+	const session = await getServerSession(authOptions);
 
-	assert(userId);
+	assert(session);
+
+	const userId = session.user.id;
 
 	const summary = await prisma.expense.aggregateRaw({
 		pipeline: [
@@ -145,9 +148,11 @@ async function getYearSummary(range: DateRange) {
 }
 
 async function getMonthSummary(range: DateRange) {
-	const userId = cookies().get("user")?.value;
+	const session = await getServerSession(authOptions);
 
-	assert(userId);
+	assert(session);
+
+	const userId = session.user.id;
 
 	const summary = await prisma.expense.aggregateRaw({
 		pipeline: [
@@ -232,9 +237,11 @@ async function getMonthSummary(range: DateRange) {
 }
 
 async function getWeekSummary(range: DateRange) {
-	const userId = cookies().get("user")?.value;
+	const session = await getServerSession(authOptions);
 
-	assert(userId);
+	assert(session);
+
+	const userId = session.user.id;
 
 	const summary = await prisma.expense.aggregateRaw({
 		pipeline: [

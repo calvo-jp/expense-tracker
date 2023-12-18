@@ -1,21 +1,21 @@
 "use server";
 
+import {authOptions} from "@/config/auth-options";
 import {prisma} from "@/config/prisma";
+import assert from "assert";
+import {getServerSession} from "next-auth";
 import {revalidatePath} from "next/cache";
-import {cookies} from "next/headers";
-import {UpsertExpenseSchema} from "./schema";
+import {TUpsertExpenseSchema} from "./schema";
 
-export async function createExpense(input: unknown) {
-	const parsed = UpsertExpenseSchema.safeParse(input);
-	const userId = cookies().get("user")?.value;
+export async function createExpense(data: TUpsertExpenseSchema) {
+	const session = await getServerSession(authOptions);
 
-	if (!parsed.success) return parsed.error.errors[0].message;
-	if (!userId) return "Auth required";
+	assert(session);
 
-	const data = {userId, ...parsed.data};
+	const userId = session.user.id;
 
 	try {
-		await prisma.expense.create({data});
+		await prisma.expense.create({data: {...data, userId}});
 		revalidatePath("/expenses");
 		return null;
 	} catch {
@@ -23,14 +23,12 @@ export async function createExpense(input: unknown) {
 	}
 }
 
-export async function updateExpense(id: string, input: unknown) {
-	const parsed = UpsertExpenseSchema.safeParse(input);
-	const userId = cookies().get("user")?.value;
+export async function updateExpense(id: string, data: TUpsertExpenseSchema) {
+	const session = await getServerSession(authOptions);
 
-	if (!parsed.success) return parsed.error.errors[0].message;
-	if (!userId) return "Auth required";
+	assert(session);
 
-	const data = {userId, ...parsed.data};
+	const userId = session.user.id;
 
 	try {
 		await prisma.expense.update({where: {id, AND: {userId}}, data});
@@ -42,9 +40,11 @@ export async function updateExpense(id: string, input: unknown) {
 }
 
 export async function deleteExpense(id: string) {
-	const userId = cookies().get("user")?.value;
+	const session = await getServerSession(authOptions);
 
-	if (!userId) return "Auth required";
+	assert(session);
+
+	const userId = session.user.id;
 
 	try {
 		await prisma.expense.delete({where: {id, AND: {userId}}});

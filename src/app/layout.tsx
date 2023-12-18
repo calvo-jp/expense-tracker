@@ -1,8 +1,10 @@
 import "@/assets/styles/globals.css";
 import {Toaster} from "@/components/toaster";
+import {authOptions} from "@/config/auth-options";
 import {cx} from "@/styled-system/css";
 import {styled} from "@/styled-system/jsx";
 import {Metadata} from "next";
+import {getServerSession} from "next-auth";
 import {Inter, JetBrains_Mono, Open_Sans} from "next/font/google";
 import {PropsWithChildren} from "react";
 import {Providers} from "./providers";
@@ -41,20 +43,22 @@ const mono = JetBrains_Mono({
 	variable: "--font-mono",
 });
 
-export default function RootLayout({children}: PropsWithChildren) {
+export default async function RootLayout({children}: PropsWithChildren) {
+	const session = await getServerSession(authOptions);
+
 	return (
 		<styled.html
 			lang="en"
-			scrollBehavior="smooth"
+			suppressHydrationWarning
 			className={cx(body.variable, heading.variable, mono.variable)}
+			scrollBehavior="smooth"
 			colorScheme={{
 				base: "dark",
 				_light: "light",
 			}}
-			suppressHydrationWarning
 		>
 			<styled.body fontFamily="body">
-				<Providers>{children}</Providers>
+				<Providers session={session}>{children}</Providers>
 				<Toaster />
 			</styled.body>
 		</styled.html>

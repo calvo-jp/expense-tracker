@@ -1,5 +1,6 @@
 import {Spinner} from "@/app/spinner";
 import {Icon} from "@/components/icon";
+import {authOptions} from "@/config/auth-options";
 import {prisma} from "@/config/prisma";
 import {Box, Flex} from "@/styled-system/jsx";
 import {formatNumber} from "@/utils/format-number";
@@ -20,7 +21,7 @@ import {
 	subYears,
 } from "date-fns";
 import {CoinsIcon, FoldersIcon, TrendingUpIcon, WalletIcon} from "lucide-react";
-import {cookies} from "next/headers";
+import {getServerSession} from "next-auth";
 import {Suspense} from "react";
 import {Card, CardContent, CardHeading, CardIcon, CardLabel} from "./card";
 import {Duration, getDurationValue} from "./utils";
@@ -70,10 +71,11 @@ function CardSkeleton() {
 }
 
 async function TotalExpenses({duration}: {duration: Duration}) {
-	const userId = cookies().get("user")?.value;
+	const session = await getServerSession(authOptions);
 
-	assert(userId);
+	assert(session);
 
+	const userId = session.user.id;
 	const {start, until} = getDurationValue(duration);
 
 	const {_sum} = await prisma.expense.aggregate({
@@ -105,10 +107,11 @@ async function TotalExpenses({duration}: {duration: Duration}) {
 }
 
 async function TotalRecords({duration}: {duration: Duration}) {
-	const userId = cookies().get("user")?.value;
+	const session = await getServerSession(authOptions);
 
-	assert(userId);
+	assert(session);
 
+	const userId = session.user.id;
 	const {start, until} = getDurationValue(duration);
 
 	const {_count} = await prisma.expense.aggregate({
@@ -140,10 +143,11 @@ async function TotalRecords({duration}: {duration: Duration}) {
 }
 
 async function MostExpensive({duration}: {duration: Duration}) {
-	const userId = cookies().get("user")?.value;
+	const session = await getServerSession(authOptions);
 
-	assert(userId);
+	assert(session);
 
+	const userId = session.user.id;
 	const {start, until} = getDurationValue(duration);
 
 	const l = await prisma.expense.aggregateRaw({
@@ -238,9 +242,11 @@ async function MostExpensive({duration}: {duration: Duration}) {
 }
 
 async function Comparison({duration}: {duration: Duration}) {
-	const userId = cookies().get("user")?.value;
+	const session = await getServerSession(authOptions);
 
-	assert(userId);
+	assert(session);
+
+	const userId = session.user.id;
 
 	const {range, expr, label} = getComparisonHelpers(duration);
 	const {start, until} = range;
