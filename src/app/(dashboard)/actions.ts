@@ -10,8 +10,6 @@ import {TUpdateProfileSchema} from "./schema";
 export async function updateProfile(data: TUpdateProfileSchema) {
 	const session = await getServerSession(authOptions);
 
-	console.log({session});
-
 	assert(session);
 
 	const id = session.user.id;
@@ -21,7 +19,6 @@ export async function updateProfile(data: TUpdateProfileSchema) {
 		revalidatePath("/(dashboard)", "layout");
 		return null;
 	} catch (e) {
-		console.log(e);
 		return "Something went wrong";
 	}
 }
