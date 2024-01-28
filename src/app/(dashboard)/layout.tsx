@@ -1,9 +1,13 @@
 import {Box, Flex, styled} from "@/styled-system/jsx";
+import {cookies} from "next/headers";
+import {redirect} from "next/navigation";
 import {PropsWithChildren} from "react";
 import {Navbar} from "./navbar";
 import {Sidebar} from "./sidebar";
 
 export default async function Layout({children}: PropsWithChildren) {
+	if (!cookies().has("user")) return redirect("/login");
+
 	return (
 		<Box h="100vh" minW="breakpoint-lg">
 			<Navbar />

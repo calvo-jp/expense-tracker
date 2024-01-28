@@ -23,5 +23,6 @@ export async function updateProfile(data: TUpdateProfileSchema) {
 
 export async function logout() {
 	cookies().delete("user");
-	redirect("/login");
+	revalidatePath("/(dashboard)");
+	redirect("/");
 }
