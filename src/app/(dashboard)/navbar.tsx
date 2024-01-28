@@ -90,15 +90,20 @@ async function NavbarProfile() {
 						<MenuItemGroup id="navbar.profile-settings">
 							<UpdateProfile __SSR_DATA={{user}} />
 							<ThemeSettings />
-							<MenuItem
-								id="navbar.profile-settings.signout"
-								gap={2}
-								onClick={logout}
-							>
-								<Icon>
-									<PowerIcon />
-								</Icon>
-								<styled.span>Sign out</styled.span>
+							<MenuItem id="navbar.profile-settings.signout" asChild>
+								<styled.form action={logout}>
+									<styled.button
+										display="flex"
+										alignItems="center"
+										gap={2}
+										cursor="pointer"
+									>
+										<Icon>
+											<PowerIcon />
+										</Icon>
+										<styled.span>Sign out</styled.span>
+									</styled.button>
+								</styled.form>
 							</MenuItem>
 						</MenuItemGroup>
 					</MenuContent>

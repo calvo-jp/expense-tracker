@@ -43,12 +43,14 @@ export function Sidebar() {
 						</SidebarButton>
 					</styled.li>
 					<styled.li>
-						<SidebarButton onClick={logout}>
-							<Icon>
-								<PowerIcon />
-							</Icon>
-							<styled.span>Sign out</styled.span>
-						</SidebarButton>
+						<styled.form action={logout}>
+							<SidebarButton type="submit">
+								<Icon>
+									<PowerIcon />
+								</Icon>
+								<styled.span>Sign out</styled.span>
+							</SidebarButton>
+						</styled.form>
 					</styled.li>
 				</styled.ul>
 			</styled.nav>
