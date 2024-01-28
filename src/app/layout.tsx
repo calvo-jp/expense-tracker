@@ -24,6 +24,7 @@ const body = Inter({
 	weight: ["400", "500", "600", "700"],
 	display: "swap",
 	subsets: ["latin"],
+	preload: true,
 	variable: "--font-body",
 });
 
@@ -31,6 +32,7 @@ const heading = Open_Sans({
 	weight: ["400", "500", "600", "700", "800"],
 	display: "swap",
 	subsets: ["latin"],
+	preload: true,
 	variable: "--font-heading",
 });
 
