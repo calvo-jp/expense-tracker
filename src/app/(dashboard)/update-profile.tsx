@@ -9,10 +9,10 @@ import {
 	DialogPositioner,
 	DialogTrigger,
 } from "@/components/dialog";
-import {ErrorMessage} from "@/components/error-message";
+import {FormErrorMessage} from "@/components/form-error-message";
+import {FormLabel} from "@/components/form-label";
 import {Icon} from "@/components/icon";
 import {Input} from "@/components/input";
-import {Label} from "@/components/label";
 import {MenuItem} from "@/components/menu";
 import {toast} from "@/components/toaster";
 import {Flex, HStack, VStack, styled} from "@/styled-system/jsx";
@@ -87,20 +87,22 @@ export function UpdateProfile() {
 								>
 									<VStack alignItems="stretch" gap={3}>
 										<Flex flexDir="column" gap={1.5}>
-											<Label htmlFor="update-profile.name">Name</Label>
+											<FormLabel htmlFor="update-profile.name">Name</FormLabel>
 											<Input
 												id="update-profile.name"
 												size="lg"
 												placeholder="Name"
 												{...form.register("name")}
 											/>
-											<ErrorMessage>
+											<FormErrorMessage>
 												{form.formState.errors.name?.message}
-											</ErrorMessage>
+											</FormErrorMessage>
 										</Flex>
 
 										<Flex flexDir="column" gap={1.5}>
-											<Label htmlFor="update-profile.email">Email</Label>
+											<FormLabel htmlFor="update-profile.email">
+												Email
+											</FormLabel>
 											<Input
 												id="update-profile.email"
 												size="lg"

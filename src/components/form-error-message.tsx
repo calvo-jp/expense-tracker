@@ -19,7 +19,7 @@ const Component = styled(
 	},
 );
 
-export const ErrorMessage = forwardRef<
+export const FormErrorMessage = forwardRef<
 	HTMLDivElement,
 	Assign<HTMLArkProps<"div">, HTMLStyledProps<"div">>
 >(function ErrorMessage(props, ref) {

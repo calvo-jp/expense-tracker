@@ -2,7 +2,7 @@
 
 import {Spinner} from "@/app/spinner";
 import {Button} from "@/components/button";
-import {ErrorMessage} from "@/components/error-message";
+import {FormErrorMessage} from "@/components/form-error-message";
 import {Input} from "@/components/input";
 import {toast} from "@/components/toaster";
 import {Box, styled} from "@/styled-system/jsx";
@@ -71,9 +71,9 @@ export async function RegisterForm() {
 					autoFocus
 					{...form.register("name")}
 				/>
-				<ErrorMessage mt={1.5}>
+				<FormErrorMessage mt={1.5}>
 					{form.formState.errors.name?.message}
-				</ErrorMessage>
+				</FormErrorMessage>
 			</Box>
 			<Box>
 				<Input
@@ -82,9 +82,9 @@ export async function RegisterForm() {
 					placeholder="Email"
 					{...form.register("email")}
 				/>
-				<ErrorMessage mt={1.5}>
+				<FormErrorMessage mt={1.5}>
 					{form.formState.errors.email?.message}
-				</ErrorMessage>
+				</FormErrorMessage>
 			</Box>
 
 			<Button

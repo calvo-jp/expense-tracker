@@ -47,10 +47,10 @@ import {
 	DrawerPositioner,
 	DrawerTrigger,
 } from "@/components/drawer";
+import {FormLabel} from "@/components/form-label";
 import {Icon} from "@/components/icon";
 import {IconButton} from "@/components/icon-button";
 import {Input} from "@/components/input";
-import {Label} from "@/components/label";
 import {
 	NumberInput,
 	NumberInputControl,
@@ -248,7 +248,9 @@ export function Filter() {
 									</Combobox>
 
 									<Box mt={4}>
-										<Label htmlFor="expenses.filter.location">Location</Label>
+										<FormLabel htmlFor="expenses.filter.location">
+											Location
+										</FormLabel>
 										<Input
 											mt={1}
 											id="expenses.filter.location"

@@ -45,11 +45,11 @@ import {
 	DialogPositioner,
 	DialogTrigger,
 } from "@/components/dialog";
-import {ErrorMessage} from "@/components/error-message";
+import {FormErrorMessage} from "@/components/form-error-message";
+import {FormLabel} from "@/components/form-label";
 import {Icon} from "@/components/icon";
 import {IconButton} from "@/components/icon-button";
 import {Input} from "@/components/input";
-import {Label} from "@/components/label";
 import {
 	NumberInput,
 	NumberInputControl,
@@ -207,9 +207,9 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 														</ComboboxTrigger>
 													</ComboboxControl>
 
-													<ErrorMessage>
+													<FormErrorMessage>
 														{form.formState.errors.category?.message}
-													</ErrorMessage>
+													</FormErrorMessage>
 
 													<ComboboxPositioner>
 														<ComboboxContent>
@@ -242,9 +242,9 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 										</Combobox>
 
 										<Flex direction="column" gap={1.5}>
-											<Label htmlFor="expenses.upsert.description">
+											<FormLabel htmlFor="expenses.upsert.description">
 												Description
-											</Label>
+											</FormLabel>
 											<Textarea
 												id="expenses.upsert.description"
 												size="lg"
@@ -253,22 +253,24 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 												placeholder="Enter description"
 												{...form.register("description")}
 											/>
-											<ErrorMessage>
+											<FormErrorMessage>
 												{form.formState.errors.description?.message}
-											</ErrorMessage>
+											</FormErrorMessage>
 										</Flex>
 
 										<Flex direction="column" gap={1.5}>
-											<Label htmlFor="expenses.upsert.location">Location</Label>
+											<FormLabel htmlFor="expenses.upsert.location">
+												Location
+											</FormLabel>
 											<Input
 												id="expenses.upsert.location"
 												size="lg"
 												placeholder="Enter location"
 												{...form.register("location")}
 											/>
-											<ErrorMessage>
+											<FormErrorMessage>
 												{form.formState.errors.location?.message}
-											</ErrorMessage>
+											</FormErrorMessage>
 										</Flex>
 
 										<DatePicker
@@ -313,9 +315,9 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 												</DatePickerTrigger>
 											</DatePickerControl>
 
-											<ErrorMessage>
+											<FormErrorMessage>
 												{form.formState.errors.transactionDate?.message}
-											</ErrorMessage>
+											</FormErrorMessage>
 
 											<DatePickerPositioner>
 												<DatePickerContent>
@@ -508,9 +510,9 @@ export function UpsertExpense(props: UpsertExpenseProps) {
 												</NumberInputDecrementTrigger>
 											</NumberInputControl>
 
-											<ErrorMessage>
+											<FormErrorMessage>
 												{form.formState.errors.amount?.message}
-											</ErrorMessage>
+											</FormErrorMessage>
 										</NumberInput>
 									</VStack>
 

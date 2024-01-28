@@ -2,7 +2,7 @@
 
 import {Spinner} from "@/app/spinner";
 import {Button} from "@/components/button";
-import {ErrorMessage} from "@/components/error-message";
+import {FormErrorMessage} from "@/components/form-error-message";
 import {Input} from "@/components/input";
 import {toast} from "@/components/toaster";
 import {Box, styled} from "@/styled-system/jsx";
@@ -59,9 +59,9 @@ export function LoginForm() {
 					autoFocus
 					{...form.register("email")}
 				/>
-				<ErrorMessage mt={1.5}>
+				<FormErrorMessage mt={1.5}>
 					{form.formState.errors.email?.message}
-				</ErrorMessage>
+				</FormErrorMessage>
 			</Box>
 
 			<Button

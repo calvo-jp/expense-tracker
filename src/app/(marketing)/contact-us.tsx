@@ -1,7 +1,7 @@
 "use client";
 
 import {Button} from "@/components/button";
-import {ErrorMessage} from "@/components/error-message";
+import {FormErrorMessage} from "@/components/form-error-message";
 import {Input} from "@/components/input";
 import {Textarea} from "@/components/textarea";
 import {toast} from "@/components/toaster";
@@ -77,11 +77,15 @@ export function ContactUs() {
 			>
 				<Flex flexDir="column" gap={2}>
 					<Input size="xl" placeholder="Name" {...form.register("name")} />
-					<ErrorMessage>{form.formState.errors.name?.message}</ErrorMessage>
+					<FormErrorMessage>
+						{form.formState.errors.name?.message}
+					</FormErrorMessage>
 				</Flex>
 				<Flex flexDir="column" gap={2}>
 					<Input size="xl" placeholder="Email" {...form.register("email")} />
-					<ErrorMessage>{form.formState.errors.email?.message}</ErrorMessage>
+					<FormErrorMessage>
+						{form.formState.errors.email?.message}
+					</FormErrorMessage>
 				</Flex>
 				<Flex flexDir="column" gap={2}>
 					<Textarea
@@ -90,7 +94,9 @@ export function ContactUs() {
 						rows={4}
 						{...form.register("message")}
 					/>
-					<ErrorMessage>{form.formState.errors.message?.message}</ErrorMessage>
+					<FormErrorMessage>
+						{form.formState.errors.message?.message}
+					</FormErrorMessage>
 				</Flex>
 
 				<Button type="submit" size="xl" display="block">

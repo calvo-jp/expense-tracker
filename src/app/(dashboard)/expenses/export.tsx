@@ -10,11 +10,11 @@ import {
 	DialogPositioner,
 	DialogTrigger,
 } from "@/components/dialog";
-import {ErrorMessage} from "@/components/error-message";
+import {FormErrorMessage} from "@/components/form-error-message";
+import {FormLabel} from "@/components/form-label";
 import {Icon} from "@/components/icon";
 import {IconButton} from "@/components/icon-button";
 import {Input} from "@/components/input";
-import {Label} from "@/components/label";
 import {toast} from "@/components/toaster";
 import {Flex, HStack, styled} from "@/styled-system/jsx";
 import {Portal} from "@ark-ui/react";
@@ -92,15 +92,17 @@ export function Export() {
 									})}
 								>
 									<Flex direction="column" gap={1.5}>
-										<Label htmlFor="expenses.export.filename">File Name</Label>
+										<FormLabel htmlFor="expenses.export.filename">
+											File Name
+										</FormLabel>
 										<Input
 											id="expenses.export.filename"
 											size="lg"
 											{...form.register("filename")}
 										/>
-										<ErrorMessage>
+										<FormErrorMessage>
 											{form.formState.errors.filename?.message}
-										</ErrorMessage>
+										</FormErrorMessage>
 									</Flex>
 
 									<HStack mt={8} gap={4}>
