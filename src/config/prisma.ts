@@ -1,17 +1,31 @@
 import {Prisma, PrismaClient} from "@prisma/client";
+import bcrypt from "bcrypt";
 
 function createPrismaClient() {
 	return new PrismaClient().$extends({
 		model: {
 			$allModels: {
-				async exists<T>(
-					this: T,
-					where: Prisma.Args<T, "findFirst">["where"],
-				): Promise<boolean> {
-					const context = Prisma.getExtensionContext(this);
-					const result = await (context as any).findFirst({where});
-
+				async exists<T>(this: T, where: Prisma.Args<T, "findFirst">["where"]) {
+					const context = Prisma.getExtensionContext(this) as any;
+					const result = await context.findFirst({where});
 					return result !== null;
+				},
+			},
+		},
+
+		query: {
+			user: {
+				async $allOperations({args, query, operation}) {
+					if (operation === "create" || operation === "update") {
+						if (args.data.password) {
+							args.data.password = await bcrypt.hash(
+								args.data.password.toString(),
+								await bcrypt.genSalt(8),
+							);
+						}
+					}
+
+					return query(args);
 				},
 			},
 		},

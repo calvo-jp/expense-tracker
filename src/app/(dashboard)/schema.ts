@@ -3,6 +3,7 @@ import {z} from "zod";
 export type TUpdateProfileSchema = z.infer<typeof UpdateProfileSchema>;
 export const UpdateProfileSchema = z.object({
 	name: z.string().min(4, "Name too short").max(50, "Name too long"),
+	email: z.string().email(),
 });
 
 export type TPaginationSchema = z.infer<typeof PaginationSchema>;

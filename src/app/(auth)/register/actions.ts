@@ -1,18 +1,22 @@
 "use server";
 
 import {prisma} from "@/config/prisma";
+import {cookies} from "next/headers";
+import {redirect} from "next/navigation";
 import {TCreateAccountSchema} from "./schema";
 
 export async function createAccount(data: TCreateAccountSchema) {
-	const {email} = data;
-
-	if (await prisma.user.exists({email})) return "Email already in use";
-
-	try {
-		await prisma.user.create({data, select: {}});
-
-		return null;
-	} catch {
-		return "Something went wrong";
+	if (await prisma.user.exists({email: data.email})) {
+		return "Email already in use";
 	}
+
+	const user = await prisma.user.create({
+		data,
+		select: {
+			id: true,
+		},
+	});
+
+	cookies().set("user", user.id);
+	redirect("/dashboard");
 }

@@ -1,18 +1,16 @@
 "use server";
 
-import {authOptions} from "@/config/auth-options";
 import {prisma} from "@/config/prisma";
 import assert from "assert";
-import {getServerSession} from "next-auth";
 import {revalidatePath} from "next/cache";
+import {cookies} from "next/headers";
+import {redirect} from "next/navigation";
 import {TUpdateProfileSchema} from "./schema";
 
 export async function updateProfile(data: TUpdateProfileSchema) {
-	const session = await getServerSession(authOptions);
+	const id = cookies().get("user")?.value;
 
-	assert(session);
-
-	const id = session.user.id;
+	assert(id);
 
 	try {
 		await prisma.user.update({where: {id}, data});
@@ -21,4 +19,9 @@ export async function updateProfile(data: TUpdateProfileSchema) {
 	} catch (e) {
 		return "Something went wrong";
 	}
+}
+
+export async function logout() {
+	cookies().delete("user");
+	redirect("/login");
 }

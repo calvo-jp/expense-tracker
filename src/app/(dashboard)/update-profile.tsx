@@ -18,28 +18,27 @@ import {toast} from "@/components/toaster";
 import {Flex, HStack, VStack, styled} from "@/styled-system/jsx";
 import {Portal} from "@ark-ui/react";
 import {zodResolver} from "@hookform/resolvers/zod";
+import {User} from "@prisma/client";
 import {SettingsIcon} from "lucide-react";
-import {useSession} from "next-auth/react";
-import {useEffect} from "react";
 import {useForm} from "react-hook-form";
 import {Spinner} from "../spinner";
 import {updateProfile} from "./actions";
 import {TUpdateProfileSchema, UpdateProfileSchema} from "./schema";
 
-export function UpdateProfile() {
-	const session = useSession({required: true});
+interface UpdateProfileProps {
+	__SSR_DATA: {
+		user: User;
+	};
+}
+
+export function UpdateProfile(props: UpdateProfileProps) {
 	const form = useForm<TUpdateProfileSchema>({
 		resolver: zodResolver(UpdateProfileSchema),
 		defaultValues: {
-			name: "",
+			name: props.__SSR_DATA.user.name,
+			email: props.__SSR_DATA.user.email,
 		},
 	});
-
-	useEffect(() => {
-		form.setValue("name", session.data?.user.name ?? "");
-	}, [form, session.data?.user.name]);
-
-	if (session.status === "loading") return null;
 
 	return (
 		<Dialog
@@ -77,7 +76,6 @@ export function UpdateProfile() {
 											return;
 										}
 
-										session.update();
 										api.close();
 										toast.success({
 											title: "Success",
@@ -106,10 +104,9 @@ export function UpdateProfile() {
 											<Input
 												id="update-profile.email"
 												size="lg"
+												type="email"
 												placeholder="Email"
-												value={session.data?.user.email ?? ""}
-												onChange={function noop() {}}
-												disabled
+												{...form.register("email")}
 											/>
 										</Flex>
 									</VStack>

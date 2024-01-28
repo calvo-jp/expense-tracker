@@ -1,12 +1,12 @@
 import {Spinner} from "@/app/spinner";
 import {Icon} from "@/components/icon";
 import {Link} from "@/components/link";
-import {authOptions} from "@/config/auth-options";
+import {prisma} from "@/config/prisma";
 import {Box, Flex, HStack, Spacer, styled} from "@/styled-system/jsx";
 import assert from "assert";
 import {ChevronRightIcon, ClockIcon, SplitIcon} from "lucide-react";
 import {Metadata} from "next";
-import {getServerSession} from "next-auth";
+import {cookies} from "next/headers";
 import {Suspense} from "react";
 import {Breakdown} from "./breakdown";
 import {Cards} from "./cards";
@@ -110,11 +110,18 @@ export default function Dashboard(props: DashboardProps) {
 }
 
 async function Username() {
-	const session = await getServerSession(authOptions);
+	const id = cookies().get("user")?.value;
 
-	assert(session);
+	assert(id);
 
-	return (
-		<styled.strong fontWeight="semibold">{session.user.name}!</styled.strong>
-	);
+	const user = await prisma.user.findUniqueOrThrow({
+		where: {
+			id,
+		},
+		select: {
+			name: true,
+		},
+	});
+
+	return <styled.strong fontWeight="semibold">{user.name}!</styled.strong>;
 }

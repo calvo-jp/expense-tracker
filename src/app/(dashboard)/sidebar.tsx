@@ -2,8 +2,8 @@ import {Icon} from "@/components/icon";
 import {Link} from "@/components/link";
 import {Box, styled} from "@/styled-system/jsx";
 import {ark} from "@ark-ui/react";
-import {CoinsIcon, LineChartIcon} from "lucide-react";
-import {Signout} from "./sign-out";
+import {CoinsIcon, LineChartIcon, PowerIcon} from "lucide-react";
+import {logout} from "./actions";
 
 export function Sidebar() {
 	return (
@@ -43,8 +43,11 @@ export function Sidebar() {
 						</SidebarButton>
 					</styled.li>
 					<styled.li>
-						<SidebarButton asChild>
-							<Signout />
+						<SidebarButton onClick={logout}>
+							<Icon>
+								<PowerIcon />
+							</Icon>
+							<styled.span>Sign out</styled.span>
 						</SidebarButton>
 					</styled.li>
 				</styled.ul>

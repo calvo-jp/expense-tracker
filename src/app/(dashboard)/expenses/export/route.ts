@@ -1,21 +1,19 @@
-import {authOptions} from "@/config/auth-options";
 import {prisma} from "@/config/prisma";
 import {pascalToSentenceCase} from "@/utils/pascal-to-sentence-case";
 import assert from "assert";
 import {format} from "date-fns";
-import {getServerSession} from "next-auth";
+import {cookies} from "next/headers";
 import slugify from "slugify";
 import * as XLSX from "xlsx";
 import {ExpenseFilterSchema} from "../schema";
 import {paramsToWhereClause} from "../utils.server";
 
 export async function GET(request: Request) {
-	const session = await getServerSession(authOptions);
+	const userId = cookies().get("user")?.value;
 
-	assert(session);
+	assert(userId);
 
 	const url = new URL(request.url);
-	const userId = session.user.id;
 	const filename = slugify(url.searchParams.get("filename") ?? "expenses", {
 		lower: true,
 	});

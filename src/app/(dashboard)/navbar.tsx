@@ -8,16 +8,16 @@ import {
 	MenuPositioner,
 	MenuTrigger,
 } from "@/components/menu";
-import {authOptions} from "@/config/auth-options";
+import {prisma} from "@/config/prisma";
 import {Box, Spacer, styled} from "@/styled-system/jsx";
 import {getInitials} from "@/utils/get-initials";
 import {Portal} from "@ark-ui/react";
 import assert from "assert";
-import {ChevronDownIcon} from "lucide-react";
-import {getServerSession} from "next-auth";
+import {ChevronDownIcon, PowerIcon} from "lucide-react";
+import {cookies} from "next/headers";
 import {Suspense} from "react";
 import {Logo} from "../logo";
-import {Signout} from "./sign-out";
+import {logout} from "./actions";
 import {ThemeSettings} from "./theme-settings";
 import {UpdateProfile} from "./update-profile";
 
@@ -48,9 +48,11 @@ export function Navbar() {
 }
 
 async function NavbarProfile() {
-	const session = await getServerSession(authOptions);
+	const id = cookies().get("user")?.value;
 
-	assert(session);
+	assert(id);
+
+	const user = await prisma.user.findUniqueOrThrow({where: {id}});
 
 	return (
 		<Menu
@@ -74,7 +76,7 @@ async function NavbarProfile() {
 					}}
 				>
 					<Avatar>
-						<AvatarFallback>{getInitials(session.user.name)}</AvatarFallback>
+						<AvatarFallback>{getInitials(user.name)}</AvatarFallback>
 					</Avatar>
 					<Icon transition="transform token(durations.slow)">
 						<ChevronDownIcon />
@@ -86,10 +88,17 @@ async function NavbarProfile() {
 				<MenuPositioner>
 					<MenuContent w="14rem" zIndex="modal">
 						<MenuItemGroup id="navbar.profile-settings">
-							<UpdateProfile />
+							<UpdateProfile __SSR_DATA={{user}} />
 							<ThemeSettings />
-							<MenuItem id="navbar.profile-settings.signout" gap={2} asChild>
-								<Signout />
+							<MenuItem
+								id="navbar.profile-settings.signout"
+								gap={2}
+								onClick={logout}
+							>
+								<Icon>
+									<PowerIcon />
+								</Icon>
+								<styled.span>Sign out</styled.span>
 							</MenuItem>
 						</MenuItemGroup>
 					</MenuContent>

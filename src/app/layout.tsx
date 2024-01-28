@@ -1,10 +1,8 @@
 import "@/assets/styles/globals.css";
 import {Toaster} from "@/components/toaster";
-import {authOptions} from "@/config/auth-options";
 import {cx} from "@/styled-system/css";
 import {styled} from "@/styled-system/jsx";
 import {Metadata} from "next";
-import {getServerSession} from "next-auth";
 import {Inter, JetBrains_Mono, Open_Sans} from "next/font/google";
 import {PropsWithChildren} from "react";
 import {Providers} from "./providers";
@@ -44,8 +42,6 @@ const mono = JetBrains_Mono({
 });
 
 export default async function RootLayout({children}: PropsWithChildren) {
-	const session = await getServerSession(authOptions);
-
 	return (
 		<styled.html
 			lang="en"
@@ -58,7 +54,7 @@ export default async function RootLayout({children}: PropsWithChildren) {
 			}}
 		>
 			<styled.body fontFamily="body">
-				<Providers session={session}>{children}</Providers>
+				<Providers>{children}</Providers>
 				<Toaster />
 			</styled.body>
 		</styled.html>
