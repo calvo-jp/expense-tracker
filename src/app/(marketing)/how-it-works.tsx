@@ -69,7 +69,7 @@ export async function HowItWorks() {
 						</TabsTrigger>
 					))}
 
-					<TabsIndicator bg="gray.a5" h={5} w={0.5} />
+					<TabsIndicator bg="gray.a5" h="var(--height)" w={0.5} />
 				</TabsList>
 
 				{items.map((item) => (
