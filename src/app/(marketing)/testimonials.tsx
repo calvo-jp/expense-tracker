@@ -1,5 +1,14 @@
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/avatar";
-import {CarouselPrevTrigger} from "@/components/carousel";
+import {
+	Carousel,
+	CarouselIndicator,
+	CarouselIndicatorGroup,
+	CarouselItem,
+	CarouselItemGroup,
+	CarouselNextTrigger,
+	CarouselPrevTrigger,
+	CarouselViewport,
+} from "@/components/carousel";
 import {Icon} from "@/components/icon";
 import {css} from "@/styled-system/css";
 import {
@@ -13,15 +22,6 @@ import {
 } from "@/styled-system/jsx";
 import {arrayChunk} from "@/utils/array-chunk";
 import {getInitials} from "@/utils/get-initials";
-import {
-	Carousel,
-	CarouselIndicator,
-	CarouselIndicatorGroup,
-	CarouselItem,
-	CarouselItemGroup,
-	CarouselNextTrigger,
-	CarouselViewport,
-} from "@ark-ui/react";
 import {ChevronLeftIcon, ChevronRightIcon, QuoteIcon} from "lucide-react";
 import path from "path";
 import {z} from "zod";
@@ -73,7 +73,7 @@ export async function Testimonials() {
 						</Trigger>
 					</CarouselPrevTrigger>
 					<CarouselViewport asChild>
-						<Box pos="relative" overflow="hidden">
+						<Box>
 							<CarouselItemGroup>
 								{chunks.map((list, index) => (
 									<CarouselItem key={index} index={index} asChild>
