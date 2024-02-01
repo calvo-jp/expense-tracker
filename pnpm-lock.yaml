@@ -10,7 +10,7 @@ dependencies:
     version: 2.0.1(@internationalized/date@3.5.1)(react-dom@18.2.0)(react@18.2.0)
   '@hookform/resolvers':
     specifier: 3.3.4
-    version: 3.3.4(react-hook-form@7.49.3)
+    version: 3.3.4(react-hook-form@7.50.0)
   '@prisma/client':
     specifier: 5.8.1
     version: 5.8.1(prisma@5.8.1)
@@ -36,8 +36,8 @@ dependencies:
     specifier: ^18
     version: 18.2.0(react@18.2.0)
   react-hook-form:
-    specifier: 7.49.3
-    version: 7.49.3(react@18.2.0)
+    specifier: 7.50.0
+    version: 7.50.0(react@18.2.0)
   recharts:
     specifier: 2.11.0
     version: 2.11.0(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
@@ -86,8 +86,8 @@ devDependencies:
     specifier: 0.29.1
     version: 0.29.1(typescript@5.2.2)
   '@park-ui/panda-preset':
-    specifier: 0.32.0
-    version: 0.32.0(@internationalized/date@3.5.1)(@pandacss/dev@0.29.1)(@pandacss/types@0.28.0)
+    specifier: 0.33.0
+    version: 0.33.0(@internationalized/date@3.5.1)(@pandacss/dev@0.29.1)(@pandacss/types@0.29.1)
   '@types/bcrypt':
     specifier: 5.0.2
     version: 5.0.2
@@ -526,12 +526,12 @@ packages:
     resolution: {integrity: sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw==}
     dev: true
 
-  /@hookform/resolvers@3.3.4(react-hook-form@7.49.3):
+  /@hookform/resolvers@3.3.4(react-hook-form@7.50.0):
     resolution: {integrity: sha512-o5cgpGOuJYrd+iMKvkttOclgwRW86EsWJZZRC23prf0uU2i48Htq4PuT73AVb9ionFyZrwYEITuOFGF+BydEtQ==}
     peerDependencies:
       react-hook-form: ^7.0.0
     dependencies:
-      react-hook-form: 7.49.3(react@18.2.0)
+      react-hook-form: 7.50.0(react@18.2.0)
     dev: false
 
   /@humanwhocodes/config-array@0.11.13:
@@ -1112,23 +1112,19 @@ packages:
       ts-pattern: 5.0.5
     dev: true
 
-  /@pandacss/types@0.28.0:
-    resolution: {integrity: sha512-6HvmCMBhmp+UIPHHN4EGsIaFzzSUMxy9eztKqfr+uYM3rmV9uNATpbG3dMEvnZiFQT0i3lLCONKwtdW52EmXzQ==}
-    dev: true
-
   /@pandacss/types@0.29.1:
     resolution: {integrity: sha512-jIBG7sr61E0tmXNEA2JQB9yzG9ASFTZY2fuAtafO24FOnmFEOJ/nTa4a2qgVESjiDqdow+VEGSKQVyeQ1DuTEg==}
     dev: true
 
-  /@park-ui/panda-preset@0.32.0(@internationalized/date@3.5.1)(@pandacss/dev@0.29.1)(@pandacss/types@0.28.0):
-    resolution: {integrity: sha512-xyDHiVIQqLNQzZfglMuNg6J0qTHRw3EI4JmUnUN1EsUP4e2v7Y+2plxzKjAGayLo7AGJZxkW/m+5K5DBotCMzg==}
+  /@park-ui/panda-preset@0.33.0(@internationalized/date@3.5.1)(@pandacss/dev@0.29.1)(@pandacss/types@0.29.1):
+    resolution: {integrity: sha512-+L4kzga6BNaYUnWk9cfhPEVbH0rcQNBEeXRy2g1pQj73hu1q642owdWXWbQWZ82E8VlA1fzRjkl4RvCKRNoLMw==}
     peerDependencies:
       '@pandacss/dev': '>0.22.0'
       '@pandacss/types': '>0.22.0'
     dependencies:
       '@ark-ui/anatomy': 2.1.0(@internationalized/date@3.5.1)
       '@pandacss/dev': 0.29.1(typescript@5.2.2)
-      '@pandacss/types': 0.28.0
+      '@pandacss/types': 0.29.1
       '@radix-ui/colors': 3.0.0
       deepmerge: 4.3.1
       ts-pattern: 5.0.6
@@ -5299,9 +5295,9 @@ packages:
       scheduler: 0.23.0
     dev: false
 
-  /react-hook-form@7.49.3(react@18.2.0):
-    resolution: {integrity: sha512-foD6r3juidAT1cOZzpmD/gOKt7fRsDhXXZ0y28+Al1CHgX+AY1qIN9VSIIItXRq1dN68QrRwl1ORFlwjBaAqeQ==}
-    engines: {node: '>=18', pnpm: '8'}
+  /react-hook-form@7.50.0(react@18.2.0):
+    resolution: {integrity: sha512-AOhuzM3RdP09ZCnq+Z0yvKGHK25yiOX5phwxjV9L7U6HMla10ezkBnvQ+Pk4GTuDfsC5P2zza3k8mawFwFLVuQ==}
+    engines: {node: '>=12.22.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18
     dependencies:

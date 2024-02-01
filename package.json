@@ -21,7 +21,7 @@
 		"next-themes": "0.2.1",
 		"react": "^18",
 		"react-dom": "^18",
-		"react-hook-form": "7.49.3",
+		"react-hook-form": "7.50.0",
 		"recharts": "2.11.0",
 		"rehype-stringify": "10.0.0",
 		"remark-frontmatter": "5.0.0",
@@ -39,7 +39,7 @@
 	"devDependencies": {
 		"@faker-js/faker": "8.4.0",
 		"@pandacss/dev": "0.29.1",
-		"@park-ui/panda-preset": "0.32.0",
+		"@park-ui/panda-preset": "0.33.0",
 		"@types/bcrypt": "5.0.2",
 		"@types/node": "^20",
 		"@types/react": "^18",
