@@ -1,4 +1,3 @@
-import {Spinner} from "@/app/spinner";
 import {Icon} from "@/components/icon";
 import {prisma} from "@/config/prisma";
 import {Box, Flex} from "@/styled-system/jsx";
@@ -22,7 +21,14 @@ import {
 import {CoinsIcon, FoldersIcon, TrendingUpIcon, WalletIcon} from "lucide-react";
 import {cookies} from "next/headers";
 import {Suspense} from "react";
-import {Card, CardContent, CardHeading, CardIcon, CardLabel} from "./card";
+import {
+	Card,
+	CardContent,
+	CardHeading,
+	CardIcon,
+	CardLabel,
+	CardSkeleton,
+} from "./card";
 import {Duration, getDurationValue} from "./utils";
 
 interface CardsProps {
@@ -52,20 +58,6 @@ export async function Cards(props: CardsProps) {
 				<TotalRecords duration={props.duration} />
 			</Suspense>
 		</Flex>
-	);
-}
-
-function CardSkeleton() {
-	return (
-		<Card
-			bg="gray.a2"
-			border="1px solid token(colors.gray.a4)"
-			rounded="sm"
-			alignItems="center"
-			justifyContent="center"
-		>
-			<Spinner w={7} h={7} />
-		</Card>
 	);
 }
 

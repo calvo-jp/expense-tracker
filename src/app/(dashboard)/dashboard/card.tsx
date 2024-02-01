@@ -1,3 +1,4 @@
+import {Skeleton} from "@/components/skeleton";
 import {styled} from "@/styled-system/jsx";
 import {ark} from "@ark-ui/react";
 
@@ -59,3 +60,15 @@ export const CardHeading = styled(ark.div, {
 		truncate: true,
 	},
 });
+
+export const CardSkeleton = () => (
+	<Skeleton
+		css={{
+			h: "10.5rem",
+			w: "18.5rem",
+			rounded: "sm",
+			flexGrow: 0,
+			flexShrink: 0,
+		}}
+	/>
+);
