@@ -13,10 +13,10 @@
 	"dependencies": {
 		"@ark-ui/react": "2.0.1",
 		"@hookform/resolvers": "3.3.4",
-		"@prisma/client": "5.8.1",
+		"@prisma/client": "5.9.1",
 		"bcrypt": "5.1.1",
 		"date-fns": "3.3.1",
-		"lucide-react": "0.320.0",
+		"lucide-react": "0.321.0",
 		"next": "14.1.0",
 		"next-themes": "0.2.1",
 		"react": "^18",
@@ -47,7 +47,7 @@
 		"eslint": "^8",
 		"eslint-config-next": "14.1.0",
 		"prettier": "3.2.4",
-		"prisma": "5.8.1",
+		"prisma": "5.9.1",
 		"typescript": "^5"
 	},
 	"prisma": {
