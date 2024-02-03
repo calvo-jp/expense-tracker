@@ -11,7 +11,6 @@ const nextConfig = {
 		],
 	},
 	experimental: {
-		ppr: true,
 		serverMinification: true,
 	},
 };
