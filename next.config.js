@@ -1,3 +1,5 @@
+// @ts-check
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	images: {
@@ -7,6 +9,10 @@ const nextConfig = {
 				hostname: "*",
 			},
 		],
+	},
+	experimental: {
+		ppr: true,
+		serverMinification: true,
 	},
 };
 
